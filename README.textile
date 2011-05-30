@@ -1,0 +1,207 @@
+h1. Troles
+
+The following is a discussion of roles design and how the current roles_generic design could be re-factored into a much simpler and effective solution which will be called Troles and Troles group.
+
+The Troles solution will use caching to optimize performance, only updating the roles cache of a user when the roles the user changes!
+
+Roles are assigned to user accounts. Different account types can have different role strategies! Often this would translate into a UserAccount with a multi role strategy and an AdminAccount with a single role strategy (or vice versa).
+
+* one role from a set of valid roles
+* many roles from a set of valid roles    
+
+h2. Role strategies
+
+The following lists the role strategies to be supported 
+
+h3. Single role strategies
+
+Schemas:
+* Boolean field on the User class (admin role)
+* String field on the User class
+* One reference to a Role
+* Embeds one Role (document store only)
+
+Field stored in the data store: @trole@
+
+The field is named _trole_, in order not to conflict with the method _#role_ used in the _Role DSL_.
+
+h3. Multiple roles strategies
+
+Schemas
+* Integer (bitmap) field on the User class
+* String of comma delimited roles on User class
+* References to multiple Roles
+* Embeds multiple Roles
+
+Field stored in the datastore: @troles@
+
+The field is named troles, in order not to conflict with the method _#roles_ used in the _Role DSL_.
+
+These strategies can be grouped and named as follows:
+
+Single role:
+* bit_one
+* string_one
+* ref_one
+* embed_one (document store)
+
+Multiple roles
+* bit_many
+* string_many
+* ref_many
+* embed_many (document store)
+
+These strategies can be implemented for any data store using any schema format.
+
+Different strategies can be used for different user accounts:
+
+<pre>
+  UserAccount
+   include Troles::RoleAdapter::BitOne
+
+  AdminAccount
+   include Troles::RoleAdapter::RefOne  
+</pre>
+
+h2. Roles API
+
+The Roles API can be divided into:
+* Core
+* Event/Cache
+* Read
+* Write
+* Operations object
+
+h3. Core API
+
+<pre>
+  # return the role field used, fx :string_one etc.
+  # should NOT be mutable
+  def role_field
+    :trole
+  end  
+  
+  # should return a Roles::Operations object
+  def roles
+   TRoles::Roles::Operations.new(self)
+  end  
+</pre>
+
+h3. Event/Cache API
+
+The User class should have an event trigger after save to see if the roles were changed.
+If the roles were changed, an even should be sent to an event manager to handle this, invalidating role caches etc. 
+Also any write event is predicated on _#static_roles?_ not being true for the user (ensuring guest roles are never updated).
+
+<pre>
+  User
+   after_save: update_roles # add event handler
+
+  # a change to the roles of the user should be published to an event handler
+  # this can be used to update both the Role cache of the user and fx the RolePermit cache.
+  # Both (and potentially others, fx for Role Groups) can subscribe to this event!
+
+  def update_roles
+   publish_change(:roles) if field_changed?(role_field)
+  end
+
+  # check if a field on the model changed
+  # See http://api.rubyonrails.org/classes/ActiveModel/Dirty.html
+  def field_changed? name
+   send :“#{name}_changed?”
+  end
+
+  # can be customized
+  # here uses singleton EventManager
+  def publish_change event
+   Roles::EventManager.publish_change event, :from => self
+  end  
+</pre>
+
+h3. Roles Read API
+
+This API operates directly on a user, fx _user#has_role?_
+
+<pre>
+  # perform any? on role_list
+  def has_role? role
+
+  # role_list has one element which is role
+  def is_role? role
+
+  # subtraction of roles from role_list is empty
+  def has_all_roles? roles
+
+  # union of roles and role_list is not empty
+  def has_any_role? roles
+
+  # return Set of symbols,where each symbol is a role name
+  # This set should be cached and only invalidated when the user has a change of roles
+  def role_list  
+</pre>
+
+h3. Roles Write API
+
+This API operates directly on a user, fx _user#has_role?_
+
+<pre>
+  def add_role
+  roles << role
+  end  
+</pre>
+
+h3. Roles Operations object
+
+The Roles Operations object is available on user#roles
+
+<pre>
+  class TRoles::Roles::Operations
+   include ReadOperations
+   include WriteOperations
+
+   def initialize user
+     @user = user
+   end
+  end
+
+  module TRoles::Roles::ReadOperations
+   # check if the roles list has the given role
+
+   def contains? role
+     list.include? role
+   end
+   alias_method :includes?, :contains?
+
+   # symbol list
+   def list
+
+   def get *roles
+  end
+
+  module TRoles::Roles::WriteOperations
+   def + # add role
+   alias_method <<
+
+   def - # remove roles
+  end  
+</pre>
+
+Example usage of Roles Operations API:
+
+<pre>
+  user.roles.get(:blogger) => returns :blogger if in roles_list, otherwise raises error
+  user.roles.get(:blogger, :admin) => returns [:blogger, :admin], otherwise raises error
+
+  if user.roles.list == [:blogger, :admin]
+  if user.roles.have_role? :blogger
+
+  user.roles << :blogger
+  user.roles - :blogger
+  user.roles + [:blogger, :editor]
+  user.roles.add :blogger
+  user.roles.remove :blogger  
+</pre>
+
+h2. License
+
+This project rocks and uses MIT-LICENSE.

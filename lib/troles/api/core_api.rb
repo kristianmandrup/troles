@@ -7,7 +7,7 @@ module Troles
     end  
 
     # should return a Roles::Operations object
-    def role
+    def roles
      TRoles::Operations.new(self)
     end  
   end

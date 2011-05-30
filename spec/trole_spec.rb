@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Troles do
+describe Trole do
   it "should be a module" do
-    Troles.should be_a(Module)
+    Trole.should be_a(Module)
   end
 end

@@ -10,5 +10,13 @@ module Troles
     def clear!
       # ...
     end  
+
+    protected
+
+    def valid_roles *roles
+      roles = roles.select_labels
+      raise ArgumentError, "Roles must contain Symbols or Strings" if roles.empty?                
+      check_valid_roles? roles.map{|r| r.to_s.alpha_numeric}
+    end    
   end
 end

@@ -1,3 +1,5 @@
+require 'troles/main'
+
 module Trole
   autoload :CoreApi,            'trole/api/core_api'
   autoload :ReadApi,            'trole/api/core_api'

@@ -13,7 +13,7 @@ module Trole
     end
     
     module ClassMethods
-      def set_valid_roles roles
+      def set_valid_role roles
         roles = roles.select_labels
         raise ArgumentError, "Roles must contain Symbols or Strings" if roles.empty?
         @valid_roles = roles

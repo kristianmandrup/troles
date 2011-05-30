@@ -3,14 +3,21 @@ module Troles
     module StringMany
       include BaseMany
 
-      # saves the role for the user in the data store
-      def set_roles roles
-        troles = valid_roles(roles)
-      end  
+      class Storage < GenericStorage
 
-      # clears the role of the user in the data store
-      def clear!
-        trole = ""
+        def initialize api
+          super
+        end
+        
+        # saves the role for the user in the data store
+        def set_roles roles
+          troles = roles
+        end  
+
+        # clears the role of the user in the data store
+        def clear!
+          trole = ""
+        end
       end
     end
   end

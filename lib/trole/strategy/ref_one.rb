@@ -1,23 +1,22 @@
-module Troles
+module Trole
   module Strategy
     module RefOne
       include BaseOne
 
-      # saves the role for the user in the data store
-      def set_role role
-        trole = Role.where(:name => valid_role role).first
-      end  
+      def strategy
+        @strategy ||= Storage.new
+      end
 
-      # clears the role of the user in the data store
-      def clear!
-        trole = ""
-      end  
+      class Storage < GenericStorage        
+        # saves the role for the user in the data store
+        def set_role role
+          trole = Role.where(:name => role).first
+        end  
 
-      module ClassMethods
-        def set_valid_role role
-          raise ArgumentError, "Role to set must be a Symbol or String" if !role.kind_of_label?
-          @valid_role = role
-        end      
+        # clears the role of the user in the data store
+        def clear!
+          trole = ""
+        end  
       end
     end
   end

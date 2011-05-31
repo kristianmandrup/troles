@@ -1,7 +1,7 @@
 require 'troles_spec'
 
-describe Troles::Strategy::BitMany::Storage::Bitmask do
-  let(:bitmask) { Troles::Strategy::BitMany::Storage::Bitmask.new :user, :admin, :blogger }  
+describe Troles::Calculator::Bitmask do
+  let(:bitmask) { Troles::Calculator::Bitmask.new :user, :admin, :blogger }  
 
   subject { bitmask }
     specify { bitmask.calc_index(:admin).should == 2 }

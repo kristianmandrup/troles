@@ -8,6 +8,14 @@ The Troles solution will use _caching_ to optimize performance, only updating th
 
 Note: There have been a few updates since this screencast ;)
 
+h2. Status June 1, 2011
+
+The Api is now partly implemented, see the specs! We need some work on the operations object API and also tighten up the main API, make sure the right methods are public, are accessible as instance or class methods as they should be etc.
+Also test corner cases for API (such as nil arguments, strings etc.) and ensure an ArgumentError is raised on invalid input! 
+
+When both Trole and Troles have stabilized and DRYed up their implementation, it might make sense to split the project into two.
+For now, it makes sense to keep them in one project as to better find reusability ;) 
+
 h2. Role strategies
 
 The following lists the role strategies to be supported
@@ -304,6 +312,9 @@ module Troles
       end
     ...  
 </pre>
+
+You can also use a custom Calculator to store the roles in a non-standard format. This is used for the BitMany strategy, which 
+has a special _Calculator::BitMask_ class which handles conversion between a list of symbols to an Integer bitmap representing it (relative to a valid roles list!). You can create your own Calculator, fx to Encrypt the roles info or whatever you like!
 
 h2. License
 

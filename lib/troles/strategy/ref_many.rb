@@ -7,7 +7,7 @@ module Troles
         @strategy ||= Storage.new self
       end
 
-      class Storage < GenericStorage
+      class Storage < Troles::Storage::Generic
 
         def initialize api
           super

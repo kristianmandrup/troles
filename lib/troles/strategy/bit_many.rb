@@ -1,21 +1,27 @@
 module Troles
   module Strategy
     module BitMany
-      include BaseMany
+     
+      def self.included(base)
+        base.send :include, BaseMany
+      end      
 
       def strategy
         @strategy ||= Storage.new self
       end
 
       class Storage < Troles::Storage::Generic
-
         def initialize api
           super
+        end
+
+        def display_roles
+          bitmask.get_roles(ds_field)
         end
         
         # saves the role for the user in the data store
         def set_roles *roles
-          trole = bitmask(valid_roles).calc_bitmask(roles)
+          set_ds_field bitmask.calc_bitmask(roles)
         end  
 
         # clears the role of the user in the data store
@@ -25,12 +31,12 @@ module Troles
         
         # clears the role of the user in the data store
         def set_default_role!
-          trole = 0
+          set_ds_field 0
         end            
 
         protected
 
-        def bitmask valid_roles
+        def bitmask
           @bitmask ||= Bitmask.new valid_roles
         end
 
@@ -45,11 +51,15 @@ module Troles
             2**valid_roles.index(r)
           end
 
-          def get_roles bitmask
-            valid_roles.reject { |r| ((bitmask || 0) & calc_index(r)).zero? }
+          def get_roles number      
+            raise ArgumentError, "to get roles from bitmask, a number must be passed as argument, was: #{number.inspect}" if !number.is_a?(Numeric) 
+            raise "Valid roles have not been defined" if !valid_roles || valid_roles.empty?
+            valid_roles.reject do |r| 
+              ((number || 0) & calc_index(r)).zero?
+            end
           end
 
-          def bitmask
+          def calc_bitmask roles
             roles.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }          
           end
         end

@@ -4,10 +4,14 @@ module Trole
       include BaseOne
 
       def strategy
-        @strategy ||= Storage.new
+        @strategy ||= Storage.new self
       end
 
-      class Storage < GenericStorage        
+      class Storage < Trole::Storage::Generic        
+        def initialize api        
+          super
+        end
+
         # saves the role for the user in the data store
         def set_role role
           trole = role

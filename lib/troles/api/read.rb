@@ -19,7 +19,7 @@ module Troles::Api
     # return Set of symbols,where each symbol is a role name
     # This set should be cached and only invalidated when the user has a change of roles
     def role_list
-      [:admin, :blogger]  
+      strategy.display_roles
     end
   end
 end

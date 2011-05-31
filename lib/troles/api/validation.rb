@@ -1,3 +1,5 @@
+require 'trole/api/validation'
+
 module Troles::Api
   module Validation
     include Trole::Api::Validation

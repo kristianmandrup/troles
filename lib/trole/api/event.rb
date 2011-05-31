@@ -16,7 +16,7 @@ module Trole::Api
 
     # can be customized
     # here uses singleton EventManager
-    def publish_change event
+    def publish_change! event
       event_manager.publish_change event, :from => self
     end  
     

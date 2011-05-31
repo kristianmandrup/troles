@@ -1,6 +1,6 @@
-require 'rspec'
 require 'troles'
 require 'troles/macros'
+require 'trole_spec_helper'
 
 describe Troles do
   it "should be a module" do

@@ -2,7 +2,11 @@
 module Trole
   module Strategy
     module BaseOne
-      include Api 
+      def self.included(base)
+        base.send :include, Trole::Api
+        base.send :extend,  Trole::Api::ClassMethods
+        base.send :attr_accessor, base.role_field
+      end
       
       class << self
         def set_role role

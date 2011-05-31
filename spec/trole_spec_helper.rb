@@ -1,0 +1,5 @@
+require 'rspec'
+require 'require_all'
+require 'factory_girl'
+require 'factories'
+require 'models'

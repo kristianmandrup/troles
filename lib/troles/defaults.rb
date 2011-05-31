@@ -2,7 +2,7 @@ module Troles
   module Defaults
     module StaticRole
       def static_roles?
-        true
+        false
       end
     end
   end

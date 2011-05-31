@@ -3,7 +3,7 @@ module Troles
     module StringMany
       include BaseMany
 
-      class Storage < GenericStorage
+      class Storage < Troles::Storage::Generic
 
         def initialize api
           super

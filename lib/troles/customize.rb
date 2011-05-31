@@ -8,8 +8,10 @@ module Troles
 
     class << self
       def apply_strategy_options! clazz, options
-        clazz.send :include,  Troles::Customize::StaticRole # overrides default method that returns false 
-        clazz.send :extend,   Troles::Customize::StaticRole
+        if options[:static_role]
+          clazz.send :include,  Troles::Customize::StaticRole # overrides default method that returns false 
+          clazz.send :extend,   Troles::Customize::StaticRole
+        end
       end
 
       def strategy_module strategy_name

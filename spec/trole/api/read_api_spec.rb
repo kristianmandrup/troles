@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'trole_spec'
 
-describe Trole::ReadApi do
+describe Trole::Api::Read do
   describe '#has_role?' do
   end
 

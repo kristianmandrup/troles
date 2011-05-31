@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'trole_spec'
 
-describe Trole::WriteApi do
+describe Trole::Api::Write do
   describe '#add_role' do
   end
 

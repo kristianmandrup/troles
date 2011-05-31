@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'trole_spec'
 
-describe Trole::EventApi do
+describe Trole::Api::Event do
   describe '#update_role' do
   end
 

@@ -1,6 +1,8 @@
-module Troles
-  module WriteApi
-    include Trole::WriteApi
+require 'trole/api/write'
+
+module Troles::Api
+  module Write
+    include Trole::Api::Write
     
     def add_roles *roles_to_add
       subject << roles_to_add 

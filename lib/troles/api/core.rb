@@ -1,5 +1,5 @@
-module Troles
-  module CoreApi
+module Troles::Api
+  module Core
     # return the role field used, fx :string_one etc.
     # should NOT be mutable
     def role_field
@@ -8,7 +8,7 @@ module Troles
 
     # should return a Roles::Operations object
     def roles
-     TRoles::Operations.new(self)
+      Troles::Operations.new(self)
     end
     
     def static_role?

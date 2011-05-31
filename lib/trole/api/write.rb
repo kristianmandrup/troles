@@ -1,5 +1,5 @@
-module Trole
-  module WriteApi
+module Trole::Api
+  module Write
     def add_role role_to_add
       subject << role_to_add
     end  

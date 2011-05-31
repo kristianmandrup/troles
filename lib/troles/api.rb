@@ -1,16 +1,16 @@
 module Troles
   module Api
-    autoload :CoreApi,        'troles/api/core_api'
-    autoload :EventApi,       'troles/api/event_api'
-    autoload :ReadApi,        'troles/api/read_api'
-    autoload :StoreApi,       'troles/api/store_api'    
-    autoload :ValidationApi,  'troles/api/read_api'
-    autoload :WriteApi,       'troles/api/write_api'
+    autoload :Core,       'troles/api/core'
+    autoload :Event,      'troles/api/event'
+    autoload :Read,       'troles/api/read'
+    autoload :Store,      'troles/api/store'    
+    autoload :Validation, 'troles/api/read'
+    autoload :Write,      'troles/api/write'
 
-    include CoreApi
-    include EventApi    
-    include ReadApi
-    include StoreApi
-    include WriteApi
+    include Core
+    include Event    
+    include Read
+    include Store
+    include Write
   end
 end

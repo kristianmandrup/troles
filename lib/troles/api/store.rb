@@ -1,5 +1,5 @@
-module Troles
-  module StoreApi
+module Troles::Api
+  module Store
     # saves the role for the user in the data store
     def set_roles *new_roles
       strategy.clear!

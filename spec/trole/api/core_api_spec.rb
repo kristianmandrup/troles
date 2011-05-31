@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'trole_spec'
 
-describe Trole::CoreApi do
+describe Trole::Api::Core do
   describe '#role_field' do
   end
 

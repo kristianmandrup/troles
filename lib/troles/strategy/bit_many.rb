@@ -7,7 +7,7 @@ module Troles
         @strategy ||= Storage.new self
       end
 
-      class Storage < GenericStorage
+      class Storage < Troles::Storage::Generic
 
         def initialize api
           super
@@ -41,7 +41,7 @@ module Troles
           end
 
           def get_roles bitmask
-            valid_roles.reject { |r| ((bitmask || 0) & calc_index(r)).zero? })        
+            valid_roles.reject { |r| ((bitmask || 0) & calc_index(r)).zero? }
           end
 
           def bitmask

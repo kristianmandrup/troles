@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'trole_spec'
 
-describe Trole::StoreApi do
+describe Trole::Api::Store do
   describe '#set_role' do
   end
 

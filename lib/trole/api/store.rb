@@ -1,6 +1,6 @@
 # API for the data store
-module Trole
-  module StoreApi
+module Trole::Api
+  module Store
     # saves the role for the user in the data store
     def set_role role
       strategy.set_role(make_valid_role role) 

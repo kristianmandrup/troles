@@ -9,6 +9,10 @@ module Troles
     # should return a Roles::Operations object
     def roles
      TRoles::Operations.new(self)
-    end  
+    end
+    
+    def static_role?
+      false
+    end      
   end
 end

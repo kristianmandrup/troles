@@ -1,12 +1,8 @@
 require 'troles/main'
 
 module Troles
-  autoload :CoreApi,            'troles/api/core_api'
-  autoload :ReadApi,            'troles/api/core_api'
-  autoload :WriteApi,           'troles/api/core_api'
-  autoload :StoreApi,           'troles/api/core_api'    
-
-  autoload :Operations,         'troles/operations'
-  autoload :ReadOperations,     'troles/operations/read_ops'
-  autoload :WriteOperations,    'troles/operations/write_ops'
+  autoload :Api,            'troles/api'
+  autoload :EventManager,   'troles/event_manager'
+  autoload :Operations,     'troles/operations'
+  autoload :Strategy,       'troles/strategy'
 end

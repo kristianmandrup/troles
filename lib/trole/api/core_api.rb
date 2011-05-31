@@ -10,5 +10,14 @@ module Trole
     def role
      TRole::Operations.new(self)
     end  
+
+    def StaticRole    
+      def static_role?
+        false
+      end
+    end
+    
+    include StaticRole
+    extend  StaticRole
   end
 end

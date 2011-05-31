@@ -2,16 +2,14 @@ h1. Troles
 
 The following is a discussion of roles design and how the current roles_generic design could be re-factored into a much simpler and effective solution which will be called Troles and Troles group.
 
-The Troles solution will use caching to optimize performance, only updating the roles cache of a user when the roles the user changes!
-
-Roles are assigned to user accounts. Different account types can have different role strategies! Often this would translate into a UserAccount with a multi role strategy and an AdminAccount with a single role strategy (or vice versa).
-
-* one role from a set of valid roles
-* many roles from a set of valid roles    
+The Troles solution will use _caching_ to optimize performance, only updating the roles cache of a user when the roles the user changes!
 
 h2. Role strategies
 
-The following lists the role strategies to be supported 
+The following lists the role strategies to be supported
+
+* Single  - one role from a set of valid roles
+* Many    - many roles from a set of valid roles 
 
 h3. Single role strategies
 
@@ -53,19 +51,30 @@ Multiple roles
 
 These strategies can be implemented for any data store using any schema format.
 
-Different strategies can be used for different user accounts:
+h3. Using roles strategies with Users and User accounts
 
-<pre>
-  UserAccount
-   include Troles::RoleAdapter::BitOne
+Roles are assigned to _Users_ or _User accounts_ (Devise fx). The class that has a role strategy assigned is referred to as the _role subject_. Different role subjects can have different role strategies! 
 
-  AdminAccount
-   include Troles::RoleAdapter::RefOne  
+When using Devise this could translate fx into a UserAccount with a multi role strategy and an AdminAccount with a single role strategy (or vice versa). Example:
+
+<pre> 
+  require 'trole/macros'
+  
+  class UserAccount
+    trole_strategy :string_many
+  end
+
+  class AdminAccount
+    trole_strategy :bit_one, :static => true
+  end  
 </pre>
+
+The macros must be enabled my requiring the _trole/macros_ file. The @:static => true@ options is used to indicate, that the role can not be changed after being initially set. But we are getting ahead of ourselves... (more on this later)
 
 h2. Roles API
 
 The Roles API can be divided into:
+
 * Core
 * Event/Cache
 * Read
@@ -73,6 +82,8 @@ The Roles API can be divided into:
 * Operations object
 
 h3. Core API
+
+Contains Core Role functionality
 
 <pre>
   # return the role field used, fx :string_one etc.
@@ -89,9 +100,11 @@ h3. Core API
 
 h3. Event/Cache API
 
-The User class should have an event trigger after save to see if the roles were changed.
-If the roles were changed, an even should be sent to an event manager to handle this, invalidating role caches etc. 
-Also any write event is predicated on _#static_roles?_ not being true for the user (ensuring guest roles are never updated).
+The User class should have an event trigger after *save* to react when the roles have changed.
+If the roles were changed, an even should be sent to an _Event Manager_ to handle this. The event manager
+can have subscribers to events. 
+
+Also any write event to the datastore should be predicated on _#static_roles?_ not being true for the user (thus ensuring guest roles are never updated).
 
 <pre>
   User
@@ -146,7 +159,11 @@ This API operates directly on a user, fx _user#has_role?_
 
 <pre>
   def add_role
-  roles << role
+    roles + role
+  end  
+
+  def remove_role
+    roles - role
   end  
 </pre>
 
@@ -197,9 +214,9 @@ Example usage of Roles Operations API:
 
   user.roles << :blogger
   user.roles - :blogger
-  user.roles + [:blogger, :editor]
+  user.roles + [:blogger, :editor]    http://screencast.com/t/Yi0TrYz2
   user.roles.add :blogger
-  user.roles.remove :blogger  
+  user.roles.remove :blogger      
 </pre>
 
 h2. License

@@ -2,13 +2,16 @@ module Troles::Api
   module Store
     # saves the role for the user in the data store
     def set_roles *new_roles
-      strategy.clear!
-      strategy.set_roles(make_valid_roles roles) 
-      strategy.persist_role_changes!      
+      # clear_roles!       
+      roles_to_set = make_valid_roles *new_roles
+      raise ArgumentError, "None of the roles are valid, was: #{new_roles}, valid are: #{self.class.valid_roles}" if !roles_to_set
+      puts roles_to_set
+      strategy.set_roles(roles_to_set) 
+      # strategy.persist_role_changes!      
     end  
 
     # clears the role of the user in the data store
-    def clear!
+    def clear_roles!
       strategy.clear!
       strategy.persist_role_changes!      
     end  

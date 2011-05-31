@@ -8,9 +8,18 @@ describe Troles::Strategy::BitMany do
   let(:jack)    { Factory.create :user, :name => 'jack', :troles => 3 } # :user and :admin roles
 
   it_should_behave_like "a Many strategy for Kris"
+  # subject { kris }
+  #   its(:troles)        { should == 1 }
+
   it_should_behave_like "a Many strategy for Susan"
+  # subject { susan }
+  #   its(:troles)        { should == 2 }
+
   it_should_behave_like "a Many strategy for Jack"
 
+  # subject { jack }
+  #   its(:troles)        { should == 3 }
+    
   # subject { kris }  
   #   # Core API
   #   specify       { lambda { kris.role_field }.should raise_error } # is a class method    

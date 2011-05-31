@@ -5,7 +5,7 @@ module Troles::Api
     include Trole::Api::Validation
 
     def check_valid_roles? *roles
-      roles = self.class.valid_roles & roles.flatten
+      roles = self.class.valid_roles.to_symbols & roles.to_symbols
       return roles if !roles.empty? 
       false
     end

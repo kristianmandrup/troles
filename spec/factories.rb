@@ -5,3 +5,4 @@ end
 Factory.define :user_account do |u|
   u.name 'susan'
 end
+

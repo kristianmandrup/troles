@@ -10,7 +10,7 @@ module Troles::Strategy::BitMany
   
     # saves the role for the user in the data store
     def set_roles *roles
-      set_ds_field bitmask.calc_bitmask(roles)
+      set_ds_field bitmask.calc_bitmask(roles.to_symbols)
     end  
 
     # clears the role of the user in the data store
@@ -32,8 +32,8 @@ module Troles::Strategy::BitMany
     class Bitmask          
       attr_accessor :valid_roles
     
-      def initialize valid_roles
-        @valid_roles = valid_roles
+      def initialize *valid_roles
+        @valid_roles = valid_roles.to_symbols
       end
     
       def calc_index(r)
@@ -48,8 +48,8 @@ module Troles::Strategy::BitMany
         end
       end
 
-      def calc_bitmask roles
-        roles.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }          
+      def calc_bitmask *roles
+        roles.to_symbols.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }          
       end
     end
   end

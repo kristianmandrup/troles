@@ -10,6 +10,10 @@ module Trole
         end
 
         def clear!
+          set_default_role!
+        end
+
+        def set_default_role!
           raise "Must be implemented by Strategy"
         end
 

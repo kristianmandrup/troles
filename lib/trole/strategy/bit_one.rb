@@ -1,6 +1,6 @@
 module Trole
   module Strategy
-    module BitOne
+    module BitOne # boolean flag
       include BaseOne
 
       def strategy
@@ -10,13 +10,12 @@ module Trole
       class Storage < GenericStorage        
         # saves the role for the user in the data store
         def set_role role
-          trole = role ? 1 : 0
+          trole = role ? true : false # boolean field in Data store
         end  
-
-        # clears the role of the user in the data store
-        def clear!
-          trole = 0
-        end  
+        
+        def set_default_role!
+          trole = false
+        end
       end
     end
   end

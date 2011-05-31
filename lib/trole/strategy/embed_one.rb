@@ -12,11 +12,10 @@ module Trole
         def set_role role
           trole = Role.new :name => role
         end  
-
-        # clears the role of the user in the data store
-        def clear!
-          trole = ""
-        end  
+        
+        def set_default_role!
+          trole = []
+        end          
       end      
     end
   end

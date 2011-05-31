@@ -20,8 +20,13 @@ module Troles
 
         # clears the role of the user in the data store
         def clear!
+          set_default_role!
+        end
+        
+        # clears the role of the user in the data store
+        def set_default_role!
           trole = 0
-        end  
+        end            
 
         protected
 

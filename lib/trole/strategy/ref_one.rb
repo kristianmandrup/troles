@@ -14,8 +14,8 @@ module Trole
         end  
 
         # clears the role of the user in the data store
-        def clear!
-          trole = ""
+        def set_default_role!
+          trole = nil
         end  
       end
     end

@@ -14,15 +14,21 @@ module Troles
         end
         
         # saves the role for the user in the data store
-        def set_roles roles        
+        def set_roles *roles
           # finds and sets references to existing Role instances from symbols        
-          troles = Role.where(:name => roles)
+          troles = find_roles *roles
         end  
 
         # clears the role of the user in the data store
         def clear!
           troles = []
         end
+        
+        # clears the role of the user in the data store
+        def set_default_role!
+          clear!
+          # set_roles api.default_role
+        end                            
       end
     end
   end

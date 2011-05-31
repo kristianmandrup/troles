@@ -83,22 +83,31 @@ The Roles API can be divided into:
 * Event/Cache
 * Read
 * Write
+* Store
+* Validation
 * Operations object
+
+The Store API is the only API that could require override for a specific data store.
+
+h2. Storage
+
+Storage modules for different types of data stores can be found in the /storage folder
 
 h3. Core API
 
 Contains Core Role functionality
 
-<pre>
+<pre> 
+module Troles::Api::Core  
   # return the role field used, fx :string_one etc.
   # should NOT be mutable
   def role_field
     :trole
   end  
   
-  # should return a Roles::Operations object
+  # should return a Troles::Operations object
   def roles
-   TRoles::Roles::Operations.new(self)
+    Troles::Operations.new(self)
   end  
 </pre>
 
@@ -110,36 +119,46 @@ can have subscribers to events.
 
 Also any write event to the datastore should be predicated on _#static_roles?_ not being true for the user (thus ensuring guest roles are never updated).
 
+Save triggers call to Event#update_roles
 <pre>
   User
-   after_save: update_roles # add event handler
+    after_save: update_roles # add event handler
+</pre>
 
+<pre>
+# Event API module
+module Troles::Api::Event
   # a change to the roles of the user should be published to an event handler
   # this can be used to update both the Role cache of the user and fx the RolePermit cache.
   # Both (and potentially others, fx for Role Groups) can subscribe to this event!
 
   def update_roles
-   publish_change(:roles) if field_changed?(role_field)
+    publish_change(:roles) if field_changed?(role_field)
   end
 
   # check if a field on the model changed
   # See http://api.rubyonrails.org/classes/ActiveModel/Dirty.html
   def field_changed? name
-   send :“#{name}_changed?”
+    send :“#{name}_changed?”
   end
 
   # can be customized
   # here uses singleton EventManager
   def publish_change event
-   Roles::EventManager.publish_change event, :from => self
+    event_manager.publish_change event, :from => self
   end  
+  
+  def event_manager
+    Roles::EventManager
+  end
 </pre>
 
 h3. Roles Read API
 
 This API operates directly on a user, fx _user#has_role?_
 
-<pre>
+<pre>  
+module Troles::Api::Read
   # perform any? on role_list
   def has_role? role
 
@@ -176,34 +195,40 @@ h3. Roles Operations object
 The Roles Operations object is available on user#roles
 
 <pre>
-  class TRoles::Roles::Operations
-   include ReadOperations
-   include WriteOperations
+  class Troles::Operations
+   include ReadOps
+   include WriteOps
 
    def initialize user
      @user = user
    end
+
+   # ... general purpose stuff here?
   end
 
-  module TRoles::Roles::ReadOperations
-   # check if the roles list has the given role
+  class Troles::Operations
+    module ReadOps
+      # check if the roles list has the given role
 
-   def contains? role
-     list.include? role
-   end
-   alias_method :includes?, :contains?
+      def contains? role
+        list.include? role
+      end
+      alias_method :includes?, :contains?
 
-   # symbol list
-   def list
+      # symbol list
+      def list
 
-   def get *roles
+      def get *roles
+    end
   end
 
-  module TRoles::Roles::WriteOperations
-   def + # add role
-   alias_method <<
+  class Troles::Operations
+    module WriteOps
+      def + # add role
+      alias_method <<
 
-   def - # remove roles
+      def - # remove roles
+    end
   end  
 </pre>
 
@@ -221,6 +246,63 @@ Example usage of Roles Operations API:
   user.roles + [:blogger, :editor]    http://screencast.com/t/Yi0TrYz2
   user.roles.add :blogger
   user.roles.remove :blogger      
+</pre>
+
+h2. Creating DataStore Adapter
+
+To create a DataStore Adapter, simply implement each of the strategies to be supported as shown here:
+
+<pre>
+module Troles
+  module Strategy
+    module RefMany
+      include BaseMany
+
+      def strategy
+        @strategy ||= Storage.new self
+      end
+
+      class Storage < GenericStorage
+
+        def initialize api
+          super
+        end
+        
+        # saves the role for the user in the data store
+        def set_roles *roles
+          # finds and sets references to existing Role instances from symbols        
+          troles = find_roles *roles
+        end  
+
+    ...
+</pre>  
+
+For Active Record the is no need for change, as an AR Role model implements the _where_ API used in the deault _#find_roles_ implementation of the generic _RefMany_ strategy, that returns an array of Role models.
+
+However for Mongoid fx, there is a need to use _#all_ on the where result: @Role.where(:name => roles).all@
+This can be done elegantly using super, and having the MongoidStorage inherit from the Generic one.
+
+<pre>
+module Troles
+  module Strategy
+    module RefMany
+      include BaseMany
+
+      def strategy
+        @strategy ||= MongoidStorage.new self
+      end
+
+      class MongoidStorage < Troles::Strategy::RefMany::Storage
+
+        def initialize api
+          super
+        end
+
+        def find_roles *roles
+          super.all
+        end
+      end
+    ...  
 </pre>
 
 h2. License

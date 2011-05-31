@@ -1,23 +1,27 @@
 require 'troles_spec'
 User.role_strategy :bit_many
-User.valid_roles = [:user]
-
-# let(:susan)   { Factory.create :user, :name => 'susan', :troles => [:user, :blogger] }
+User.valid_roles = [:user, :admin, :blogger]
 
 describe Troles::Strategy::BitMany do
-  let(:kris)    { Factory.create :user, :troles => 1 } # same as setting role to :user
-  
-  subject { kris }  
-    # Core API
-    specify       { lambda { kris.role_field }.should raise_error } # is a class method    
-    specify       { User.role_field.should == :troles }
+  let(:kris)    { Factory.create :user, :troles => 1 } # :user role
+  let(:susan)   { Factory.create :user, :name => 'susan', :troles => 2 } # :admin role
+  let(:jack)    { Factory.create :user, :name => 'jack', :troles => 3 } # :user and :admin roles
 
-    its(:roles)         { should be_a Troles::Operations }
-    its(:role_list)     { should include(:user) }
+  it_should_behave_like "a Many strategy for Kris"
+  it_should_behave_like "a Many strategy for Susan"
+  it_should_behave_like "a Many strategy for Jack"
+
+  # subject { kris }  
+  #   # Core API
+  #   specify       { lambda { kris.role_field }.should raise_error } # is a class method    
+  #   specify       { User.role_field.should == :troles }
+  # 
+  #   its(:roles)         { should be_a Troles::Operations }
+  #   its(:role_list)     { should include(:user) }
 
     # specify       { lambda { kris.static_roles? }.should raise_error } # is a class method    
-    specify       { kris.static_roles?.should be_false }
-    specify       { User.static_roles?.should be_false }
+    # specify       { kris.static_roles?.should be_false }
+    # specify       { User.static_roles?.should be_false }
   # 
   #   # Event API
   #   its(:event_manager?)  { should be_a Troles::EventManager }    

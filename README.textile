@@ -2,7 +2,11 @@ h1. Troles
 
 The following is a discussion of roles design and how the current roles_generic design could be re-factored into a much simpler and effective solution which will be called Troles and Troles group.
 
-The Troles solution will use _caching_ to optimize performance, only updating the roles cache of a user when the roles the user changes!
+The Troles solution will use _caching_ to optimize performance, only updating the roles cache of a user when the roles the user changes!       
+
+"Screencast: run-down of this README":http://screencast.com/t/Yi0TrYz2
+
+Note: There have been a few updates since this screencast ;)
 
 h2. Role strategies
 

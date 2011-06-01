@@ -313,8 +313,27 @@ module Troles
     ...  
 </pre>
 
-You can also use a custom Calculator to store the roles in a non-standard format. This is used for the BitMany strategy, which 
-has a special _Calculator::BitMask_ class which handles conversion between a list of symbols to an Integer bitmap representing it (relative to a valid roles list!). You can create your own Calculator, fx to Encrypt the roles info or whatever you like!
+You can also use a custom "Marshaller":http://en.wikipedia.org/wiki/Marshalling_%28computer_science%29 to store the roles in a non-standard format. This is used for the _BitMany_ strategy, which has a special _Marshaller::BitMask_ class which handles conversion between a list of symbols to an _Integer_ bitmap representing it (relative to a valid roles list!). You can create your own _Marshaller_, fx to encrypt the roles info or whatever you like!
+
+<pre>
+module Trole::Marshaller
+  class MyCustomMarshaller < GenericMarshaller
+    def initialize role_subject
+      super
+    end
+
+    # convert marshalled value into roles symbols list
+    def read
+      ...      
+    end
+
+    # convert roles symbols list into value to be marshalled
+    def write *roles
+      ...
+    end
+  end
+end
+</pre>
 
 h2. License
 

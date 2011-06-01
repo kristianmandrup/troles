@@ -1,6 +1,6 @@
 module Troles::Strategy::BitMany
   class Storage < Troles::Storage::Generic
-    def initialize api
+    def initialize role_subject
       super
     end
 
@@ -26,7 +26,7 @@ module Troles::Strategy::BitMany
     protected
 
     def bitmask
-      @bitmask ||= Troles::Calculator::Bitmask.new valid_roles
+      @bitmask ||= Troles::Calculator::Bitmask.new role_subject
     end
   end
 end

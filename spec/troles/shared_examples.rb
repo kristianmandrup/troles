@@ -24,6 +24,8 @@ shared_examples_for "a Many strategy for Kris" do
       # use mock expectation : don't expect strategy to be called!
       kris.role_list.should include(:user)
       kris.expects(:strategy).never
+      # calling role_list multiple times should NOT invalidate the cache :)
+      expect { kris.role_list }.to_not change{kris.instance_variable_get "@role_list"}      
       kris.role_list.should include(:user)      
     end
 
@@ -32,8 +34,8 @@ shared_examples_for "a Many strategy for Kris" do
       kris.set_roles(:admin)
       kris.expects(:invalidate_role_cache!)
       kris.publish_change :roles
-      # expect strategy to be called!
-      # kris.expects(:strategy).at_most(1)
+      # expect cached role_list instance variable (cache) to be changed
+      expect { kris.role_list }.to change{kris.instance_variable_get "@role_list"}
       kris.role_list.should include(:admin)            
     end
     

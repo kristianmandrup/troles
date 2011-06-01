@@ -5,7 +5,6 @@ module Troles
       
       def self.included(base)
         base.send :include, Troles::Api
-        base.send :extend,  Troles::Api
         base.send :attr_accessor, base.role_field        
       end
             

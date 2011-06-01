@@ -4,7 +4,6 @@ module Trole
     module BaseOne
       def self.included(base)
         base.send :include, Trole::Api
-        base.send :extend,  Trole::Api::ClassMethods
         base.send :attr_accessor, base.role_field
       end
       

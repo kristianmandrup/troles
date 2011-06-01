@@ -20,7 +20,9 @@ module Trole::Api
       # return Set of symbols,where each symbol is a role name
       # This set should be cached and only invalidated when the user has a change of roles
       def role_list        
-        @role_list ||= strategy.display_roles || Set.new
+        @role_list ||= begin
+          strategy.display_roles
+        end # || Set.new
       end    
     end    
     include Shared

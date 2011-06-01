@@ -12,10 +12,6 @@ module Trole::Api
       strategy.clear!
       strategy.persist_role_changes!
     end 
-
-    def strategy
-      Trole::Strategy::BaseOne
-    end
     
     protected
 

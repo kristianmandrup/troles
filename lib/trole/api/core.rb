@@ -6,6 +6,11 @@ module Trole::Api
     def role
       Trole::Operations.new(self)
     end
+
+    def roles
+      require 'troles/operations'
+      Troles::Operations.new(self)
+    end       
         
     module ClassMethods
       attr_accessor :valid_roles

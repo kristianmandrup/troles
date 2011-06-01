@@ -2,10 +2,10 @@ module Troles
   class Operations
     module WriteOps
       # assignment
-      def = *roles
-        role_subject.set_roles roles        
+      def == *roles
+        role_subject.role_list == roles.flatten
       end
-      alias_method :set, :"="
+      alias_method :equal, :"=="
 
       # add role
       def + *roles

@@ -7,8 +7,8 @@ describe Trole::Strategy::BitOne do
   let(:kris)    { Factory.create :user, :trole => false } # set to :user
   let(:susan)    { Factory.create :user, :trole => true } # set to :admin
   
-  it_should_behave_like "a Many strategy for Kris"
-  it_should_behave_like "a Many strategy for Susan"
+  it_should_behave_like "Using a :single role strategy for Kris"
+  # it_should_behave_like "Using a :single role strategy for Susan"
     
     # 
     # its(:role)        { should be_a Trole::Operations }

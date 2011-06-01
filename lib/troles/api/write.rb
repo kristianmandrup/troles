@@ -14,7 +14,7 @@ module Troles::Api
     
     module ClassMethods
       def set_valid_roles *roles
-        roles = roles.flat_uniq.select_labels
+        roles = roles.to_symbols_uniq
         raise ArgumentError, "Roles must contain Symbols or Strings" if roles.empty?
         @valid_roles = roles
       end      

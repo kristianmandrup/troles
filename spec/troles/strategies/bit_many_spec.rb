@@ -9,8 +9,8 @@ describe Troles::Strategy::BitMany do
 
   it_should_behave_like "a Many strategy for Kris"
 
-  # it_should_behave_like "a Many strategy for Susan"
-  # it_should_behave_like "a Many strategy for Jack"
+  it_should_behave_like "a Many strategy for Susan"
+  it_should_behave_like "a Many strategy for Jack"
     
   # subject { kris }  
   #   # Core API

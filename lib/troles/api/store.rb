@@ -14,7 +14,7 @@ module Troles::Api
     protected
 
     def make_valid_roles *roles      
-      roles = roles.flat_uniq.select_labels
+      roles = roles.to_symbols_uniq
       return [] if roles.empty?                
       check_valid_roles? roles.map{|r| r.to_s.alpha_numeric}
     end    

@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 gem "rails", "3.1.0.rc1"
-gem "sugar-high"
+gem "sugar-high", '~> 0.4.4'
 gem "require_all", "~> 1.2.0"
 
 group :development, :test do

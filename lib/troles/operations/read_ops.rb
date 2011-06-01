@@ -2,7 +2,7 @@ module Troles
   class Operations
     module ReadOps
       # check if the roles list has the given role
-      def contains? *role
+      def contains? *roles
        role_subject.has_all_roles? *roles
       end
       alias_method :includes?, :contains?
@@ -15,7 +15,7 @@ module Troles
       # filter list of symbols 
       # on whether they are currently present/used as roles
       def used *roles
-        role_subject.role_list & roles
+        role_subject.role_list & roles.to_symbols_uniq
       end
     end
   end

@@ -68,36 +68,32 @@ shared_examples_for "a Many strategy for Kris" do
     end
 
     # # roles Operations object
-    # specify do 
-    #   expect { kris.roles.clear! }.to change{kris.instance_variable_get "@troles"}
-    #   kris.publish_change :roles      
-    #   kris.roles.list.should be_empty      
-    # end
+    specify do 
+      expect { kris.roles.clear! }.to change{kris.instance_variable_get "@troles"}
+      kris.roles.list.should be_empty      
+    end
 
     # # roles - operator
-    # specify do 
-    #   kris.add_roles(:admin, :blogger)
-    #   expect { kris.roles - :admin }.to change{kris.instance_variable_get "@troles"}
-    #   kris.publish_change :roles      
-    # 
-    #   kris.roles.contains?(:blogger).should be_true      
-    #   kris.roles.contains?(:admin).should be_false
-    # end
-    # 
+    specify do 
+      kris.add_roles(:admin, :blogger)
+      expect { kris.roles - :admin }.to change{kris.instance_variable_get "@troles"}
+    
+      kris.roles.contains?(:blogger).should be_true      
+      kris.roles.contains?(:admin).should be_false
+    end
+
     # # roles + operator
-    # specify do 
-    #   expect { kris.roles + :admin }.to change{kris.instance_variable_get "@troles"}
-    #   kris.publish_change :roles      
-    #   kris.roles.contains?(:admin).should be_true      
-    # end
-    # 
+    specify do 
+      expect { kris.roles + :admin }.to change{kris.instance_variable_get "@troles"}
+      kris.roles.contains?(:admin).should be_true      
+    end
+
     # # roles << operator
-    # specify do 
-    #   kris.clear_roles!
-    #   expect { kris.roles << :admin }.to change{kris.instance_variable_get "@troles"}
-    #   kris.publish_change :roles      
-    #   kris.roles.contains?(:admin).should be_true      
-    # end
+    specify do 
+      kris.clear_roles!
+      expect { kris.roles << :admin }.to change{kris.instance_variable_get "@troles"}
+      kris.roles.contains?(:admin).should be_true      
+    end
 end
 
 shared_examples_for "a Many strategy for Susan" do

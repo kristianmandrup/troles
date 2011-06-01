@@ -14,10 +14,10 @@ The Api is now mostly implemented at least for some strategie (see fx bit_many)!
 
 We need some work on the operations object API and also tighten up the main API, make sure the right methods are public, are accessible as instance or class methods as they should be etc. Also test corner cases for API (such as nil arguments, strings etc.) and ensure an ArgumentError is raised on invalid input! 
 
-When both Trole and Troles have stabilized and DRYed up their implementation, it might make sense to split the project into two.
-For now, it makes sense to keep them in one project as to better find reusability ;)
+I have just started using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
+Nice :)
 
-There is now support for Caching and invalidation of the role_list when the roles change. Needs more testing...
+There is now support for Caching and invalidation of the role_list when the roles change. The specs now validate that caching is in place and works as expected (using rspec expectations!)
 
 h2. Role strategies
 

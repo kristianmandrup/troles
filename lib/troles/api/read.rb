@@ -4,12 +4,16 @@ module Troles::Api
   module Read
     include Trole::Api::Read::Shared
 
-    # subtraction of roles from role_list is empty
+    # Checks if the role subject has any of the listed roles
+    # @param [Array<Symbol>]
+    # @return [Boolean]
     def has_all_roles? *roles
       (roles.to_symbols - role_list).empty?
     end
 
-    # union of roles and role_list is not empty
+    # Checks if the role subject has any of the listed roles
+    # @param (see #has_all_roles?)
+    # @return (see #has_all_roles?)
     def has_any_role? *roles
       !(role_list & roles.to_symbols).empty?
     end

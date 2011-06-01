@@ -1,3 +1,4 @@
+# @author Kristian Mandrup
 # Base module for Many strategy
 module Troles
   module Strategy    
@@ -7,8 +8,13 @@ module Troles
         base.send :include, Troles::Api
         base.send :attr_accessor, base.role_field        
       end
-            
+      
+      # @abstract            
       class << self
+        # sets the roles of the role subject.
+        #
+        # @param Array<Symbol> the list of roles
+        # @return [Boolean, Error] true on success, false/Error if not
         def set_roles *roles
           raise "Must be implemented by Strategy"
         end

@@ -1,5 +1,9 @@
-require 'spec_helper'
+require 'trole_spec'
+User.valid_roles = [:user, :admin, :editor]
 
 describe Trole::Strategy::StringOne do
-  # it should work like any other Single Strategy!
-end
+  let(:kris)      { Factory.create :user, :trole => 'user' } # set to :user
+  let(:susan)     { Factory.create :user, :trole => 'admin' } # set to :admin
+  
+  it_should_behave_like "a Many strategy for Kris"
+  it_should_behave_like "a Many strategy for Susan"

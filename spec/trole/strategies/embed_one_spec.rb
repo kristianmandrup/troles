@@ -1,17 +1,13 @@
 require 'trole_spec'
-
-STRATEGY = :bit_one
-
-require 'models'
+User.valid_roles = [:user, :admin, :editor]
 
 describe Trole::Strategy::EmbedOne do
-  let(:user) { User.new }
-  subject { user }
-    its(:role_field)  { should == :trole }
-    its(:role)        { should be_a Trole::Operations }
-    its(:role_name)   { should == :admin }
+  let(:kris)    { Factory.create :user, :trole => [Role.create :user] } # set to :user
+  let(:susan)    { Factory.create :user, :trole => [Role.create :admin] } # set to :admin
+  
+  it_should_behave_like "a Many strategy for Kris"
+  it_should_behave_like "a Many strategy for Susan"
 
-    specify { user.role_list.should == [:admin] }
   # it { should be_valid }            
   # its(:errors) { should be_empty }
   # ################################################################################

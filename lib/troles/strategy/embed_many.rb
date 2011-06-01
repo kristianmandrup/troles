@@ -20,7 +20,7 @@ module Troles
         end  
 
         def embedded_roles
-          roles.map {|name| Role.new :name => name }
+          roles.map {|name| Role.create :name => name }
         end
 
         # clears the role of the user in the data store

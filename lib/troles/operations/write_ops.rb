@@ -1,6 +1,12 @@
 module Troles
   class Operations
     module WriteOps
+      # assignment
+      def = *roles
+        role_subject.set_roles roles        
+      end
+      alias_method :set, :"="
+
       # add role
       def + *roles
         role_subject.add_roles roles

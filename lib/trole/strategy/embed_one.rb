@@ -14,7 +14,7 @@ module Trole
 
         # saves the role for the user in the data store
         def set_role role
-          trole = Role.new :name => role
+          trole = Role.create :name => role
         end  
         
         def set_default_role!

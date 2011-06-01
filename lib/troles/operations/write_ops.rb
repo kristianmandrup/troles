@@ -2,23 +2,20 @@ module Troles
   class Operations
     module WriteOps
       # add role
-      def + roles_to_add
-        set_roles(roles + roles_to_add)
+      def + *roles
+        role_subject.add_roles roles
       end
       alias_method :<<, :+
       alias_method :add, :+
 
       # remove roles
-      def - roles_to_remove
-        set_roles(roles - roles_to_add)
+      def - *roles
+        role_subject.remove_roles roles
       end
-    
-      protected
-    
-      def set_roles new_roles
-        clear!    
-        store_roles new_roles
-      end
+
+      def clear!
+        role_subject.clear_roles!
+      end    
     end
   end
 end

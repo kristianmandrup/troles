@@ -31,9 +31,8 @@ shared_examples_for "a Many strategy for Kris" do
 
     it 'should invalidate the role list after roles are changed' do
       # expect roles changed event
-      kris.set_roles(:admin)
       kris.expects(:invalidate_role_cache!)
-      kris.publish_change :roles
+      kris.set_roles(:admin)
       # expect cached role_list instance variable (cache) to be changed
       expect { kris.role_list }.to change{kris.instance_variable_get "@role_list"}
       kris.role_list.should include(:admin)            
@@ -47,19 +46,57 @@ shared_examples_for "a Many strategy for Kris" do
 
     specify             { kris.has_any_role?(:user, :admin).should be_true }
     specify             { kris.has_any_role?(:admin).should be_false }       
-
-    # expect { Counter.increment }.to_not change{Counter.count}
     
     # Store Api
-    # specify do 
-    #   kris.set_roles(:admin)
-    #   kris.has_role?(:admin).should be_true
-    #   kris.has_role?(:user).should be_false
-    # end       
+    specify do 
+      kris.set_roles(:admin)
+      kris.has_role?(:admin).should be_true
+      kris.has_role?(:user).should be_false
+    end       
 
+    specify do 
+      expect { kris.clear_roles! }.to change{kris.instance_variable_get "@troles"}
+      kris.role_list.should be_empty      
+    end
+
+    # Write Api
+    specify do       
+      expect { kris.add_roles(:admin) }.to change{kris.instance_variable_get "@troles"}
+      expect { kris.remove_roles(:user) }.to change{kris.instance_variable_get "@troles"}                   
+      kris.has_role?(:admin).should be_true
+      kris.has_role?(:user).should be_false
+    end
+
+    # # roles Operations object
     # specify do 
-    #   kris.roles.clear! # should be a protected method!
-    #   kris.role_list.should be_empty
+    #   expect { kris.roles.clear! }.to change{kris.instance_variable_get "@troles"}
+    #   kris.publish_change :roles      
+    #   kris.roles.list.should be_empty      
+    # end
+
+    # # roles - operator
+    # specify do 
+    #   kris.add_roles(:admin, :blogger)
+    #   expect { kris.roles - :admin }.to change{kris.instance_variable_get "@troles"}
+    #   kris.publish_change :roles      
+    # 
+    #   kris.roles.contains?(:blogger).should be_true      
+    #   kris.roles.contains?(:admin).should be_false
+    # end
+    # 
+    # # roles + operator
+    # specify do 
+    #   expect { kris.roles + :admin }.to change{kris.instance_variable_get "@troles"}
+    #   kris.publish_change :roles      
+    #   kris.roles.contains?(:admin).should be_true      
+    # end
+    # 
+    # # roles << operator
+    # specify do 
+    #   kris.clear_roles!
+    #   expect { kris.roles << :admin }.to change{kris.instance_variable_get "@troles"}
+    #   kris.publish_change :roles      
+    #   kris.roles.contains?(:admin).should be_true      
     # end
 end
 

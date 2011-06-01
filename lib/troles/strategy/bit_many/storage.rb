@@ -6,6 +6,7 @@ module Troles::Strategy::BitMany
 
     def persist_role_changes!
       role_subject.save!
+      role_subject.publish_change :roles
     end
 
     def display_roles
@@ -14,6 +15,8 @@ module Troles::Strategy::BitMany
   
     # saves the role for the user in the data store
     def set_roles *roles
+      roles = roles.flat_uniq
+      return clear! if roles.empty?      
       set_ds_field bitmask.write(roles.to_symbols)
       persist_role_changes!
     end  

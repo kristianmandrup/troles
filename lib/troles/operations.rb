@@ -6,8 +6,10 @@ module Troles
     include ReadOps
     include WriteOps
 
-    def initialize user
-      @user = user
+    attr_reader :role_subject
+
+    def initialize role_subject
+      @role_subject = role_subject
     end
   end
 end

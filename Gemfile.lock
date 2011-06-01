@@ -62,6 +62,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    mocha (0.9.12)
     multi_json (1.0.3)
     nokogiri (1.4.4)
     polyglot (0.3.1)
@@ -130,6 +131,7 @@ PLATFORMS
 DEPENDENCIES
   capybara (>= 0.4.0)
   factory_girl_rails
+  mocha
   rails (= 3.1.0.rc1)
   require_all (~> 1.2.0)
   rspec-rails (> 2.4.0)

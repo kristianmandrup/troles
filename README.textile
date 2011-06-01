@@ -10,11 +10,14 @@ Note: There have been a few updates since this screencast ;)
 
 h2. Status June 1, 2011
 
-The Api is now partly implemented, see the specs! We need some work on the operations object API and also tighten up the main API, make sure the right methods are public, are accessible as instance or class methods as they should be etc.
-Also test corner cases for API (such as nil arguments, strings etc.) and ensure an ArgumentError is raised on invalid input! 
+The Api is now mostly implemented at least for some strategie (see fx bit_many)! 
+
+We need some work on the operations object API and also tighten up the main API, make sure the right methods are public, are accessible as instance or class methods as they should be etc. Also test corner cases for API (such as nil arguments, strings etc.) and ensure an ArgumentError is raised on invalid input! 
 
 When both Trole and Troles have stabilized and DRYed up their implementation, it might make sense to split the project into two.
-For now, it makes sense to keep them in one project as to better find reusability ;) 
+For now, it makes sense to keep them in one project as to better find reusability ;)
+
+There is now support for Caching and invalidation of the role_list when the roles change. Needs more testing...
 
 h2. Role strategies
 

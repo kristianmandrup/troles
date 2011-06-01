@@ -9,7 +9,7 @@ module Troles
 
       def read
         valid_roles.reject do |r| 
-          ((ds_field || 0) & calc_index(r)).zero?
+          ((ds_field_value || 0) & calc_index(r)).zero?
         end
       end
 

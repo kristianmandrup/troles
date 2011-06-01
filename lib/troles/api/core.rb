@@ -1,5 +1,7 @@
 module Troles::Api
   module Core
+    puts "include core"
+
     include Troles::Defaults::StaticRole
     
     # should return a Roles::Operations object

@@ -5,7 +5,7 @@ module Troles
       
       def self.included(base)
         base.send :include, Troles::Api
-        base.send :extend,  Troles::Api::ClassMethods
+        base.send :extend,  Troles::Api
         base.send :attr_accessor, base.role_field        
       end
             
@@ -24,8 +24,7 @@ module Troles
         end  
 
         def persist_role_changes!
-          # raise "Must be implemented by Strategy"
-          puts "persisted!"
+          raise "Must be implemented by Strategy"
         end
         
         def find_roles *roles

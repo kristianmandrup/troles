@@ -21,6 +21,7 @@ module Trole::Api
     # can be customized
     # here uses singleton EventManager
     def publish_change event
+      send :invalidate_role_cache! if event == :roles
       event_manager.publish_change event, :from => self
     end  
     

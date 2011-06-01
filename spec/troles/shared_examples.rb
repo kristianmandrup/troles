@@ -19,6 +19,24 @@ shared_examples_for "a Many strategy for Kris" do
 
     # Read API
     its(:role_list)     { should include(:user) }
+    
+    it 'should cache the role list' do
+      # use mock expectation : don't expect strategy to be called!
+      kris.role_list.should include(:user)
+      kris.expects(:strategy).never
+      kris.role_list.should include(:user)      
+    end
+
+    it 'should invalidate the role list after roles are changed' do
+      # expect roles changed event
+      kris.set_roles(:admin)
+      kris.expects(:invalidate_role_cache!)
+      kris.publish_change :roles
+      # expect strategy to be called!
+      # kris.expects(:strategy).at_most(1)
+      kris.role_list.should include(:admin)            
+    end
+    
     specify             { kris.has_role?(:user).should be_true }
     specify             { kris.is_role?(:user).should be_true }
 
@@ -27,13 +45,15 @@ shared_examples_for "a Many strategy for Kris" do
 
     specify             { kris.has_any_role?(:user, :admin).should be_true }
     specify             { kris.has_any_role?(:admin).should be_false }       
+
+    # expect { Counter.increment }.to_not change{Counter.count}
     
     # Store Api
-    specify do 
-      kris.set_roles(:admin)
-      kris.has_role?(:admin).should be_true
-      kris.has_role?(:user).should be_false
-    end       
+    # specify do 
+    #   kris.set_roles(:admin)
+    #   kris.has_role?(:admin).should be_true
+    #   kris.has_role?(:user).should be_false
+    # end       
 
     # specify do 
     #   kris.roles.clear! # should be a protected method!

@@ -11,8 +11,12 @@ module Troles
       
       protected
 
-      def ds_field  
-        @ds_field ||= role_subject.send(role_subject.class.role_field)
+      def ds_field_value  
+        role_subject.send ds_field_name
+      end      
+
+      def ds_field_name  
+        @ds_field_name ||= role_subject.class.role_field
       end      
     end
   end

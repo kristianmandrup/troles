@@ -16,10 +16,14 @@ module Trole
       end 
       
       def set_ds_field value
-        send(:"#{ds_field}=", value)
+        role_subject.send(:"#{ds_field_name}=", value)
       end
 
-      def ds_field  
+      def ds_field_name
+        role_subject.class.role_field
+      end
+      
+      def ds_field_value
         role_subject.send(role_subject.class.role_field)
       end      
     end        

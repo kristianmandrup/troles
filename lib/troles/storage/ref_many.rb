@@ -5,7 +5,7 @@
 # @note all methods potentially operate directly on values in the data store
 #
 module Troles::Storage
-  class RefMany < Generic
+  class RefMany < BaseMany
     def initialize role_subject
       super
     end

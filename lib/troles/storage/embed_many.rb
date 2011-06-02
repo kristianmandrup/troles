@@ -5,7 +5,7 @@
 # @note all methods potentially operate directly on values in the data store
 #
 module Troles::Storage
-  class EmbedMany < Generic
+  class EmbedMany < BaseMany
 
     # constructor
     # @param [Object] the role subject

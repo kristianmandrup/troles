@@ -1,5 +1,5 @@
 require 'trole_spec'
-User.role_strategy :bit_one
+User.troles_strategy :bit_one
 
 User.valid_roles = [:user, :editor] # override default [:user, :admin]
 

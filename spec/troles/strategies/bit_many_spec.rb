@@ -1,5 +1,5 @@
 require 'troles_spec'
-User.role_strategy :bit_many
+User.troles_strategy :bit_many
 User.valid_roles = [:user, :admin, :blogger]
 
 describe Troles::Strategy::BitMany do

@@ -1,5 +1,5 @@
 require 'troles_spec'
-User.role_strategy :embed_many
+User.troles_strategy :embed_many
 User.valid_roles = [:user, :admin, :blogger]
 
 describe Troles::Strategy::EmbedMany do

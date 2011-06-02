@@ -6,11 +6,11 @@
 #
 # Usage:
 #   class User
-#     role_strategy :bit_many
+#     troles_strategy :bit_many
 #
 module Troles  
   module Macros
-    def role_strategy strategy_name, options = {}
+    def troles_strategy strategy_name, options = {}
       send :include, troles_macros.strategy_module(strategy_name)
       troles_macros.apply_strategy_options! self, options
     end     

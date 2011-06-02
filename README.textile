@@ -1,23 +1,34 @@
 h1. Troles
 
-The following is a discussion of roles design and how the current roles_generic design could be re-factored into a much simpler and effective solution which will be called Troles and Troles group.
+Troles aims to be a complete (end-all) roles solution for Ruby and is also targeted to be used with Rails 3.
+As of early June it is still under development but getting close to first release.
+The project currently consists of: 
 
-The Troles solution will use _caching_ to optimize performance, only updating the roles cache of a user when the roles the user changes!       
+* Trole - for single role strategies 
+* Troles - for many roles strategies
 
-"Screencast: run-down of this README":http://screencast.com/t/Yi0TrYz2
+The Troles project uses _role caching_ to optimize performance! 
+The roles list cache of a role subject (fx a user) is only updated (retrieved from data store) when the roles of the role subject changes!
 
-Note: There have been a few updates since this screencast ;)
+Note: Troles is a full redesign of roles generic and company, using lessons learned and using a much cleaner/test driven design from the start. It is aimed at being easy to extend and easy to create adapters for etc.
 
 h2. Status June 1, 2011
 
-The Api is now mostly implemented at least for some strategie (see fx bit_many)! 
+Trole and Troles are now mostly implemented. Looks like a very clean and intuitive design, and now fully documented!
+The specs are mostly in place, but there is a need to test more usage of the APIs to ensure corner cases are covered
+with ArgumentException raised and such. Also needs some debugging/finetuning in various places. 
 
-We need some work on the operations object API and also tighten up the main API, make sure the right methods are public, are accessible as instance or class methods as they should be etc. Also test corner cases for API (such as nil arguments, strings etc.) and ensure an ArgumentError is raised on invalid input! 
+I'm using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
 
-I have just started using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
-Nice :)
+<pre>$ yard server
 
-There is now support for Caching and invalidation of the role_list when the roles change. The specs now validate that caching is in place and works as expected (using rspec expectations!)
+From browser, go to: http://0.0.0.0:8808/  # then you can enjoy! the nice documentation :) 
+</pre>
+
+There is now support for Caching and invalidation of the _role_list_ when the roles change. 
+The specs now validate that caching is in place and works as expected.
+
+Please help out to finalize this project! :)
 
 h2. Role strategies
 
@@ -68,23 +79,33 @@ These strategies can be implemented for any data store using any schema format.
 
 h3. Using roles strategies with Users and User accounts
 
-Roles are assigned to _Users_ or _User accounts_ (Devise fx). The class that has a role strategy assigned is referred to as the _role subject_. Different role subjects can have different role strategies! 
+Roles are assigned to role subject classes such as _User_ or _UserAccount_ (YES, Devise can have multiple user accounts!). The class that has a role strategy assigned is referred to as the _role subject class_. 
+Different role subject classes can have different role strategies! 
 
-When using Devise this could translate fx into a UserAccount with a multi role strategy and an AdminAccount with a single role strategy (or vice versa). Example:
+When using Devise this could translate fx into a UserAccount with a "many roles" strategy and an AdminAccount with a "single role" strategy (or vice versa). 
+
+Example:
 
 <pre> 
-  require 'trole/macros'
+  require 'troles'
+  require 'troles/macros'
   
   class UserAccount
-    trole_strategy :string_many
+    troles_strategy :string_many
   end
 
   class AdminAccount
-    trole_strategy :bit_one, :static => true
+    troles_strategy :bit_one, :static => true
   end  
 </pre>
 
-The macros must be enabled my requiring the _trole/macros_ file. The @:static => true@ options is used to indicate, that the role can not be changed after being initially set. But we are getting ahead of ourselves... (more on this later)
+The special troles macros must be enabled my requiring the _trole/macros_ file. 
+
+h3. Macro options
+
+The @:static => true@ options is used to indicate, that the role can not be changed after being initially set. 
+But we are getting ahead of ourselves... (more on this later).
+Troles can easily be extended to support other macro options if needed.
 
 h2. Roles API
 
@@ -98,29 +119,7 @@ The Roles API can be divided into:
 * Validation
 * Operations object
 
-The Store API is the only API that could require override for a specific data store.
-
-h2. Storage
-
-Storage modules for different types of data stores can be found in the /storage folder
-
-h3. Core API
-
-Contains Core Role functionality
-
-<pre> 
-module Troles::Api::Core  
-  # return the role field used, fx :string_one etc.
-  # should NOT be mutable
-  def role_field
-    :trole
-  end  
-  
-  # should return a Troles::Operations object
-  def roles
-    Troles::Operations.new(self)
-  end  
-</pre>
+There is an equivalen Trole API for single role strategies.
 
 h3. Event/Cache API
 
@@ -132,36 +131,14 @@ Also any write event to the datastore should be predicated on _#static_roles?_ n
 
 Save triggers call to Event#update_roles
 <pre>
-  User
-    after_save: update_roles # add event handler
+User
+  after_save: update_roles # event handler
 </pre>
 
 <pre>
-# Event API module
 module Troles::Api::Event
-  # a change to the roles of the user should be published to an event handler
-  # this can be used to update both the Role cache of the user and fx the RolePermit cache.
-  # Both (and potentially others, fx for Role Groups) can subscribe to this event!
-
   def update_roles
-    publish_change(:roles) if field_changed?(role_field)
-  end
-
-  # check if a field on the model changed
-  # See http://api.rubyonrails.org/classes/ActiveModel/Dirty.html
-  def field_changed? name
-    send :“#{name}_changed?”
-  end
-
-  # can be customized
-  # here uses singleton EventManager
   def publish_change event
-    event_manager.publish_change event, :from => self
-  end  
-  
-  def event_manager
-    Roles::EventManager
-  end
 </pre>
 
 h3. Roles Read API
@@ -169,22 +146,9 @@ h3. Roles Read API
 This API operates directly on a user, fx _user#has_role?_
 
 <pre>  
-module Troles::Api::Read
-  # perform any? on role_list
-  def has_role? role
-
-  # role_list has one element which is role
-  def is_role? role
-
-  # subtraction of roles from role_list is empty
-  def has_all_roles? roles
-
-  # union of roles and role_list is not empty
-  def has_any_role? roles
-
-  # return Set of symbols,where each symbol is a role name
-  # This set should be cached and only invalidated when the user has a change of roles
-  def role_list  
+  user.has_role? :admin
+  user.is_role? :editor
+  user.has_any_roles? :editor, :admin  
 </pre>
 
 h3. Roles Write API
@@ -192,13 +156,8 @@ h3. Roles Write API
 This API operates directly on a user, fx _user#has_role?_
 
 <pre>
-  def add_role
-    roles + role
-  end  
-
-  def remove_role
-    roles - role
-  end  
+  user.add_role :admin
+  user.remove_role :editor
 </pre>
 
 h3. Roles Operations object
@@ -206,121 +165,88 @@ h3. Roles Operations object
 The Roles Operations object is available on user#roles
 
 <pre>
-  class Troles::Operations
-   include ReadOps
-   include WriteOps
-
-   def initialize user
-     @user = user
-   end
-
-   # ... general purpose stuff here?
-  end
-
-  class Troles::Operations
-    module ReadOps
-      # check if the roles list has the given role
-
-      def contains? role
-        list.include? role
-      end
-      alias_method :includes?, :contains?
-
-      # symbol list
-      def list
-
-      def get *roles
-    end
-  end
-
-  class Troles::Operations
-    module WriteOps
-      def + # add role
-      alias_method <<
-
-      def - # remove roles
-    end
-  end  
+  user.roles + :admin
+  user.roles - :editor
+  user.roles << [:editor, :admin]
+  user.roles.clear!  
 </pre>
 
-Example usage of Roles Operations API:
+h3. Creating a custom Strategy Storage Adapter (SSA)
+
+Example custom SSA - encrypted comma seperated string for multiple roles:
 
 <pre>
-  user.roles.get(:blogger) => returns :blogger if in roles_list, otherwise raises error
-  user.roles.get(:blogger, :admin) => returns [:blogger, :admin], otherwise raises error
+module Trole::Storage
+  module EncryptedStringOne < BaseOne
+    def initialize role_subject        
+      super
+    end
 
-  if user.roles.list == [:blogger, :admin]
-  if user.roles.have_role? :blogger
+    def display_roles
+      unencrypted_value.split(',')
+    end
 
-  user.roles << :blogger
-  user.roles - :blogger
-  user.roles + [:blogger, :editor]    http://screencast.com/t/Yi0TrYz2
-  user.roles.add :blogger
-  user.roles.remove :blogger      
-</pre>
+    # saves the role of the role subject in the data store
+    # @param [Symbol] the role name
+    def set_role role
+      set_encrypted_ds_field role.to_s
+    end  
 
-h2. Creating DataStore Adapter
+    # sets the role to its default state
+    def set_default_role!
+      set_encrypted_ds_field ""
+    end  
 
-To create a DataStore Adapter, simply implement each of the strategies to be supported as shown here:
+    protected
 
-<pre>
-module Troles
-  module Strategy
-    module RefMany
-      include BaseMany
+    def unencrypted_value
+      ds_field_value.unencrypt!
+    end
 
-      def strategy
-        @strategy ||= Storage.new self
-      end
-
-      class Storage < GenericStorage
-
-        def initialize api
-          super
-        end
-        
-        # saves the role for the user in the data store
-        def set_roles *roles
-          # finds and sets references to existing Role instances from symbols        
-          troles = find_roles *roles
-        end  
-
-    ...
+    def set_encrypted_value value
+      set_ds_field value.encrypt! 
+    end
+  end
+end
 </pre>  
 
-For Active Record the is no need for change, as an AR Role model implements the _where_ API used in the deault _#find_roles_ implementation of the generic _RefMany_ strategy, that returns an array of Role models.
+h3. Custom Storage for an ORM (or data store)
 
-However for Mongoid fx, there is a need to use _#all_ on the where result: @Role.where(:name => roles).all@
+For Active Record there is no need for change, as an AR Role model implements the _where_ API used in the default _#find_roles_ implementation of the generic _BaseMany_ storage.
+
+<pre>
+module Troles::Storage
+  class Generic < Troles::Common::Storage
+    def find_roles *roles
+      Role.where(:name => roles)
+    end  
+  ...
+end
+</pre>
+
+However for Mongoid, there is a need to use _#all_ on the result of the query to get the array: 
+
+@Role.where(:name => roles).all@
+
 This can be done elegantly using super, and having the MongoidStorage inherit from the Generic one.
 
 <pre>
-module Troles
-  module Strategy
-    module RefMany
-      include BaseMany
+module Troles::MongoidStorage
+  class RefMany < Troles::Storage::BaseMany
 
-      def strategy
-        @strategy ||= MongoidStorage.new self
-      end
-
-      class MongoidStorage < Troles::Strategy::RefMany::Storage
-
-        def initialize api
-          super
-        end
-
-        def find_roles *roles
-          super.all
-        end
-      end
-    ...  
+    def find_roles *roles
+      super.all
+    end
+  ...  
 </pre>
+
+h3. Custom data marshaller
 
 You can also use a custom "Marshaller":http://en.wikipedia.org/wiki/Marshalling_%28computer_science%29 to store the roles in a non-standard format. This is used for the _BitMany_ strategy, which has a special _Marshaller::BitMask_ class which handles conversion between a list of symbols to an _Integer_ bitmap representing it (relative to a valid roles list!). You can create your own _Marshaller_, fx to encrypt the roles info or whatever you like!
 
 <pre>
-module Trole::Marshaller
-  class MyCustomMarshaller < GenericMarshaller
+module Troles::Marshaller
+  class Encryption < Generic
     def initialize role_subject
       super
     end
@@ -337,6 +263,33 @@ module Trole::Marshaller
   end
 end
 </pre>
+
+h3. Custom troles strategy
+
+To add a new strategy, create a special Strategy module that acts as the module included by the troles macro.
+Using standard naming convention it will be found and used by the _troles_strategy_ macro method :)  
+Configure the strategy to use your custom storage class. 
+
+<pre>
+module Troles::Strategy
+  module EncryptedStringMany
+
+    # What to add to the role subject class when this role strategy is included
+    # @param [Class] the role subject class to  
+    def self.included(base)
+      base.send :include, BaseMany
+    end
+
+    # The storage strategy class
+    # @return [Class] a storage subclass
+    def storage 
+      Troles::Storage::EncryptedStringMany
+    end      
+  end
+end
+  
+</pre>
+
 
 h2. License
 

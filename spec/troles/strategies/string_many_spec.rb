@@ -1,5 +1,5 @@
 require 'troles_spec'
-User.role_strategy :string_many
+User.troles_strategy :string_many
 User.valid_roles = [:user, :admin, :blogger]
 
 describe Troles::Strategy::StringMany do

@@ -4,7 +4,7 @@
 #
 module Troles
   module Storage
-    class Generic < Troles::Common::Storage
+    class BaseMany < Troles::Common::Storage
       protected
       
       # get matching list of Role instances

@@ -9,7 +9,8 @@ module Troles
 
       def read
         valid_roles.reject do |r| 
-          ((ds_field_value || 0) & calc_index(r)).zero?
+          num = as_number(ds_field_value) 
+          ((num || 0) & calc_index(r)).zero?
         end
       end
 
@@ -18,6 +19,17 @@ module Troles
       end
       
       protected
+
+      def as_number value
+        case value
+        when TrueClass, FalseClass
+          value ? 2 : 1
+        when Fixnum
+          value 
+        else
+          raise ArgumentError, "Cant be converted to a bit index, #{value}"
+        end
+      end
         
       def calc_index(r)
         2**valid_roles.index(r)

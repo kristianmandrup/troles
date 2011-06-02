@@ -1,7 +1,10 @@
+#
 # @author Kristian Mandrup
+#
 # Storage that stores role as a boolean value (false, true)
+#
 module Trole::Storage 
-  class BitOne < Generic
+  class BitOne < BaseOne
     def initialize role_subject
       super
     end

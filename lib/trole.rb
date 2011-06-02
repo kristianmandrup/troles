@@ -1,3 +1,4 @@
+# require 'troles'
 require 'troles/common'
 
 module Trole

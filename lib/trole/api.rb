@@ -1,5 +1,7 @@
+# 
 # @author Kristian Mandrup
 #
+# Single role Api to be included directly on the role subject class (fx User or User Account)
 #
 module Trole
   module Api
@@ -10,19 +12,16 @@ module Trole
     autoload :Validation,  'trole/api/validation'
     autoload :Write,       'trole/api/write'    
 
-    # Needs refactor - move into Common!
+    #
+    # When the Trole::Api is included by the Role Subject class (fx a User Account)
+    # first include methods from Troles Common API      
+    # then include Trole API on top
+    #
+    # @param [Class] the role subject class (fx User or UserAccount)
+    #
     module ClassMethods
       def included(base)
-        # first include all from common Api
-        apis.each do |api|
-          begin
-            base.include  "Troles::Common::Api::#{api.to_s.camelize}".constantize
-            base.extend   "Troles::Common::Api::#{api.to_s.camelize}::ClassMethods".constantize
-          rescue
-          end
-        end        
-
-        # then override any methods with local api
+        base.send :include, Troles::Common::Api
         apis.each do |api|
           begin
             base.include_and_extend :"#{api.to_s.camelize}"

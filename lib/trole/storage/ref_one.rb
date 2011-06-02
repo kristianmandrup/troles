@@ -1,5 +1,10 @@
+#
+# @author Kristian Mandrup
+#
+# Storage that stores role as a Role instance reference
+#
 module Trole::Storage
-  class RefOne < Generic        
+  class RefOne < BaseOne        
     def initialize api        
       super
     end

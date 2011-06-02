@@ -1,38 +1,37 @@
-# Base module for One strategy
+#
+# @author Kristian Mandrup
+#
+# Base module for Single role strategies
+#
 module Trole
   module Strategy
     module BaseOne
+      #
+      # a Many role strategy is included by a role subject (fx a UserAccount class) 
+      # a Many role strategy should always include BaseMany
+      # when BaseMany is included, it ensures that the complete 
+      # Trole Api is also included into the role subject                                              
+      #
+      # @note the Trole::Api also includes the Troles::Common::Api
+      #
+      # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
+      #
+      #
+      def self.included(base)
+        base.send :include, Trole::Api
+      end      
+
+      # The storage to use 
+      # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy
       def store
         @store ||= storage.new self
       end
 
+      # The storage strategy class
+      # @return [Class] a storage subclass
       def storage 
-        Troles::Storage::Generic
-      end      
-      
-      def self.included(base)
-        base.send :include, Trole::Api
-        base.send :attr_accessor, base.role_field
-      end
-      
-      # class << self
-      #   def set_role role
-      #     raise "Must be implemented by Strategy"
-      #   end
-      # 
-      #   def clear!
-      #     set_default_role!
-      #   end
-      # 
-      #   def set_default_role!
-      #     raise "Must be implemented by Strategy"
-      #   end
-      # 
-      #   def persist_role_changes!
-      #     # raise "Must be implemented by Strategy"
-      #     puts "persisted!"
-      #   end
-      # end      
+        Troles::Storage::BaseOne
+      end            
     end
   end
 end

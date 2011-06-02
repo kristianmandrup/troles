@@ -1,3 +1,8 @@
+#
+# @author Kristian Mandrup
+#
+# Core Troles API functions
+#
 module Troles::Common::Api
   module Core
     # Access to the Troles operations API
@@ -13,7 +18,9 @@ module Troles::Common::Api
     end       
 
     # If this role subject instance should have static (immutable) roles
+    # @return [true, false] defaults to false so a role subject is allowed to change roles 
     def static_roles?
+      return self.class.static_roles? if self.class.respond_to? :static_roles?
       false
     end
         

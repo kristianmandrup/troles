@@ -10,6 +10,15 @@ module Troles::Common
       def apis
         [:core, :cache, :event, :read, :validation, :write]
       end
+
+      def included(base)
+        apis.each do |api|
+          begin
+            base.include_and_extend :"#{api.to_s.camelize}"
+          rescue
+          end
+        end      
+      end
     end
     extend ClassMethods
   end

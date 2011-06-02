@@ -1,3 +1,8 @@
+#
+# @author Kristian Mandrup
+#
+# Container for Single role Storages
+#
 module Trole
   module Storage
     autoload :Generic,    'trole/storage/generic'

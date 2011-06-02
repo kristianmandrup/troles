@@ -3,17 +3,24 @@
 # @note all methods should operate on the data store via the #store
 #
 module Troles::Common::Api
-  module Write    
+  module Write
+        
+    # Add a single new role to the roles of the subject
+    # @param  [Symbol] role to add
+    # @return (see #add_roles)
     def add_role new_role
       add_roles new_role
     end  
 
+    # Remove a single role from the roles of the subject
+    # @param  [Symbol] role to remove
+    # @return (see #remove_roles)
     def remove_role a_role
       remove_roles a_role
     end    
 
     # Adds a set of new roles to the roles of the subject
-    # @param  [Array<Symbol] list of roles to add
+    # @param  [Array<Symbol>] list of roles to add
     # @return [true, false, Error] true if ok, false if static or invalid, Error on some error
     def add_roles *new_roles      
       store.set_roles (roles | new_roles.to_symbols_uniq) # Set Union (joined set)
@@ -39,6 +46,11 @@ module Troles::Common::Api
     end  
     
     module ClassMethods
+      # Sets which roles are valid for the role subject class (fx User or UserAccount)
+      #
+      # @note this in effect limits what roles can be assigned to any instance of the class
+      #
+      # @param [Array<Symbol>] list of role names
       def set_valid_roles *roles
         roles = roles.to_symbols_uniq
         raise ArgumentError, "Roles must contain Symbols or Strings" if roles.empty?

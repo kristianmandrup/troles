@@ -1,3 +1,13 @@
+# 
+# @author Kristian Mandrup
+#
+# Macros that can be used directly on the role subject class 
+# These methods are added to the ruby core 'Module' module
+#
+# Usage:
+#   class User
+#     role_strategy :bit_many
+#
 module Troles  
   module Macros
     def role_strategy strategy_name, options = {}

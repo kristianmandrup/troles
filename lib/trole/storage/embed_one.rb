@@ -1,8 +1,10 @@
+#
 # @author Kristian Mandrup
-# Storage that stores role as a boolean value (false, true)
-
+#
+# Storage that stores role as an embedded Role instance
+#
 module Trole::Storage 
-  class EmbedOne < Generic
+  class EmbedOne < BaseOne
 
   def initialize api        
     super

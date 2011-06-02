@@ -1,9 +1,13 @@
+#
+# @author Kristian Mandrup
+# 
+# Event API
+#
 module Trole::Common::Api
   module Event
     # a change to the roles of the user should be published to an event handler
     # this can be used to update both the Role cache of the user and fx the RolePermit cache.
     # Both (and potentially others, fx for Role Groups) can subscribe to this event!
-
     def update_roles
       publish_change(:roles) if field_changed?(self.class.role_field)
     end

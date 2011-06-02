@@ -1,5 +1,10 @@
+#
+# @author Kristian Mandrup
+#
+# Storage that stores role as a single String
+#
 module Trole::Storage
-  class StringOne < Generic        
+  class StringOne < BaseOne        
     def initialize role_subject        
       super
     end

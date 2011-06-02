@@ -2,12 +2,24 @@ module Trole
   class Operations
     autoload :Read,     'trole/operations/read'
     autoload :Write,    'trole/operations/write'  
-    
+
     include Read
     include Write
 
-    def initialize user
-      @user = user
+    include Enumerable
+
+    attr_reader :role_subject
+
+    # constructor
+    # @param [Object] the role subject, fx a User or UserAccount
+    def initialize role_subject
+      @role_subject = role_subject
     end
+
+    # required method to act as enumerable
+    # iterates and yields all roles in the role list (Symbols)
+    def each
+      list.each { |role| yield role }
+    end       
   end
 end

@@ -1,8 +1,9 @@
 # @author Kristian Mandrup
 #
-# common Core Api for Trole and Troles
-
+# Common Read API
+#
 require 'set'
+
 module Troles::Common::Api
   module Read
     # Ensures that the common API methods always have a common underlying model to work on

@@ -1,3 +1,8 @@
+#
+# @author Kristian Mandrup
+#
+# Container for Single role Strategies
+#
 module Trole
   module Strategy
     autoload :BaseOne,   'trole/strategy/base_one'

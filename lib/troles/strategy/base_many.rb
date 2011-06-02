@@ -3,42 +3,18 @@
 module Troles
   module Strategy    
     module BaseMany
+      def store
+        @store ||= storage.new self
+      end
+
+      def storage 
+        Troles::Storage::Generic
+      end
       
       def self.included(base)
         base.send :include, Troles::Api
-        base.send :attr_accessor, base.role_field        
-      end
-      
-      # @abstract            
-      class << self
-        # sets the roles of the role subject.
-        #
-        # @param Array<Symbol> the list of roles
-        # @return [Boolean, Error] true on success, false/Error if not
-        def set_roles *roles
-          raise "Must be implemented by Strategy"
-        end
 
-        def clear!
-          raise "Must be implemented by Strategy"
-        end
-
-        # clears the role of the user in the data store
-        def set_default_role!
-          clear!
-        end  
-
-        def persist_role_changes!
-          raise "Must be implemented by Strategy"
-        end
-        
-        def find_roles *roles
-          Role.where(:name => roles)
-        end
-        
-        def embedded_roles
-          []
-        end        
+        # base.send :attr_accessor, base.role_field
       end      
     end
   end

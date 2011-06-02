@@ -1,19 +1,26 @@
+# @author Kristian Mandrup
+#
+# @note all methods should operate on the data store via the #store
+#
 module Trole::Api
   module Write
-    def add_role _role
-      role << _role
-    end  
-
-    def remove_role _role
-      role - _role
+    def role= new_role
+      store.set_role new_role
+    end    
+    
+    # Set the role of the subject to a new role
+    # @param  [Symbol] the role to set
+    # @return [true, false, Error] true if ok, false if not valid, Error on some error
+    def set_role new_role
+      value = make_valid_role new_role 
+      return false if !value
+      store.set_role(value)      
     end  
     
-    module ClassMethods
-      def set_valid_role *roles
-        roles = roles.select_labels
-        raise ArgumentError, "Roles must contain Symbols or Strings" if roles.empty?
-        @valid_roles = roles
-      end      
+    # Clears the role of the user
+    # @return (see #set_role)
+    def clear_role!
+      store.clear!
     end    
   end
 end

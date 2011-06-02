@@ -1,5 +1,7 @@
-module Trole::Strategy::BitOne # boolean flag
-  class Storage < Trole::Storage::Generic
+# @author Kristian Mandrup
+# Storage that stores role as a boolean value (false, true)
+module Trole::Storage 
+  class BitOne < Generic
     def initialize role_subject
       super
     end

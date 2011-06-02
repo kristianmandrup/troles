@@ -1,14 +1,12 @@
 module Troles
   module Strategy
-    module BitMany
-      autoload :Storage, 'troles/strategy/bit_many/storage'
-     
+    module BitMany     
       def self.included(base)
         base.send :include, BaseMany
       end      
-
-      def strategy
-        @strategy ||= Storage.new self
+      
+      def storage 
+        Troles::Storage::BitMany
       end
     end
   end

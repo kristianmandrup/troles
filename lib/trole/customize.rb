@@ -6,7 +6,7 @@ module Trole
       end
     end
 
-    class << self
+    module Macros
       def apply_strategy_options! clazz, options
         clazz.send :include,  Trole::Customize::StaticRole # overrides default method that returns false 
         clazz.send :extend,   Trole::Customize::StaticRole
@@ -16,5 +16,7 @@ module Trole
         "Trole::Strategy::#{strategy_name.to_s.camelize}".constantize
       end  
     end
+    extend Macros
+    
   end  
 end

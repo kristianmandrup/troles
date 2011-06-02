@@ -1,10 +1,10 @@
 module Trole
   class Operations
-    autoload :ReadOps,     'trole/operations/read_ops'
-    autoload :WriteOps,    'trole/operations/write_ops'  
+    autoload :Read,     'trole/operations/read'
+    autoload :Write,    'trole/operations/write'  
     
-    include ReadOps
-    include WriteOps
+    include Read
+    include Write
 
     def initialize user
       @user = user

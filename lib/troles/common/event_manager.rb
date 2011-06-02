@@ -1,4 +1,4 @@
-module Trole
+module Troles
   module EventManager
     def self.included(base)
       base.extend ClassMethods

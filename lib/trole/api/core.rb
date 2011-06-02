@@ -2,21 +2,13 @@ module Trole::Api
   module Core
     include Trole::Defaults::StaticRole
     
-    # should return a Role::Operations object
+    # Access to the Trole operations API
+    # @return [Trole::Operations] the operations API object 
     def role
       Trole::Operations.new(self)
     end
-
-    def roles
-      require 'troles/operations'
-      Troles::Operations.new(self)
-    end       
         
-    module ClassMethods
-      include Trole::Defaults::StaticRole      
-      
-      attr_accessor :valid_roles
-                  
+    module ClassMethods                        
       def role_field
         :trole
       end 

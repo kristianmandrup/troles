@@ -1,18 +1,9 @@
-require 'trole/shared/main'
+require 'troles/common'
 
-module Trole
-end
-
-module Troles
-  # some default API module methods
-  autoload :Defaults,       'troles/defaults'  
-  # customized modules for using specific options on role_strategy
-  autoload :Customize,      'troles/customize'
-  
+module Troles  
   autoload :Api,            'troles/api'
-  autoload :EventManager,   'troles/event_manager'
   autoload :Operations,     'troles/operations'
   autoload :Strategy,       'troles/strategy'
   autoload :Storage,        'troles/storage'  
-  autoload :Marshaller,     'troles/marshaller'  
+  autoload :EventManager,   'troles/event_manager'
 end

@@ -1,5 +1,9 @@
-module Troles::Strategy::BitMany
-  class Storage < Troles::Storage::Generic
+# @author Kristian Mandrup
+#
+# @note all methods potentially operate directly on values in the data store
+#
+module Troles::Storage
+  class BitMany < Generic
     def initialize role_subject
       super
     end
@@ -8,21 +12,21 @@ module Troles::Strategy::BitMany
       bitmask.read
     end
   
-    # saves the role for the user in the data store
+    # saves the role for the user 
     def set_roles *roles
       roles = roles.to_symbols_uniq
       return clear! if roles.empty?      
       set_ds_field bitmask.write(roles.to_symbols)
     end  
 
-    # clears the role of the user in the data store
+    # Clears the role set of the role subject 
     def clear!
-      set_default_role!
+      set_ds_field 0
     end
   
-    # clears the role of the user in the data store
+    # Sets to default role set    
     def set_default_role!
-      set_ds_field 0
+      clear!
     end            
 
     protected

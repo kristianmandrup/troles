@@ -1,9 +1,9 @@
-module Troles
-  class Operations
-    module ReadOps
+module Trole
+  class Operations      
+    module Read
       # check if the roles list has the given role
-      def contains? *roles
-       role_subject.has_all_roles? *roles
+      def contains? role
+        role_subject.role_name == role
       end
       alias_method :includes?, :contains?
 
@@ -13,10 +13,12 @@ module Troles
       end
 
       # filter list of symbols 
-      # on whether they are currently present/used as roles
+      # on whether they are present as roles
       def used *roles
         role_subject.role_list & roles.to_symbols_uniq
-      end
+      end   
     end
   end
 end
+
+

@@ -1,9 +1,8 @@
 module Troles::Api
   module Store
     # saves the role for the user in the data store
-    def set_roles *new_roles
-      roles_to_set = make_valid_roles *new_roles      
-      strategy.set_roles(roles_to_set) 
+    def set_roles *roles
+      strategy.set_roles(make_valid_roles *roles) 
     end  
 
     # clears the role of the user in the data store

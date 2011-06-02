@@ -22,6 +22,6 @@ module Trole
         [:core, :cache, :event, :read, :store, :validation, :write]
       end
     end
-    extend ClassMethods
+    extend ClassMethods    
   end
 end

@@ -1,6 +1,7 @@
 module Troles
   class Operations
     module WriteOps
+      
       # assignment
       def == *roles
         role_subject.role_list == roles.flatten

@@ -13,6 +13,8 @@ module Trole::Api
     end       
         
     module ClassMethods
+      include Trole::Defaults::StaticRole      
+      
       attr_accessor :valid_roles
                   
       def role_field

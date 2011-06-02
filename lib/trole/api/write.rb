@@ -1,16 +1,12 @@
 module Trole::Api
   module Write
-    def add_role role
-      subject << role
+    def add_role _role
+      role << _role
     end  
 
-    def remove_role role
-      subject - role
+    def remove_role _role
+      role - _role
     end  
-
-    def subject
-      role
-    end
     
     module ClassMethods
       def set_valid_role *roles

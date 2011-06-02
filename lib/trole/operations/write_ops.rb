@@ -1,23 +1,29 @@
 module Trole
   class Operations
     module WriteOps
+
+      # assignment
+      def == role
+        role_subject.role_list == role
+      end
+      alias_method :equal, :"=="
+
       # add role
-      def + role_to_add
-        set_role(roles_to_add)
+      def + role
+        role_subject.add_role(role)
       end
       alias_method :<<, :+
       alias_method :add, :+
 
       # remove role
-      def - role_to_remove
-        clear! if contains? role_to_remove 
+      def - role         
+        role_subject.remove_role(role)
       end
     
       protected
     
-      def set_role new_role
-        clear!    
-        store_role new_role
+      def clear!
+        role_subject.clear_role!
       end    
     end
   end

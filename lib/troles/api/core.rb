@@ -4,7 +4,7 @@ module Troles::Api
     
     # should return a Roles::Operations object
     def roles
-      Troles::Operations.new self
+      @roles ||= Troles::Operations.new self
     end    
 
     module ClassMethods

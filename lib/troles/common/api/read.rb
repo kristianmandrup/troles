@@ -31,12 +31,12 @@ module Troles::Common::Api
     # Checks if the role subject has any of the listed roles
     # @param [Array<Symbol>]
     # @return [true, false]
-    def has_all_roles? *roles
+    def has_roles? *roles
       (roles.to_symbols - role_list).empty?
     end
 
     # Checks if the role subject has any of the listed roles
-    # (see #has_all_roles?)
+    # (see #has_roles?)
     def has_any_role? *roles
       !(role_list & roles.to_symbols).empty?
     end    

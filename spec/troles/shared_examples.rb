@@ -41,59 +41,14 @@ shared_examples_for "a Many strategy for Kris" do
     specify             { kris.has_role?(:user).should be_true }
     specify             { kris.is_role?(:user).should be_true }
 
-    specify             { kris.has_all_roles?(:user).should be_true }
-    specify             { kris.has_all_roles?(:user, :admin).should be_false }
+    specify             { kris.has_roles?(:user).should be_true }
+    specify             { kris.has_roles?(:user, :admin).should be_false }
 
     specify             { kris.has_any_role?(:user, :admin).should be_true }
     specify             { kris.has_any_role?(:admin).should be_false }       
     
-    # Store Api
-    specify do 
-      kris.set_roles(:admin)
-      kris.has_role?(:admin).should be_true
-      kris.has_role?(:user).should be_false
-    end       
 
-    specify do 
-      expect { kris.clear_roles! }.to change{kris.instance_variable_get "@troles"}
-      kris.role_list.should be_empty      
-    end
 
-    # Write Api
-    specify do       
-      expect { kris.add_roles(:admin) }.to change{kris.instance_variable_get "@troles"}
-      expect { kris.remove_roles(:user) }.to change{kris.instance_variable_get "@troles"}                   
-      kris.has_role?(:admin).should be_true
-      kris.has_role?(:user).should be_false
-    end
-
-    # # roles Operations object
-    specify do 
-      expect { kris.roles.clear! }.to change{kris.instance_variable_get "@troles"}
-      kris.roles.list.should be_empty      
-    end
-
-    # # roles - operator
-    specify do 
-      kris.add_roles(:admin, :blogger)
-      expect { kris.roles - :admin }.to change{kris.instance_variable_get "@troles"}
-    
-      kris.roles.contains?(:blogger).should be_true      
-      kris.roles.contains?(:admin).should be_false
-    end
-
-    # # roles + operator
-    specify do 
-      expect { kris.roles + :admin }.to change{kris.instance_variable_get "@troles"}
-      kris.roles.contains?(:admin).should be_true      
-    end
-
-    # # roles << operator
-    specify do 
-      kris.clear_roles!
-      expect { kris.roles << :admin }.to change{kris.instance_variable_get "@troles"}
-      kris.roles.contains?(:admin).should be_true      
-    end
 end
 
 shared_examples_for "a Many strategy for Susan" do

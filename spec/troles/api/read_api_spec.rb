@@ -7,7 +7,7 @@ describe Troles::ReadApi do
   describe '#is_role?' do
   end
 
-  describe '#has_all_roles?' do
+  describe '#has_roles?' do
   end
 
   describe '#has_any_role?' do

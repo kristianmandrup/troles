@@ -10,9 +10,9 @@ The project currently consists of:
 The Troles project uses _role caching_ to optimize performance! 
 The roles list cache of a role subject (fx a user) is only updated (retrieved from data store) when the roles of the role subject changes!
 
-Note: Troles is a full redesign of roles generic and company, using lessons learned and using a much cleaner/test driven design from the start. It is aimed at being easy to extend and easy to create adapters for etc.
+Note: Troles is a full redesign of _roles generic_ and company, using lessons learned. Troles uses a much cleaner design. It is aimed at being easy to extend and easy to create adapters for etc.
 
-h2. Status June 1, 2011
+h2. Status June 2, 2011
 
 Trole and Troles are now mostly implemented. Looks like a very clean and intuitive design, and now fully documented!
 The specs are mostly in place, but there is a need to test more usage of the APIs to ensure corner cases are covered
@@ -26,7 +26,7 @@ From browser, go to: http://0.0.0.0:8808/  # then you can enjoy! the nice docume
 </pre>
 
 There is now support for Caching and invalidation of the _role_list_ when the roles change. 
-The specs now validate that caching is in place and works as expected.
+The specs now validate that caching works as it should.
 
 Please help out to finalize this project! :)
 

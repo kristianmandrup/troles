@@ -1,45 +1,7 @@
 shared_examples_for "Using a :single role strategy for Kris" do
   subject { kris }
-    # Core API
-    specify       { lambda { kris.role_field }.should raise_error } # is a class method    
-    specify       { User.role_field.should == :trole }
-
-    its(:roles)         { should be_a Troles::Operations }
-    its(:role)          { should be_a Trole::Operations } # alias to roles
-    its(:role_list)     { should include(:user) }
-
-    specify             { kris.static_roles?.should be_false }
-    specify             { User.static_roles?.should be_false }
-
-    describe 'Event API' do
-      # Event API
-      its(:event_manager) { should == Trole::EventManager }
-      specify             { lambda { kris.field_changed? }.should raise_error } # since not using rails here!   
-      specify             { kris.publish_change(:roles).should be_true }
-      specify             { kris.update_roles.should be_false } # since not using rails   
-    end
-
-    # Read API
-    its(:role_list)     { should include(:user) }
-    
-    it 'should cache the role list' do
-      # use mock expectation : don't expect strategy to be called!
-      kris.role_list.should include(:user)
-      kris.expects(:strategy).never
-      # calling role_list multiple times should NOT invalidate the cache :)
-      expect { kris.role_list }.to_not change{kris.instance_variable_get "@role_list"}      
-      kris.role_list.should include(:user)      
-    end
-    
-    it 'should invalidate the role list after roles are changed' do
-      # expect roles changed event
-      kris.set_roles :admin
-      kris.role_name.should == :user # invalid role admin
-      
-      kris.set_role :editor
-      expect { kris.role_list }.to change{kris.instance_variable_get "@role_list"}
-      kris.role_name.should == :editor
-    end
+    its(:role)          { should be_a Trole::Operations  }
+   
     # 
     # specify             { kris.has_role?(:user).should be_true }
     # specify             { kris.is_role?(:user).should be_true }

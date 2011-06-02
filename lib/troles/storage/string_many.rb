@@ -1,5 +1,7 @@
 # @author Kristian Mandrup
 #
+# Many role storage for storing a comma ',' seperated String of roles on the role subject
+#
 # @note all methods potentially operate directly on values in the data store
 #
 module Troles::Storage
@@ -8,13 +10,16 @@ module Troles::Storage
       super
     end
 
+    # display the roles as a list of symbols
+    # @return [Array<Symbol>] roles list
     def display_roles
-      ds_field_value.map{|role| role.name.to_sym }
+      ds_field_value.split(',').map{|r| r.strip }
     end
     
     # saves the role for the user in the data store
-    def set_roles roles
-      set_ds_field roles.map(:to_s).join(',')
+    # @param [Array<Symbol>] roles list
+    def set_roles *roles
+      set_ds_field roles.flatten.map(:to_s).join(',')
     end  
 
     # clears the role of the user in the data store
@@ -22,7 +27,7 @@ module Troles::Storage
       set_ds_field ""
     end
     
-    # clears the role of the user in the data store
+    # sets the role to default setting
     def set_default_role!
       clear!
     end        

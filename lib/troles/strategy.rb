@@ -1,3 +1,8 @@
+#
+# @author Kristian Mandrup
+#
+# Container for Many role Strategies
+#
 module Troles
   module Strategy
     autoload :BaseMany,   'troles/strategy/base_many'

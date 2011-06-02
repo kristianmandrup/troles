@@ -6,11 +6,10 @@ require 'set'
 
 module Troles::Common::Api
   module Read
+
     # Ensures that the common API methods always have a common underlying model to work on
-    #
-    # @return Array<Symbol> Set of role names
-    #
     # @note This Set should be cached and only invalidated when the user has a change of roles    
+    # @return Array<Symbol> Set of role names
     def role_list        
       @role_list ||= begin
         Set.new strategy.display_roles

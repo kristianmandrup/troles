@@ -1,4 +1,6 @@
 # @author Kristian Mandrup
+# 
+# Many role storage for storing multiple Role references on the role subject
 #
 # @note all methods potentially operate directly on values in the data store
 #
@@ -8,6 +10,8 @@ module Troles::Storage
       super
     end
 
+    # display the roles as a list of symbols
+    # @return [Array<Symbol>] roles list
     def display_roles
       ds_field_value.map{|role| role.name.to_sym }
     end
@@ -23,7 +27,7 @@ module Troles::Storage
       set_ds_field []
     end
     
-    # clears the role of the user in the data store
+    # sets the role to default setting
     def set_default_role!
       clear!
     end                            

@@ -1,5 +1,6 @@
 # @author Kristian Mandrup
-#
+#  
+# The Common Storage API
 # @note all methods potentially operate directly on values in the data store
 #
 module Troles::Common

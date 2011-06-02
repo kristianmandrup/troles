@@ -1,22 +1,33 @@
 #
 # @author Kristian Mandrup
 #
-# Storage that stores role as a Role instance reference
+# Sngle role storage that stores a role as a Role instance reference
 #
 module Trole::Storage
   class RefOne < BaseOne        
-    def initialize api        
+
+    # constructor
+    # @param [Symbol] the role subject
+    def initialize role_subject
       super
     end
 
-    # saves the role for the user in the data store
+    # display the role as a list of one symbol
+    # @return [Array<Symbol>] roles list
+    def display_roles
+      !ds_field_value.empty? ? [ds_field_value.first.name.to_sym] : []
+    end
+    
+
+    # saves the role of the role subject in the data store
+    # @param [Symbol] the role name
     def set_role role
-      trole = Role.where(:name => role).first
+      set_ds_field Role.where(:name => role).first
     end  
 
-    # clears the role of the user in the data store
+    # sets the role to its default state
     def set_default_role!
-      trole = nil
+      set_ds_field nil
     end  
   end
 end

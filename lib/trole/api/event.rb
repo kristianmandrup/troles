@@ -1,3 +1,8 @@
+# 
+# @author Kristian Mandrup
+#
+# Single role Event Api
+#
 module Trole::Api
   module Event
     # @return [Trole::EventManager] The event manager singleton (class) to use to handle role events 

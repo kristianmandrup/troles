@@ -6,8 +6,9 @@ module Troles
   module Strategy
     module StringMany
       #
+      # 
       # What to add to the role subject class when this role strategy is included
-      #
+      # @param [Class] the role subject class to  
       def self.included(base)
         base.send :include, BaseMany
       end

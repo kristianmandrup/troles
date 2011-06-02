@@ -1,3 +1,12 @@
+#
+# @author Kristian Mandrup
+# 
+# Trole operations object API, for performing operations on #roles
+#
+# Usage:
+#   - user.roles + :admin
+#   - user.roles.clear!
+#
 module Trole
   class Operations
     autoload :Read,     'trole/operations/read'

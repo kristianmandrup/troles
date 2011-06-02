@@ -1,3 +1,8 @@
+# 
+# @author Kristian Mandrup
+#
+# Single role Core Api
+#
 module Trole::Api
   module Core
     include Trole::Defaults::StaticRole

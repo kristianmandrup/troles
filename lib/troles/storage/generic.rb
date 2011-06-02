@@ -1,6 +1,6 @@
 # @author Kristian Mandrup
 #
-# @note all methods potentially operate directly on values in the data store
+# Generic Troles storage
 #
 module Troles
   module Storage

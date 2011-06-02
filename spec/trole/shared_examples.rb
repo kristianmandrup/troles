@@ -33,11 +33,12 @@ shared_examples_for "Using a :single role strategy for Kris" do
     
     it 'should invalidate the role list after roles are changed' do
       # expect roles changed event
-      kris.expects(:invalidate_role_cache!)
-      kris.set_roles(:admin)
-      # expect cached role_list instance variable (cache) to be changed
+      kris.set_roles :admin
+      kris.role_name.should == :user # invalid role admin
+      
+      kris.set_role :editor
       expect { kris.role_list }.to change{kris.instance_variable_get "@role_list"}
-      kris.role_list.should include(:admin)            
+      kris.role_name.should == :editor
     end
     # 
     # specify             { kris.has_role?(:user).should be_true }

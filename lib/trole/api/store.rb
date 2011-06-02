@@ -1,17 +1,21 @@
 module Trole::Api
   module Store
     # saves the role for the user in the data store
-    def set_role role
-      strategy.set_role(make_valid_role role)
+    # must user strategy to handle it
+    def set_role new_role
+      value = make_valid_role new_role 
+      return false if !value
+      strategy.set_role(value)      
     end  
     
-    def set_roles *roles                                                 
+    def set_roles *roles
       roles = roles.to_symbols_uniq
       raise ArgumentError, "A single role strategy can only set one role" if (roles.size > 1)
       set_role roles.first
     end
     
     # clears the role of the user in the data store
+    # must user strategy to handle it
     def clear_role!
       strategy.clear!
     end 

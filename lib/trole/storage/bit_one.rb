@@ -1,3 +1,5 @@
+require 'troles/common/marshaller'
+
 #
 # @author Kristian Mandrup
 #
@@ -41,7 +43,7 @@ module Trole::Storage
     protected
 
     def bitmask
-      @bitmask ||= Troles::Marshaller::Bitmask.new role_subject
+      @bitmask ||= Troles::Common::Marshaller::Bitmask.new role_subject
     end    
   end
 end

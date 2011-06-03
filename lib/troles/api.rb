@@ -30,9 +30,7 @@ module Troles
             base.extend "Troles::Api::#{api.to_s.camelize}::ClassMethods".constantize
           rescue
           end
-        end  
-
-        base.send :attr_accessor, base.role_field # create troles accessor
+        end
       end      
     end
     extend ClassMethods

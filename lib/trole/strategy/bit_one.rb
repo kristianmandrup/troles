@@ -12,13 +12,16 @@ module Trole::Strategy
     #
     def self.included(base)
       base.send :include, BaseOne
+      base.send :include, InstanceMethods      
       base.valid_roles = [:user, :admin] # default binary roles 
     end
 
-    # The storage strategy class
-    # @return [Class] a storage subclass
-    def storage 
-      Troles::Storage::BitOne
-    end      
+    module InstanceMethods
+      # The storage strategy class
+      # @return [Class] a storage subclass
+      def storage 
+        Trole::Storage::BitOne
+      end      
+    end
   end
 end

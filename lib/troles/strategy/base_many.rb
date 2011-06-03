@@ -17,6 +17,8 @@ module Troles
       #
       def self.included(base)
         base.send :include, Troles::Api
+        puts "generic? #{base.troles_config.generic?}"
+        base.send(:attr_accessor, base.role_field) if base.troles_config.generic? # create troles accessor      
       end      
 
       # The storage to use

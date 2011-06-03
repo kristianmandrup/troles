@@ -4,9 +4,7 @@
 # Single role Core Api
 #
 module Trole::Api
-  module Core
-    include Trole::Defaults::StaticRole
-    
+  module Core        
     # Access to the Trole operations API
     # @return [Trole::Operations] the operations API object 
     def role
@@ -16,7 +14,7 @@ module Trole::Api
     module ClassMethods                        
       def role_field
         :trole
-      end 
+      end      
     end
   end
 end

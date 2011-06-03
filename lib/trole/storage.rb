@@ -5,10 +5,10 @@
 #
 module Trole
   module Storage
-    autoload :BaseMany,   'trole/storage/base_many'
-    autoload :BitMany,    'trole/storage/bit_many'
-    autoload :EmbedMany,  'trole/storage/embed_many'
-    autoload :RefMany,    'trole/storage/ref_many'
-    autoload :StringMany, 'trole/storage/string_many'        
+    autoload :BaseOne,   'trole/storage/base_one'
+    autoload :BitOne,    'trole/storage/bit_one'
+    autoload :EmbedOne,  'trole/storage/embed_one'
+    autoload :RefOne,    'trole/storage/ref_one'
+    autoload :StringOne, 'trole/storage/string_one'        
   end
 end

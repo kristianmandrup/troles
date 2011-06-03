@@ -1,3 +1,5 @@
+# require 'troles/common/marshaller/generic'
+
 module Troles::Common
   module Marshaller
     class Bitmask < Generic

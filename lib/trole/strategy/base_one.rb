@@ -18,9 +18,10 @@ module Trole::Strategy
     #
     def self.included(base)
       base.send :include, Trole::Api
+      base.send(:attr_accessor, base.role_field) if base.troles_config.generic? # create troles accessor      
     end      
 
-    # The storage to use 
+    # The storage to use
     # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy
     def store
       @store ||= storage.new self
@@ -29,7 +30,7 @@ module Trole::Strategy
     # The storage strategy class
     # @return [Class] a storage subclass
     def storage 
-      Troles::Storage::BaseOne
-    end            
+      Trole::Storage::BaseOne
+    end
   end
 end

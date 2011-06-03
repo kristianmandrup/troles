@@ -2,6 +2,7 @@ module Troles::Common
   module Api
     autoload :Core,       'troles/common/api/core'
     autoload :Cache,      'troles/common/api/cache'
+    autoload :Config,     'troles/common/api/config'
     autoload :Event,      'troles/common/api/event'
     autoload :Read,       'troles/common/api/read'
     autoload :Write,      'troles/common/api/write'
@@ -10,7 +11,7 @@ module Troles::Common
 
     module ClassMethods
       def apis
-        [:core, :cache, :event, :read, :validation, :write]
+        [:core, :cache, :config, :event, :read, :validation, :write]
       end
 
       def included(base)

@@ -12,12 +12,15 @@ module Trole::Strategy
     #
     def self.included(base)
       base.send :include, BaseOne
+      base.send :include, InstanceMethods      
     end
 
-    # The storage strategy class
-    # @return [Class] a storage subclass
-    def storage 
-      Troles::Storage::RefOne
-    end      
+    module InstanceMethods
+      # The storage strategy class
+      # @return [Class] a storage subclass
+      def storage 
+        Trole::Storage::RefOne
+      end      
+    end
   end
 end

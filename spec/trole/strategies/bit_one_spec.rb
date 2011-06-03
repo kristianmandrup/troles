@@ -1,38 +1,18 @@
 require 'trole_spec'
 User.troles_strategy :bit_one
+User.valid_roles = [:user, :admin]
 
-User.valid_roles = [:user, :editor] # override default [:user, :admin]
+module UserSetup
+  def create_user
+    Factory.create :user, :name => 'user', :troles => false
+  end
 
-describe Trole::Strategy::BitOne do
-  let(:kris)    { Factory.create :user, :trole => false } # set to :user
-  let(:susan)    { Factory.create :user, :trole => true } # set to :admin
-  
-  it_should_behave_like "Using a :single role strategy for Kris"
-  # it_should_behave_like "Using a :single role strategy for Susan"
-    
-    # 
-    # its(:role)        { should be_a Trole::Operations }
-    # its(:role_name)   { should == :admin }
-    # 
-    # its(:role_list)   { should == [:admin] }
-  # it { should be_valid }            
-  # its(:errors) { should be_empty }
-  # ################################################################################
-  # # specify (generated descriptions)
-  # # instead of repeating expectation with: it "should not be published"...)
-  # specify { blog_post.should_not be_published }
-  # 
-  # ################################################################################
-  # # subject (delegate should/should_not to subject)
-  # subject { BlogPost.new :title => 'foo', :body => 'bar' }
-  #  it "sets published timestamp" do
-  #    subject.publish!
-  #    subject.should be_published
-  #  end
-  # 
-  # it { should be_valid }
-  # its(:errors) { should be_empty }
-  # its(:title) { should == 'foo' }
-
-
+  def create_admin_user
+    Factory.create :user, :name => 'admin', :troles => true
+  end
 end
+
+describe Troles::Strategy::BitOne do
+  it_should_behave_like "Common API"
+  it_should_behave_like "Trole API"  
+end    

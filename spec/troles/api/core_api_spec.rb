@@ -1,9 +1,4 @@
-require 'spec_helper'
-
-describe Troles::CoreApi do
+shared_examples_for "Core API" do
   describe '#role_field' do
-  end
-
-  describe '#roles' do
   end
 end

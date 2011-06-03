@@ -1,9 +1,22 @@
 require 'trole_spec'
-User.valid_roles = [:user, :admin, :editor]
+User.troles_strategy :string_one
+User.valid_roles = [:user, :admin, :editor, :blogger]
 
-describe Trole::Strategy::StringOne do
-  let(:kris)      { Factory.create :user, :trole => 'user' } # set to :user
-  let(:susan)     { Factory.create :user, :trole => 'admin' } # set to :admin
-  
-  it_should_behave_like "a Many strategy for Kris"
-  it_should_behave_like "a Many strategy for Susan"
+module UserSetup
+  def create_no_roles
+    Factory.create :user, :name => 'no roles', :troles => ''
+  end
+
+  def create_user
+    Factory.create :user, :name => 'user', :troles => 'user'
+  end
+
+  def create_admin_user
+    Factory.create :user, :name => 'admin', :troles => 'admin'
+  end
+end
+
+describe Troles::Strategy::StringOne do
+  it_should_behave_like "Common API"
+  it_should_behave_like "Trole API"  
+end    

@@ -1,9 +1,2 @@
-require 'spec_helper'
-
-describe Troles::WriteApi do
-  describe '#add_roles' do
-  end
-
-  describe '#remove_roles' do
-  end
+shared_examples_for "Write API" do
 end

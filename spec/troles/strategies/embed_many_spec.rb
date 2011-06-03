@@ -1,13 +1,26 @@
 require 'troles_spec'
-User.troles_strategy :embed_many
-User.valid_roles = [:user, :admin, :blogger]
+User.troles_strategy :bit_many
+User.valid_roles = [:user, :admin, :blogger, :editor]
+
+module UserSetup
+  def create_no_roles_user
+    Factory.create :user, :name => 'no roles', :troles => []
+  end
+
+  def create_user
+    Factory.create :user, :name => 'normal', :troles => [ Role.create :name => :user ]
+  end
+
+  def create_admin_user
+    Factory.create :user, :name => 'admin', :troles => [ Role.create :name => :admin ]
+  end
+
+  def create_complex_user
+    Factory.create :user, :name => 'user and admin', :troles => [ Role.create(:name => :user), Role.create(:name => :admin) ]
+  end
+end
 
 describe Troles::Strategy::EmbedMany do
-  let(:kris)    { Factory.create :user, :troles => [Role.create(:user)] } # :user role
-  let(:susan)   { Factory.create :user, :name => 'susan', :troles => [Role.create(:admin)] } # :admin role
-  let(:jack)    { Factory.create :user, :name => 'jack', :troles => [Role.create(:admin), Role.create(:user)] } # :user and :admin roles
-
-  it_should_behave_like "a Many strategy for Kris"
-
-  it_should_behave_like "a Many strategy for Susan"
-  it_should_behave_like "a Many strategy for Jack"
+  it_should_behave_like "Common API"
+  it_should_behave_like "Troles API"  
+end    

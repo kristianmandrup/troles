@@ -1,14 +1,28 @@
 require 'trole_spec'
-User.valid_roles = [:user, :admin, :editor]
+User.troles_strategy :ref_one
+User.valid_roles = [:user, :admin, :editor, :blogger]
 
-# make available! (perhaps should be auto-done by User.valid_roles for this strategy!)
 Role.create(:name => :user)
 Role.create(:name => :admin)
 Role.create(:name => :editor)
 
-describe Trole::Strategy::RefOne do
-  let(:kris)    { Factory.create :user, :trole => [Role.where(:name => :user)] } # set to :user
-  let(:susan)    { Factory.create :user, :trole => [Role.where(:name => :admin)] } # set to :admin
-  
-  it_should_behave_like "a Many strategy for Kris"
-  it_should_behave_like "a Many strategy for Susan"
+
+module UserSetup
+  def create_no_roles
+    Factory.create :user, :name => 'no roles', :troles => [ ]
+  end
+
+  def create_user
+    Factory.create :user, :name => 'user', :troles => [ Role.where(:name => :user) ]
+  end
+
+  def create_admin_user
+    Factory.create :user, :name => 'admin', :troles => [ Role.where(:name => :admin) ]
+  end
+end
+
+describe Troles::Strategy::RefOne do
+  it_should_behave_like "Common API"
+  it_should_behave_like "Trole API"  
+end    
+

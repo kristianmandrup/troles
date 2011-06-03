@@ -4,43 +4,37 @@
 
 require_all File.dirname(__FILE__) + '/api'
 
+def define_users
+  let(:no_roles_user) { create_no_roles_user  }
+  let(:user)          { create_user  }
+  let(:admin_user)    { create_admin_user  }
+end  
+
 shared_examples_for "Common API" do
   include UserSetup 
      
   it_behaves_like "Common Core API" do
-    let(:no_roles_user) { create_no_roles_user  }
-    let(:user)          { create_user  }
-    let(:admin_user)    { create_admin_user  }
+    define_users
   end  
 
-  # it_behaves_like "Common Event API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
-  # end  
-  # 
-  # it_behaves_like "Common Read API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
-  # end  
-  # 
-  # it_behaves_like "Common Validation API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
-  # end  
-  # 
+  it_behaves_like "Common Event API" do
+    define_users
+  end  
+
+  it_behaves_like "Common Read API" do
+    define_users
+  end  
+  
+  it_behaves_like "Common Validation API" do
+    define_users
+  end  
+
   # it_behaves_like "Common Write API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
+  #   define_users
   # end  
   # 
   # it_behaves_like "Common Operations API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
+  #   define_users
   # end  
 end 
 

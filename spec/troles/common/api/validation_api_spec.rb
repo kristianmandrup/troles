@@ -1,7 +1,7 @@
 shared_examples_for "Common Validation API" do
   describe '#check_valid_role?' do
     it 'should return valid role' do
-      user.check_valid_role?(:admin).should include(:admin)
+      user.check_valid_role?(:admin).should == :admin
     end
   end
 
@@ -15,7 +15,7 @@ shared_examples_for "Common Validation API" do
   # @return [Symbol, false, Error] a valid role name, false if invalid, or Error on some error    
   describe '#make_valid_role?' do
     it 'should return valid role' do
-      user.make_valid_role? :admin
+      user.send :make_valid_role, :admin
     end
   end
 
@@ -24,14 +24,14 @@ shared_examples_for "Common Validation API" do
   # @return [Array<Symbol>] the valid roles from the list of roles given
   describe '#make_valid_roles?' do
     it 'should return valid roles' do
-      user.make_valid_roles? :admin, :editor
+      user.send :make_valid_roles, [:admin, :editor]
     end
   end
 
   # @return [Array<Symbol>] the valid roles of the role subject
   describe '#valid_roles' do
     it 'should get valid roles of class' do                   
-      user.valid_role.should include(:admin)
+      user.send(:valid_roles).should include(:admin)
     end
   end
 

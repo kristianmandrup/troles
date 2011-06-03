@@ -3,7 +3,7 @@
 # 
 # Event API
 #
-module Trole::Common::Api
+module Troles::Common::Api
   module Event
     # A change to the roles of the user should be published to an event handler
     # this can be used to update both the Role cache of the user and fx the RolePermit cache.
@@ -31,9 +31,9 @@ module Trole::Common::Api
       event_manager.publish_change event, :from => self
     end
 
-    # the EventManeger instance for which to send events
+    # @return [Trole::EventManager] The event manager singleton (class) to use to handle role events 
     def event_manager
-      raise "Must be implemented by including class"
+      Troles::Common::EventManager
     end
   end
 end

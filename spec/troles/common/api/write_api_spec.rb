@@ -6,6 +6,16 @@ shared_examples_for "Common Write API" do
     end
   end
 
+  it 'should invalidate the role list after roles are changed' do
+    # expect roles changed event
+    user.set_roles :blip # invalid role
+    user.role_name.should == :user # invalid role admin
+
+    user.set_role :editor # editor should be a valid role
+    expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
+    user.role_name.should == :editor
+  end
+
   describe '#set_roles' do
     it "should set set roles to :user only" do
       user.set_roles(:admin)

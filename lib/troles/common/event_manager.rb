@@ -4,7 +4,7 @@
 # Handles event handlinm/publication for when the roles of a role subject change
 # This is currently a singleton (class methods only) by design
 #
-module Troles
+module Troles::Common
   module EventManager
     def self.included(base)
       base.extend ClassMethods

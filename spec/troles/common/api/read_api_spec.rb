@@ -20,14 +20,4 @@ shared_examples_for "Common Read API" do
     expect { user.role_list }.to_not change{user.instance_variable_get "@role_list"}      
     user.role_list.should include(:user)      
   end
-
-  it 'should invalidate the role list after roles are changed' do
-    # expect roles changed event
-    user.set_roles :blip # invalid role
-    user.role_name.should == :user # invalid role admin
-
-    user.set_role :editor # editor should be a valid role
-    expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
-    user.role_name.should == :editor
-  end
 end

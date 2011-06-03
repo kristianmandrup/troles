@@ -1,2 +1,2 @@
-shared_examples_for "Write API" do
+shared_examples_for "Troles Write API" do
 end

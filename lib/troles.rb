@@ -1,4 +1,4 @@
-# require 'troles/common'
+require 'troles/common'
 
 module Troles  
   autoload :Common,         'troles/common'

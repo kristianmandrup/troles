@@ -3,8 +3,12 @@
 #
 # Core Troles API functions
 #
+
+puts "Common Core"
+
 module Troles::Common::Api
   module Core
+    
     # Access to the Troles operations API
     # @return [Troles::Operations] the operations API object 
     def roles
@@ -24,7 +28,7 @@ module Troles::Common::Api
       false
     end
         
-    module ClassMethods      
+    module ClassMethods            
       attr_accessor :valid_roles
       attr_accessor :role_model
 

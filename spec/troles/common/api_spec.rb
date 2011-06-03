@@ -2,7 +2,7 @@
 # And: http://relishapp.com/rspec/rspec-core/v/2-6/dir/example-groups/shared-examples
 # Also: http://stackoverflow.com/questions/6152359/dynamically-generating-shared-examples-in-rspec-2
 
-require_all File.dirname(__FILE__) + '/apis'
+require_all File.dirname(__FILE__) + '/api'
 
 shared_examples_for "Common API" do
   include UserSetup 
@@ -32,6 +32,12 @@ shared_examples_for "Common API" do
   end  
 
   it_behaves_like "Common Write API" do
+    let(:no_roles_user) { create_no_roles_user  }
+    let(:user)          { create_user  }
+    let(:admin_user)    { create_admin_user  }
+  end  
+
+  it_behaves_like "Common Operations API" do
     let(:no_roles_user) { create_no_roles_user  }
     let(:user)          { create_user  }
     let(:admin_user)    { create_admin_user  }

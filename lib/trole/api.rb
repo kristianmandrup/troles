@@ -9,8 +9,8 @@ module Trole
     autoload :Cache,       'trole/api/cache'
     autoload :Event,       'trole/api/event'
     autoload :Read,        'trole/api/read'
-    autoload :Validation,  'trole/api/validation'
-    autoload :Write,       'trole/api/write'    
+    autoload :Write,       'trole/api/write'
+    autoload :Validation,  'trole/api/validation'        
 
     #
     # When the Trole::Api is included by the Role Subject class (fx a User Account)
@@ -22,12 +22,20 @@ module Trole
     module ClassMethods
       def included(base)
         base.send :include, Troles::Common::Api
+        self.extend Troles::Common::Api::ClassMethods # draws in the #apis method from Common Api
+
         apis.each do |api|
           begin
-            base.include_and_extend :"#{api.to_s.camelize}"
+            base.send :include, "Trole::Api::#{api.to_s.camelize}".constantize
+            base.extend "Trole::Api::#{api.to_s.camelize}::ClassMethods".constantize
+            
+            # base.include_and_extend :"#{api.to_s.camelize}"
           rescue
           end
-        end  
+        end                               
+
+        # see how it worked before! was in Strategy::BaseMany fx
+        base.attr_accessor base.role_field # create trole accessor
       end
     end
     extend ClassMethods    

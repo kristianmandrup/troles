@@ -1,4 +1,4 @@
-shared_examples_for "Cache API" do
+shared_examples_for "Common Cache API" do
   describe '#invalidate_role_cache!' do
     before :each do
       user.role_list
@@ -6,7 +6,7 @@ shared_examples_for "Cache API" do
     end
 
     # should invalidate role cache, forcing update of @role_list instance var    
-    expect { kris.role_list }.to change { kris.instance_variable_get "@role_list" }
+    expect { user.role_list }.to change { user.instance_variable_get "@role_list" }
   end
 end
 

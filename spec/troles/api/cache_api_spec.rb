@@ -1,2 +1,2 @@
-shared_examples_for "Cache API" do
+shared_examples_for "Troles Cache API" do
 end

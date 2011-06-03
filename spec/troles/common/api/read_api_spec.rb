@@ -1,4 +1,4 @@
-shared_examples_for "Read API essentials" do
+shared_examples_for "Common Read API" do
   specify { user.has_role?(:user).should be_true }
   specify { user.is_role?(:user).should be_true }
         
@@ -29,7 +29,5 @@ shared_examples_for "Read API essentials" do
     user.set_role :editor # editor should be a valid role
     expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
     user.role_name.should == :editor
-  end
-    
   end
 end

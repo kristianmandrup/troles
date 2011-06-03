@@ -1,2 +1,2 @@
-shared_examples_for "Event API" do
+shared_examples_for "Troles Event API" do
 end

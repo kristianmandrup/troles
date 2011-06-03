@@ -20,7 +20,6 @@ module Troles::Storage
     end
   
     # saves the roles for the role subject in the data store
-    # see Troles::Storage::Generic
     # @param [Array<Symbol>] roles list    
     def set_roles *roles
       # creates and embeds new Role instances from symbols

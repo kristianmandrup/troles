@@ -8,6 +8,9 @@
 #   class User
 #     troles_strategy :bit_many
 #
+
+puts "Troles macros enabled!"
+
 module Troles  
   module Macros
     def troles_strategy strategy_name, options = {}

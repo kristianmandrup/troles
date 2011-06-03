@@ -5,7 +5,7 @@
 #
 module Trole
   module Storage
-    autoload :Generic,    'trole/storage/generic'
+    autoload :BaseMany,   'trole/storage/base_many'
     autoload :BitMany,    'trole/storage/bit_many'
     autoload :EmbedMany,  'trole/storage/embed_many'
     autoload :RefMany,    'trole/storage/ref_many'

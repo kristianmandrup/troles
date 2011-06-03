@@ -216,7 +216,7 @@ For Active Record there is no need for change, as an AR Role model implements th
 
 <pre>
 module Troles::Storage
-  class Generic < Troles::Common::Storage
+  class BaseMany < Troles::Common::Storage
     def find_roles *roles
       role_model_.where(:name => roles)
     end  

@@ -1,9 +1,9 @@
-shared_examples_for "Core API" do
+shared_examples_for "Common Core API" do
   # Core API
   specify             { lambda { user.role_field }.should raise_error } # no, role_field is a class method    
-  specify             { User.role_field.should == :trole } # yes, role_field is a class method    
+  specify             { User.role_field.should_not be_nil } # yes, role_field is a class method    
 
-  subjec { user }
+  subject { user }
     its(:role_list)     { should include(:user) }
     its(:roles)         { should be_a Troles::Operations }
 

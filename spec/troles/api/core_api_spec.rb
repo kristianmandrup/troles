@@ -1,4 +1,4 @@
-shared_examples_for "Core API" do
-  describe '#role_field' do
-  end
+shared_examples_for "Troles Core API" do
+  subject { User }
+    its(:role_field) { should == :troles }
 end

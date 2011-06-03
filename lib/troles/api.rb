@@ -23,13 +23,17 @@ module Troles
       #
       def included(base)
         base.send :include, Troles::Common::Api
+        self.extend Troles::Common::Api::ClassMethods # draws in the #apis method from Common Api
         apis.each do |api|
           begin
-            base.include_and_extend :"#{api.to_s.camelize}"
+            base.send :include, "Troles::Api::#{api.to_s.camelize}".constantize
+            base.extend "Troles::Api::#{api.to_s.camelize}::ClassMethods".constantize
           rescue
           end
         end  
-      end
+
+        base.send :attr_accessor, base.role_field # create troles accessor
+      end      
     end
     extend ClassMethods
   end

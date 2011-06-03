@@ -1,6 +1,6 @@
 # @author Kristian Mandrup
 #
-# Generic Troles storage
+# Troles base storage for Many roles strategies
 #
 module Troles
   module Storage

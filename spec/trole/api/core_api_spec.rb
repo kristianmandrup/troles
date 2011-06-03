@@ -1,9 +1,4 @@
-require 'trole_spec'
-
-describe Trole::Api::Core do
-  describe '#role_field' do
-  end
-
-  describe '#role' do
-  end
+shared_examples_for "Trole Core API" do
+  subject { User }
+    its(:role_field) { should == :trole }  
 end

@@ -27,7 +27,7 @@ module Troles
 
       # @return [Class] the storage strategy class
       def storage 
-        Troles::Storage::Generic
+        Troles::Storage::BaseMany
       end      
     end
   end

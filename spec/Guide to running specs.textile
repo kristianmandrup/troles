@@ -1,0 +1,16 @@
+h1. Guide to running specs
+
+The specs use shared examples! See the _troles/api_spec.rb_, _trole/api_spec.rb_ and more importantly the _troles/common/api_spec.rb_.
+This is where most of the goodies are defined. Each api_spec pulls in spec examples from the /api folder in the respective location.
+To remove one or more APIs from the spec run, simply outcomment in the relevant _api_spec.rb_.
+
+To run specs, I recommend running for individual strategies:
+
+Example:
+
+@$ rspec spec/troles/strategies/bit_many_spec.rb@ 
+
+If the output is too much, remove one or more APIs from the "run" as describe above!
+
+Happy bug hunting!
+ 

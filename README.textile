@@ -30,6 +30,14 @@ The specs now validate that caching works as it should.
 
 Please help out to finalize this project! :)
 
+h2. Bug hunting by running specs
+
+Run specs for at most one strategy at the time for now...
+
+@$ rspec spec/troles/strategies/bit_many_spec.rb@ 
+
+Please see the document _spec/Guide to running specs.textile_ where I advise on how best to do "bug hunting" to help get this project off the ground!
+
 h2. Role strategies
 
 The following lists the role strategies to be supported

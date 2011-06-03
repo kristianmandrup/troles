@@ -22,7 +22,7 @@ module Trole::Storage
     # saves the role of the role subject in the data store
     # @param [Symbol] the role name
     def set_role role
-      set_ds_field Role.where(:name => role).first
+      set_ds_field role_model.where(:name => role).first
     end  
 
     # sets the role to its default state

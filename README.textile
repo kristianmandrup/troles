@@ -218,7 +218,7 @@ For Active Record there is no need for change, as an AR Role model implements th
 module Troles::Storage
   class Generic < Troles::Common::Storage
     def find_roles *roles
-      Role.where(:name => roles)
+      role_model_.where(:name => roles)
     end  
   ...
 end
@@ -226,7 +226,7 @@ end
 
 However for Mongoid, there is a need to use _#all_ on the result of the query to get the array: 
 
-@Role.where(:name => roles).all@
+@role_model_.where(:name => roles).all@
 
 This can be done elegantly using super, and having the MongoidStorage inherit from the Generic one.
 

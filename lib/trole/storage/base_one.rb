@@ -18,7 +18,7 @@ module Trole::Storage
     # @return [Role] reference to Role instances
     def find_role role
       raise ArgumentError, "Must be a role label" if !role.kind_of_label?
-      Role.where(:name => role.to_s)
+      role_model.where(:name => role.to_s)
     end
 
     # get embedded Role instances
@@ -27,5 +27,9 @@ module Trole::Storage
     def role_to_embed
       raise "Must be implemented by embed storage to generate a set of roles to embed"
     end                 
+    
+    def role_model
+      sole_subject.class.role_model
+    end
   end        
 end

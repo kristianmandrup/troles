@@ -14,10 +14,8 @@ module Troles::Common
       end
 
       def included(base)
-        puts "Common API base: #{base}"
         apis.each do |api|
           begin
-            puts "include Common API: #{api}"            
             base.include_and_extend :"#{api.to_s.camelize}"
           rescue
           end

@@ -12,12 +12,15 @@ module Troles
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
       def self.included(base)
         base.send :include, BaseMany
+        base.send :include, InstanceMethods
       end      
 
-      # The storage strategy class
-      # @return [Class] a storage subclass
-      def storage 
-        Troles::Storage::BitMany
+      module InstanceMethods
+        # The storage strategy class
+        # @return [Class] a storage subclass
+        def storage 
+          Troles::Storage::BitMany
+        end
       end
     end
   end

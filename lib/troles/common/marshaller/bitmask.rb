@@ -1,4 +1,4 @@
-module Troles
+module Troles::Common
   module Marshaller
     class Bitmask < Generic
       attr_reader :role_subject, :valid_roles

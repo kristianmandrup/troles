@@ -13,7 +13,7 @@ module Troles::Storage
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
-      ds_field_value.split(',').map{|r| r.strip }
+      ds_field_value.split(',').map{|r| r.strip }.map(&:to_sym)
     end
     
     # saves the role for the user in the data store

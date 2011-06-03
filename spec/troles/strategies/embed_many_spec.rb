@@ -1,22 +1,26 @@
 require 'troles_spec'
-User.troles_strategy :bit_many
+User.troles_strategy :embed_many
 User.valid_roles = [:user, :admin, :blogger, :editor]
 
 module UserSetup
+  def create_role name
+    Role.create(name)
+  end
+
   def create_no_roles_user
     Factory.create :user, :name => 'no roles', :troles => []
   end
 
   def create_user
-    Factory.create :user, :name => 'normal', :troles => [ Role.create :name => :user ]
+    Factory.create :user, :name => 'normal', :troles => [ create_role(:user) ]
   end
 
   def create_admin_user
-    Factory.create :user, :name => 'admin', :troles => [ Role.create :name => :admin ]
+    Factory.create :user, :name => 'admin', :troles => [ create_role(:admin) ]
   end
 
   def create_complex_user
-    Factory.create :user, :name => 'user and admin', :troles => [ Role.create(:name => :user), Role.create(:name => :admin) ]
+    Factory.create :user, :name => 'user and admin', :troles => [ create_role(:name => :user), create_role(:name => :admin) ]
   end
 end
 

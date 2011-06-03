@@ -41,7 +41,11 @@ module Troles::Storage
     protected
 
     def bitmask
-      @bitmask ||= Troles::Marshaller::Bitmask.new role_subject
+      @bitmask ||= bitmask_class.new role_subject
+    end
+    
+    def bitmask_class
+      Troles::Common::Marshaller::Bitmask
     end
   end
 end

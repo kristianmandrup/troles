@@ -13,13 +13,17 @@ module Troles::Storage
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
-      ds_field_value.map{|role| role.name.to_sym }
+      return [] if ds_field_value.empty?
+      ds_field_value.flatten.map do |role| 
+        role.name.to_sym 
+      end
     end
     
     # saves the role for the user in the data store
     def set_roles *roles
       # finds and sets references to existing Role instances from symbols        
-      set_ds_field find_roles(*roles)
+      found_roles = find_roles(*roles)
+      set_ds_field found_roles
     end  
 
     # clears the role of the user in the data store

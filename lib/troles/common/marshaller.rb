@@ -6,9 +6,9 @@
 # One example is the Bitmask marshaller, which converts between an Integer and a role list
 # One could imagine other custom marshallers, such as using encrypted strings etc.
 # 
-module Troles
+module Troles::Common
   module Marshaller
-    autoload :Generic,   'troles/marshaller/generic'
-    autoload :Bitmask,   'troles/marshaller/bitmask'
+    autoload :Generic,   'troles/common/marshaller/generic'
+    autoload :Bitmask,   'troles/common/marshaller/bitmask'
   end
 end

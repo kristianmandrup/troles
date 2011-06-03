@@ -2,10 +2,7 @@ require 'trole_spec'
 User.troles_strategy :ref_one
 User.valid_roles = [:user, :admin, :editor, :blogger]
 
-Role.create(:name => :user)
-Role.create(:name => :admin)
-Role.create(:name => :editor)
-
+Config.add_roles [:user, :admin, :editor, :blogger]
 
 module UserSetup
   def create_no_roles

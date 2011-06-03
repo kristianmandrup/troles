@@ -2,12 +2,18 @@ class Role
   attr_accessor :name
   
   def initialize name
-    raise ArgumentError, "Not a valid role label" if !name.kind_of_label?
+    raise ArgumentError, "Not a valid role label, was: #{name}" if !name.kind_of_label?
     @name = name.to_sym
-    Role.roles << self if !Role.exists?(name)
+    role = self if !Role.exists?(@name)
+    puts "Role :#{role.name} added" if role
+    Role.roles << role if role
   end
   
   class << self 
+    def all
+      roles
+    end
+    
     def create options = {}
       self.new options 
     end
@@ -21,7 +27,7 @@ class Role
     end
 
     def exists? name
-      where :name => name.to_sym
+      !where(:name => name.to_sym).empty?
     end
 
     def where options = {}

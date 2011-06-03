@@ -12,7 +12,7 @@ module Troles::Common::Api
     # @return Array<Symbol> Set of role names
     def role_list        
       @role_list ||= begin
-        Set.new strategy.display_roles
+        Set.new store.display_roles
       end
     end
         

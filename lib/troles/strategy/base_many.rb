@@ -27,7 +27,7 @@ module Troles
 
       # @return [Class] the storage strategy class
       def storage 
-        Troles::Storage::BaseMany
+        raise "Must be implemented by subclass" # Troles::Storage::BaseMany
       end      
     end
   end

@@ -3,9 +3,6 @@
 #
 # Core Troles API functions
 #
-
-puts "Common Core"
-
 module Troles::Common::Api
   module Core
     

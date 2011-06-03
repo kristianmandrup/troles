@@ -3,16 +3,20 @@ User.troles_strategy :embed_one
 User.valid_roles = [:user, :admin]
 
 module UserSetup
+  def create_role name
+    Role.create(name)
+  end
+
   def create_no_roles
     Factory.create :user, :name => 'no roles', :trole => [ ]
   end
 
   def create_user
-    Factory.create :user, :name => 'user', :trole => [ Role.create :name => :user ]
+    Factory.create :user, :name => 'user', :trole => [ create_role(:user) ]
   end                                            
 
   def create_admin_user
-    Factory.create :user, :name => 'admin', :trole => [ Role.create :name => :admin ]
+    Factory.create :user, :name => 'admin', :trole => [ create_role(:admin) ]
   end
 end
 

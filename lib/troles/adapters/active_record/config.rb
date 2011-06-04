@@ -1,5 +1,7 @@
 module Troles
   class Config < Troles::Common::Config  
+
+    attr_accessor :role_join_model
     
     def initialize clazz, options = {}
       super

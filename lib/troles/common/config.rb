@@ -6,9 +6,13 @@ module Troles::Common
       @clazz = clazz 
 
       # set instance var for each pait in options
+      apply_options! options
+    end
+
+    def apply_options! options = {}
       options.each_pair do |key, value|
         instance_variable_set("@#{key}", value) if self.respond_to?(:"#{key}")
-      end
+      end      
     end
 
     def configure_role_field options = {}

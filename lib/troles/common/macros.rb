@@ -52,6 +52,8 @@ module Troles
       end
       
       def apply_strategy_options! clazz, options
+        clazz.troles_config.apply_options! options
+
         StrategyOptions.new(clazz)
         extract_macros(options).each{|m| apply_macro m}
       end      

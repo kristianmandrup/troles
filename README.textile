@@ -385,6 +385,15 @@ and specify how/where to load them from as part of this configuration!
   User.troles_strategy :bit_one, :orm => :mongoid, :auto_load => true
 </pre> 
 
+Now there is also support for specifying config options directly via the macro:
+
+<pre>
+  User.troles_strategy :bit_one, :orm => :active_record, :auto_load => true, :role_join_model => 'UserRole'
+</pre> 
+
+Here the ActiveRecord Config class has added an extra config property. 
+This property can then be used in order to setup the join model between _User_ and _Role_ models for the M-M _RefMany_ scenario. 
+Expanding the Config object this way as you see fit makes ORM configuration/customization much simpler!
 
 h2. License
 

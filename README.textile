@@ -305,7 +305,9 @@ module Troles::Strategy
 end  
 </pre>
 
-Note: By default if using/overriding the Generic strategy, the #generic? config attribute is set to true, which has the effect of adding an attr_accessor _:trole_ or _:troles_ to the role subject. To avoid this when implementing you own, non-generic role strategy set, set up your Config constructor to set generic to false:
+h3. Creating a Base strategy for an Adapter
+
+Example: _BaseMany_, used as the base for all Many roles strategies
 
 <pre>
   module Troles::Mongoid
@@ -320,7 +322,7 @@ Note: By default if using/overriding the Generic strategy, the #generic? config 
 
         module Config
           def troles_config
-            @troles_config ||= Trole::Mongoid::Config.new self, :generic => :false
+            @troles_config ||= Troles::Mongoid::Config.new self
           end
         end
       end
@@ -328,23 +330,15 @@ Note: By default if using/overriding the Generic strategy, the #generic? config 
   end
 </pre>
 
-As an alternative to setting the generic to false via the Config initializer, try this: 
-Define a method #generic? in your custom Config object which returns false always! (see example below)
+An adapter requires a custom implementation of the Config class. Look at the _troles/common/config.rb_ to see what functionality is available that you can use.
+A custom Config class for :single role strategies using _Mongoid_ could look sth. like this:
 
-See _Troles::Common::Config_ for more details.
-
-An adapter requires a custom implementation of the Config class. It could look sth. like this for _Mongoid_:
 <pre>
 module Trole::Mongoid
   class Config < Troles::Common::Config  
 
     def initialize clazz, options = {}
       super
-    end
-
-    # This is NOT a generic strategy!
-    def generic?
-      false
     end
   
     def configure_relation
@@ -370,7 +364,7 @@ module Trole::Mongoid
 
 As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships!
 
-Configuring for Many roles strategies:
+Example: Config class for :many roles strategies with _Mongoid_
 
 <pre>
 module Troles::Mongoid
@@ -393,13 +387,13 @@ module Troles::Mongoid
       when :string_many
         String
       end
-      clazz.send(:field, role_field, type) if type      
+      clazz.send(:field, role_field, type: => type) if type      
     end
 </pre>  
 
 Very easy!
 
-To use your adapter, simply pass an extra option to the troles_strategy macro:
+To use your adapter, simply pass an extra option to the _troles_strategy_ macro:
 
 <pre>
   User.troles_strategy(:bit_one, :orm => :mongoid).configure!
@@ -415,21 +409,21 @@ and specify how/where to load them from as part of this configuration!
   User.troles_strategy(:bit_one, :orm => :mongoid, :auto_load => true).configure!
 </pre> 
 
+You can also specify some of the options relevant to model configuration on the call to #configure if you like ;) 
 
-In order to make the configuration even sweeter, the troles_strategy will yield the Config so you can configure it in a block, and when done simply call _configure!_
+<pre>
+  User.troles_strategy(:bit_one, :orm => :active_record, :auto_load => true).configure! :role_model => 'Troll'
+</pre> 
 
-Here the ActiveRecord Config class has added an extra config property. 
-This property can then be used in order to setup the join model between _User_ and _Role_ models for the M-M _RefMany_ scenario. 
-Expanding the Config object this way as you see fit makes ORM configuration/customization much simpler!   
+The _troles_strategy_ macro will yield the Config object if you pass it a block. 
+This allows you to configure your stategy with troles inside the block and then call _configure!_ on end of the block
 
 <pre>
 User.troles_strategy :bit_one do |c|
   c.orm = :active_record
-  c.role_model = 'Troll'
-  c.role_join_model = 'UserTroll'
   c.auto_load = false
   c.valid_roles = [:troll, :warrior]
-end.configure! 
+end.configure! :role_model => 'Troll', :join_model => 'UserTroll'
 </pre>
 
 Enjoy :)

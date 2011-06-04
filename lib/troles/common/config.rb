@@ -1,12 +1,12 @@
 module Troles::Common
   class Config
-    attr_accessor :role_model, :role_field, :generic, :clazz, :singularity, :strategy 
+    attr_accessor :role_model, :join_model, :role_field, :generic, :clazz, :singularity, :strategy, :orm 
     #:valid_roles
     
     def initialize clazz, options = {}
       @clazz = clazz 
 
-      # set instance var for each pait in options
+      # set instance var for each pair in options
       apply_options! options
     end
 
@@ -16,8 +16,9 @@ module Troles::Common
       end      
     end
 
-    def configure!
-      configure_role_field      
+    def configure! options = {}
+      apply_options! options
+      configure_role_field
     end
 
     def configure_role_field
@@ -75,29 +76,55 @@ module Troles::Common
     end
 
     def configure_role_field options = {}
-      clazz.send(:attr_accessor, role_field) if generic? # create troles accessor      
+      clazz.send(:attr_accessor, role_field) if generic? || orm == nil # create troles accessor      
     end       
         
     def generic?
-      @generic.nil? ? true : @generic
+      @generic.nil? ? false : @generic
     end
 
     protected
 
-    def clazz_name
+    # TODO: Needs extraction into helper module!
+
+    def belong_to from, to
+      make_relationship :belongs_to, from, to
+    end
+    
+    def has_many_for from, to, through = nil
+      make_relationship :has_many, from, to, through
+    end
+    
+    def make_relationship type, from, to, through
+      model_key = send "#{from}_key"
+      class_name = send "#{to}_class_name"
+      options = {:class_name => class_name}
+      options.merge!(through) if through
+      from.send(type, model_key, options)
+    end
+
+    def user_class_name
       clazz.to_s
     end
 
-    def clazz_key
-      make_key clazz_name
+    def user_key
+      make_key user_class_name
     end
 
-    def role_model_class_name
+    def join_class_name
+      join_model.to_s
+    end
+
+    def join_key
+      make_key join_class_name
+    end
+
+    def role_class_name
       role_model.to_s
     end
     
-    def role_model_key
-      make_key role_model_class_name
+    def role_key
+      make_key role_class_name
     end
     
     def make_key name

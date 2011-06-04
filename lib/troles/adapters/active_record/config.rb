@@ -6,10 +6,6 @@ module Troles::ActiveRecord
     def initialize clazz, options = {}
       super
     end
-
-    def generic?
-      false
-    end
     
     def configure_relation
       case strategy

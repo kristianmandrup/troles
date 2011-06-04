@@ -5,18 +5,19 @@ module Troles::Mongoid
       super     
     end
 
-    def generic?
-      false
-    end
-    
     # more likely, strategy should be part of configuration options directly when Config object is created!
     def configure_relation
       case strategy
-      when :ref_many
-        clazz.send(:has_many, role_model_key, :class_name => role_model_class_name)
-        role_model.send(:belongs_to, clazz_key, :class_name => clazz_name)
-      when :embed_one
-        clazz.send(:embeds_many, role_model_key, :class_name => role_model_class_name)      
+      when :ref_many      
+        has_many_for clazz, :role, :through => join_key 
+        
+        belongs_to_for join_model, :user
+        belongs_to_for join_model, :role
+
+        has_many_for role, :user, :through => join_key 
+        
+      when :embed_many
+        embeds_many clazz, :role
       end
     end
     
@@ -27,7 +28,14 @@ module Troles::Mongoid
       when :string_many
        String
       end
-      clazz.send(:field, role_field, type) if type      
-    end
+      # field :name, :type => String
+      clazz.send(:field, role_field, type: => type) if type      
+    end     
+    
+    protected
+    
+    def embeds_many from, to
+      make_relationship :embeds_many, from, to
+    end    
   end
 end

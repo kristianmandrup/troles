@@ -16,4 +16,3 @@ module Troles::Mongoid
     end
   end
 end
-      

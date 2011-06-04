@@ -1,28 +1,21 @@
-module Trole
+module Trole::Mongoid
   class Config < Troles::Common::Config  
     
     def initialize clazz, options = {}
       super
     end
     
-    # more likely, strategy should be part of configuration options directly when Config object is created!
-    def configure_role_field options = {}  
-      strategy = options[:strategy] || strategy
-      configure_field strategy
-      configure_relation strategy
-    end         
-
-    def configure_relation strategy
+    def configure_relation
       case strategy
       when :ref_one
-        clazz.send(:has_one, role_model_key, :class_name => role_model_class_name)
-        role_model.send(:belongs_to, clazz_key, :class_name => clazz_name)
+        has_one_for clazz, :role
+        belongs_to_for role_model, :user
       when :embed_one
-        clazz.send(:embeds_one, role_model_key, :class_name => role_model_class_name)      
+        embeds_one clazz, :role
       end
     end
     
-    def configure_field strategy
+    def configure_field
       type = case strategy
       when :bit_one
         Boolean
@@ -30,6 +23,12 @@ module Trole
        String
       end
       clazz.send(:field, role_field, type) if type      
-    end
+    end   
+    
+    protected
+    
+    def embeds_one from, to
+      make_relationship :embeds_one, from, to
+    end        
   end
 end

@@ -183,6 +183,11 @@ h3. Creating a custom Strategy Storage Adapter (SSA)
 
 Example custom SSA - encrypted comma seperated string for multiple roles:
 
+You must implement the following methods:
+- #display_roles (returns symbol list of roles)  
+- #set_role (for Single role strategies only)
+- #clear! (clear the role)
+
 <pre>
 module Trole::Storage
   module EncryptedStringOne < BaseOne
@@ -201,7 +206,7 @@ module Trole::Storage
     end  
 
     # sets the role to its default state
-    def set_default_role!
+    def clear!
       set_encrypted_ds_field ""
     end  
 
@@ -286,18 +291,35 @@ module Troles::Strategy
     # @param [Class] the role subject class to  
     def self.included(base)
       base.send :include, BaseMany
+      base.send :include, InstanceMethods
     end
 
-    # The storage strategy class
-    # @return [Class] a storage subclass
-    def storage 
-      Troles::Storage::EncryptedStringMany
-    end      
+    module InstanceMethods
+      # The storage strategy class
+      # @return [Class] a storage subclass
+      def storage 
+        Troles::Storage::EncryptedStringMany
+      end
+    end
   end
 end
   
 </pre>
 
+Note: By default if using/overriding the Generic strategy, the #generic? config attribute is set to true, which has the effect of adding an attr_accessor _:trole_ or _:troles_ to the role subject. To avoid this when implementing you own, non-generic role strategy set, please set this config:
+
+@User.troles_config.generic = false@
+
+<pre>
+  module EncryptedStringMany
+
+    # What to add to the role subject class when this role strategy is included
+    # @param [Class] the role subject class to  
+    def self.included(base)
+      base.send :include, BaseMany
+      base.send :include, InstanceMethods
+    end  
+</pre>
 
 h2. License
 

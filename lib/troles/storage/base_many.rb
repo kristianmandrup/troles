@@ -17,7 +17,7 @@ module Troles
       # get list of embedded Role instances
       # @param  [Array<Symbol>] list of role names
       # @return [Array<Role>] Role instances generated      
-      def roles_to_embed
+      def roles_to_embed *roles
         raise "Must be implemented by embed storage to generate a set of roles to embed"
       end           
     end        

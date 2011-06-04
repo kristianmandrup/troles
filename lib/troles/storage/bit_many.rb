@@ -25,6 +25,7 @@ module Troles::Storage
     def set_roles *roles
       roles = roles.to_symbols_uniq
       return clear! if roles.empty?      
+      puts "roles: #{roles}"
       set_ds_field bitmask.write(roles.to_symbols)
     end  
 

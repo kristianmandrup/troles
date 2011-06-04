@@ -54,6 +54,10 @@ module Troles::Common
 
     protected
 
+    def role_model
+      role_subject.class.role_model
+    end
+
     def role_list
       role_subject.role_list
     end

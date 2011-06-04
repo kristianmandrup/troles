@@ -13,6 +13,13 @@ module Troles::Storage
       super
     end
 
+    def roles_to_embed *roles
+      roles.flatten.inject([]) do |res, role| 
+        res << create_role(role)
+        res
+      end
+    end           
+
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
@@ -34,6 +41,12 @@ module Troles::Storage
     # sets the role to its default state
     def set_default_role!
       clear!
+    end
+    
+    protected
+    
+    def create_role name
+      role_model.create name
     end
   end
 end

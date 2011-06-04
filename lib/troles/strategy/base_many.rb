@@ -16,9 +16,7 @@ module Troles
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
       #
       def self.included(base)
-        base.send :include, Troles::Api
-        puts "generic? #{base.troles_config.generic?}"
-        base.send(:attr_accessor, base.role_field) if base.troles_config.generic? # create troles accessor      
+        base.send :include, Troles::Api        
       end      
 
       # The storage to use

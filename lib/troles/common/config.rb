@@ -15,6 +15,10 @@ module Troles::Common
       end      
     end
 
+    def configure!
+      configure_role_field      
+    end
+
     def configure_role_field options = {}
       clazz.send(:attr_accessor, clazz.role_field) if generic? # create troles accessor      
     end       

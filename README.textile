@@ -393,7 +393,29 @@ Now there is also support for specifying config options directly via the macro:
 
 Here the ActiveRecord Config class has added an extra config property. 
 This property can then be used in order to setup the join model between _User_ and _Role_ models for the M-M _RefMany_ scenario. 
-Expanding the Config object this way as you see fit makes ORM configuration/customization much simpler!
+Expanding the Config object this way as you see fit makes ORM configuration/customization much simpler!   
+
+In order to make the configuration even sweeter, the troles_strategy will yield the Config so you can configure it in a block, and when done simply call _configure!_ 
+
+<pre>
+User.troles_strategy :bit_one do |config|
+  config.orm = :active_record
+  config.role_join_model = 'UserRole'
+  config.auto_load = false
+end.configure! 
+</pre>
+
+Or even:
+
+<pre>
+User.troles_strategy :bit_one do
+  orm = :active_record
+  role_join_model = 'UserRole'
+  auto_load = false
+end.configure! 
+</pre>
+
+Enjoy :)
 
 h2. License
 

@@ -13,12 +13,16 @@ puts "Troles macros enabled!"
 
 module Troles  
   module Macros
-    def troles_strategy strategy_name, options = {}
+    def troles_strategy strategy_name, options = {}, &block
       troles_macros.load_adapter options
 
       send :include, troles_macros.strategy_module(strategy_name, options)
 
       troles_macros.apply_strategy_options! self, options
+      
+      if block_given?
+        (block.arity == 1) ? yield(troles_config) : instance_eval(troles_config)          
+      end
     end     
 
     def troles_macros

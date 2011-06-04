@@ -6,7 +6,9 @@
 module Troles
   module Api
     autoload :Core,       'troles/api/core'
-    autoload :Cache,      'troles/api/cache'    
+    autoload :Config,     'troles/api/config'
+    autoload :Cache,      'troles/api/cache'
+            
     autoload :Event,      'troles/api/event'
     autoload :Read,       'troles/api/read'
     autoload :Store,      'troles/api/store'    

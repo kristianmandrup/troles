@@ -17,6 +17,7 @@ module Troles
       #
       def self.included(base)
         base.send :include, Troles::Api        
+        base.troles_config.configure_role_field        
       end      
 
       # The storage to use

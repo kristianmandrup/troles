@@ -8,6 +8,7 @@ module Trole
     autoload :Core,        'trole/api/core'
     autoload :Config,      'trole/api/config'
     autoload :Cache,       'trole/api/cache'
+    
     autoload :Event,       'trole/api/event'
     autoload :Read,        'trole/api/read'
     autoload :Write,       'trole/api/write'

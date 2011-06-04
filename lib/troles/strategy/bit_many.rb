@@ -13,8 +13,6 @@ module Troles
       def self.included(base)
         base.send :include, BaseMany
         base.send :include, InstanceMethods
-        # base.troles_config.generic = false        
-        base.troles_config.configure_role_field
       end      
 
       module InstanceMethods

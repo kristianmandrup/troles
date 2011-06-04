@@ -328,7 +328,11 @@ module Troles::Common
 Change to sth like this for Mongoid:
 <pre>
 module Trole
-  class Config
+  class Config < Troles::Common::Config  
+
+    def initialize clazz, options = {}
+      super
+    end
   
     # more likely, strategy should be part of configuration options directly when Config object is created!
     def configure_role_field options = {}  

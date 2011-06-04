@@ -3,8 +3,12 @@ module Troles::Common
     attr_accessor :role_model, :role_field, :generic, :clazz
     
     def initialize clazz, options = {}
-      # for each instance var set it
-      @clazz = clazz
+      @clazz = clazz 
+
+      # set instance var for each pait in options
+      options.each_pair do |key, value|
+        instance_variable_set("@#{key}", value) if self.respond_to?(:"#{key}")
+      end
     end
 
     def configure_role_field options = {}

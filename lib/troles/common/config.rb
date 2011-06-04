@@ -7,8 +7,7 @@ module Troles::Common
       @clazz = clazz
     end
 
-    def configure_role_field
-      puts "clazz: #{clazz}, rf: #{clazz.role_field}, :gen: #{generic?}"
+    def configure_role_field options = {}
       clazz.send(:attr_accessor, clazz.role_field) if generic? # create troles accessor      
     end       
         

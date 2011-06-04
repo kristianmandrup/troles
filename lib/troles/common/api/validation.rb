@@ -38,7 +38,7 @@ module Troles::Common::Api
 
     # @return [Array<Symbol>] the valid roles of the role subject
     def valid_roles
-      self.class.valid_roles
+      self.class.troles_config.valid_roles
     end
   end
 end

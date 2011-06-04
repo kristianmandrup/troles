@@ -21,11 +21,8 @@ module Troles
       troles_macros.set_options! strategy_name, options
       troles_macros.apply_strategy_options! self, options
       
-      if block_given?
-        (block.arity == 1) ? yield(troles_config) : instance_eval(troles_config)          
-      else   
-        troles_config
-      end
+      yield troles_config if block_given?
+      troles_config
     end     
 
     def troles_macros

@@ -1,6 +1,8 @@
 require 'trole_spec'
-User.troles_strategy :string_one
-User.valid_roles = [:user, :admin, :editor, :blogger]
+
+User.troles_strategy :string_one do |c|
+  c.valid_roles = [:user, :admin, :editor, :blogger]
+end.configure!
 
 module UserSetup
   def create_no_roles

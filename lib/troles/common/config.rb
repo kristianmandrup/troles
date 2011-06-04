@@ -1,6 +1,7 @@
 module Troles::Common
   class Config
-    attr_accessor :role_model, :role_field, :generic, :clazz, :singularity, :strategy, :valid_roles
+    attr_accessor :role_model, :role_field, :generic, :clazz, :singularity, :strategy 
+    #:valid_roles
     
     def initialize clazz, options = {}
       @clazz = clazz 
@@ -50,7 +51,14 @@ module Troles::Common
     end     
 
     def valid_roles= *roles
-      @valid_roles ||= roles.flatten.map{|r| r.to_s.alpha_numeric}.map(&:to_sym).uniq
+      vrs = roles.flatten.map{|r| r.to_s.alpha_numeric}.map(&:to_sym).uniq
+      raise ArgumentError, "The role names you want to be valid are not valid role names. Must be alphanumeric, was: #{roles.flatten}" if vrs.empty?
+      @valid_roles ||= vrs
+    end
+
+    def valid_roles
+      raise "No valid roles defined" if !@valid_roles || @valid_roles.empty?
+      @valid_roles      
     end
 
     def configure_role_field options = {}

@@ -27,22 +27,14 @@ module Troles::Common::Api
         
     module ClassMethods            
       
-      def role_model
-        troles_config.role_model
-      end
-
-      def role_model= name
-        troles_config.role_model= name
-      end
-      
       def valid_roles
         troles_config.valid_roles
       end
 
-      # TODO: make sure alphanumeric only
-      def valid_roles= *roles
-        troles_config.valid_roles = *roles
-      end
+      # # TODO: make sure alphanumeric only
+      # def valid_roles= *roles
+      #   troles_config.valid_roles = *roles
+      # end
 
       # If all role subjects using this strategy should have static (immutable) roles
       #

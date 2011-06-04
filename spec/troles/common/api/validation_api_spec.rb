@@ -37,9 +37,9 @@ shared_examples_for "Common Validation API" do
 
   context 'Class Methods' do
     # @return [Array<Symbol>] the valid roles of the role subject
-    describe '#valid_roles=' do
+    describe '#valid_roles' do
       it 'should set not valid roles again!' do                   
-        expect { user.class.valid_roles = :admin, :editor }.to_not change{ user.class.troles_config.instance_variable_get "@valid_roles" }
+        user.class.valid_roles.should include(:admin)
       end
     end
   end

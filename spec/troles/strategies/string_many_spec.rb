@@ -1,5 +1,8 @@
 require 'troles_spec'
-User.troles_strategy :string_many
+User.troles_strategy :string_many do |c|
+  c.valid_roles = [:user, :admin, :blogger, :editor]
+end.configure!
+
 User.valid_roles = [:user, :admin, :blogger, :editor]
 
 module UserSetup

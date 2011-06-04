@@ -54,12 +54,16 @@ module Troles::Common
 
     protected
 
+    def troles_config
+      role_subject.class.troles_config
+    end
+
     def role_field      
-      role_subject.class.troles_config.role_field
+      troles_config.role_field
     end
 
     def role_model
-      role_subject.class.role_model
+      troles_config.role_model
     end
 
     def role_list

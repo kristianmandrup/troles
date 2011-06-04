@@ -1,6 +1,7 @@
 require 'troles_spec'
-User.troles_strategy :ref_many
-User.valid_roles = [:user, :admin, :blogger, :editor]
+User.troles_strategy :ref_many do |c|
+  c.valid_roles = [:user, :admin, :blogger, :editor]
+end.configure!
 
 Config.add_roles [:user, :admin, :editor, :blogger]
 

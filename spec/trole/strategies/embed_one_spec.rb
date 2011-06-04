@@ -1,6 +1,10 @@
 require 'trole_spec'
-User.troles_strategy :embed_one
-User.valid_roles = [:user, :admin]
+
+User.troles_strategy :embed_one do |c|
+  c.valid_roles = [:user, :admin, :editor, :blogger]
+end.configure!
+
+Config.add_roles [:user, :admin, :editor, :blogger]
 
 module UserSetup
   def create_role name

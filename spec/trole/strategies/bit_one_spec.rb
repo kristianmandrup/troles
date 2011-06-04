@@ -1,6 +1,8 @@
 require 'trole_spec'
-User.troles_strategy :bit_one
-User.valid_roles = [:user, :admin]
+
+User.troles_strategy :bit_one do |c|
+  c.valid_roles = [:user, :admin]
+end.configure!
 
 module UserSetup
   def create_user

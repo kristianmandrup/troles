@@ -281,7 +281,7 @@ h3. Custom troles strategy
 
 To add a new strategy, create a special Strategy module that acts as the module included by the troles macro.
 Using standard naming convention it will be found and used by the _troles_strategy_ macro method :)  
-Configure the strategy to use your custom storage class. 
+Using naming conventions it will use a storage class of the form: _Troles::Storage::EncryptedStringMany_ in the example below (substitute Strategy for Storage). 
 
 <pre>
 module Troles::Strategy
@@ -291,15 +291,6 @@ module Troles::Strategy
     # @param [Class] the role subject class to  
     def self.included(base)
       base.send :include, BaseMany
-      base.send :include, InstanceMethods
-    end
-
-    module InstanceMethods
-      # The storage strategy class
-      # @return [Class] a storage subclass
-      def storage 
-        Troles::Storage::EncryptedStringMany
-      end
     end
   end
 end  

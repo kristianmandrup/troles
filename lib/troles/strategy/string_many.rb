@@ -9,15 +9,6 @@ module Troles::Strategy
     # @param [Class] the role subject class to  
     def self.included(base)
       base.send :include, BaseMany
-      base.send :include, InstanceMethods      
-    end
-
-    module InstanceMethods
-      # The storage strategy class
-      # @return [Class] a storage subclass
-      def storage 
-        Troles::Storage::StringMany
-      end      
     end
   end
 end

@@ -20,6 +20,7 @@ module Troles
 
       troles_macros.set_options! strategy_name, options
       troles_macros.apply_strategy_options! self, options
+      troles_macros.define_hooks self, options
       
       yield troles_config if block_given?
       troles_config
@@ -35,9 +36,9 @@ module Troles
         options[:singularity] = extract_singularity(options)
       end      
       
-      def strategy_module strategy_name, options = {}
-        ns = full_namespace(strategy_name, options)
+      def strategy_module strategy_name, options = {}        
         begin
+          ns = full_namespace(strategy_name, options)
           "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
         rescue
           # use generic if no ORM specific strategy found!
@@ -77,7 +78,26 @@ module Troles
         extract_macros(options).each{|m| apply_macro m}
       end      
 
+      def define_hooks clazz, options = {}
+        storage_class = get_storage_class(options)
+        clazz.send :define_method, :storage do 
+          @storage ||= storage_class
+        end
+      end
+
       protected
+
+      def get_storage_class options = {}
+        strategy = options[:strategy]
+        begin
+          ns = full_namespace(strategy, options)
+          "#{ns}::Storage::#{strategy.to_s.camelize}".constantize
+        rescue
+          # use generic if no ORM specific strategy found!
+          ns = namespace(strategy, options)
+          "#{ns}::Storage::#{strategy.to_s.camelize}".constantize
+        end        
+      end
 
       def auto_load? options = {}
         (options[:auto_load] && options[:orm]) || false

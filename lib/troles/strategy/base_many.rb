@@ -16,8 +16,7 @@ module Troles
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
       #
       def self.included(base)
-        base.send :include, Troles::Api        
-        base.troles_config.configure_role_field        
+        base.send :include, Troles::Api
       end      
 
       # The storage to use

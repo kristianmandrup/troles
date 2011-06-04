@@ -13,7 +13,7 @@ module Trole::Api
         
     module ClassMethods                        
       def role_field
-        :trole
+        troles_config.role_field
       end      
     end
   end

@@ -35,13 +35,13 @@ module Troles::Common
     # the name of the role field
     # @return [Symbol] the name
     def ds_field_name
-      role_subject.class.role_field
+      role_field
     end
 
     # the current value of the role field
     # @return [Object] the value
     def ds_field_value
-      role_subject.send(role_subject.class.role_field)
+      role_subject.send(ds_field_name)
     end      
 
     # Attempts to persist the role field changes
@@ -53,6 +53,10 @@ module Troles::Common
     end 
 
     protected
+
+    def role_field      
+      role_subject.class.troles_config.role_field
+    end
 
     def role_model
       role_subject.class.role_model

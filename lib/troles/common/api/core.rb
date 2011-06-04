@@ -26,27 +26,28 @@ module Troles::Common::Api
     end
         
     module ClassMethods            
-      attr_accessor :valid_roles
-      attr_accessor :role_model
-
-      # Sets the role model to use
-      # allows different role subject classes (fx User Accounts) to have different role schemas
-      # @param [Class] the model class
-      def role_model= model_class
-        @role_model = model_class and return if model_class.kind_of?(Class)
-        raise "The role model must be a Class, was: #{model_class}"
+      
+      def role_model
+        troles_config.role_model
       end
 
-      # Gets the role model to be used
-      # see (#role_model=)
-      # @return [Class] the model class (defaults to Role)
-      def role_model
-        return @role_model if @role_model && defined? @role_model
-        return Role if defined? Role
-        raise "Troles could not figure out what Role model to use, please define a class Role or set the #role_model class method to point to a model of your choice!"
+      def role_model= name
+        troles_config.role_model= name
+      end
+      
+      def valid_roles
+        troles_config.valid_roles
+      end
+
+      # TODO: make sure alphanumeric only
+      def valid_roles= *roles
+        troles_config.valid_roles = *roles
       end
 
       # If all role subjects using this strategy should have static (immutable) roles
+      #
+      # @note Should also proxy Config object?      
+      #
       # @return [true, false] if role subjects have static roles or not (default: false)
       def static_roles?
         false

@@ -18,7 +18,6 @@ module Trole::Strategy
     #
     def self.included(base)
       base.send :include, Trole::Api
-      base.send(:attr_accessor, base.role_field) if base.troles_config.generic? # create troles accessor      
     end      
 
     # The storage to use

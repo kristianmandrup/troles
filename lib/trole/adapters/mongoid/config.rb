@@ -7,7 +7,7 @@ module Trole
     
     # more likely, strategy should be part of configuration options directly when Config object is created!
     def configure_role_field options = {}  
-      strategy = options[:strategy] # || strategy TODO
+      strategy = options[:strategy] || strategy
       configure_field strategy
       configure_relation strategy
     end         

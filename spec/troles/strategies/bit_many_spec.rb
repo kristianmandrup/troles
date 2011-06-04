@@ -1,6 +1,5 @@
 require 'troles_spec'
 User.troles_strategy :bit_many
-puts User.static_roles?
 User.valid_roles = [:user, :admin, :blogger, :editor]
 
 module UserSetup

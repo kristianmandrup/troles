@@ -18,10 +18,13 @@ module Troles
 
       send :include, troles_macros.strategy_module(strategy_name, options)
 
+      troles_macros.set_options! strategy_name, options
       troles_macros.apply_strategy_options! self, options
       
       if block_given?
         (block.arity == 1) ? yield(troles_config) : instance_eval(troles_config)          
+      else   
+        troles_config
       end
     end     
 
@@ -30,6 +33,11 @@ module Troles
     end
 
     module ClassMethods
+      def set_options! strategy_name, options = {}
+        options[:strategy] = strategy_name
+        options[:singularity] = extract_singularity(options)
+      end      
+      
       def strategy_module strategy_name, options = {}
         ns = namespace(strategy_name, options)
         "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
@@ -70,6 +78,10 @@ module Troles
       
       def extract_macros options = {}
         [:static_role].select {|o| options[o]}
+      end
+
+      def extract_singularity options = {}
+        (options[:strategy].to_s =~ /_many$/) ? :many : :single
       end
     end
     extend ClassMethods

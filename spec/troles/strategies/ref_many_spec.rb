@@ -4,8 +4,6 @@ User.valid_roles = [:user, :admin, :blogger, :editor]
 
 Config.add_roles [:user, :admin, :editor, :blogger]
 
-puts "Roles: #{Role.all.inspect}"
-
 module UserSetup
   def find_role name
     Role.where :name => name.to_sym

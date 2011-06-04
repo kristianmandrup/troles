@@ -29,7 +29,7 @@ module Troles::Common::Api
     # Removes a set of new roles to the roles of the subject
     # (see #add_roles)
     def remove_roles *the_roles
-      store.set_roles (roles - the_roles.to_symbols_uniq)
+      store.set_roles (role_list - the_roles.to_symbols_uniq)
     end  
 
     # Sets new roles for the subject

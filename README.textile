@@ -416,13 +416,17 @@ You can also specify some of the options relevant to model configuration on the 
 </pre> 
 
 The _troles_strategy_ macro will yield the Config object if you pass it a block. 
-This allows you to configure your stategy with troles inside the block and then call _configure!_ on end of the block
+This allows you to configure your stategy with troles inside the block and then call _configure!_ on end of the block.
+Using all this in combination, you could configure it all doing sth. like this:
 
 <pre>
-User.troles_strategy :bit_one do |c|
-  c.orm = :active_record
+User.troles_strategy :bit_one, :orm => :active_record do |c|
   c.auto_load = false
   c.valid_roles = [:troll, :warrior]
+
+  c.static_roles_for_class = false # note: false by default
+  c.static_roles_for_user = false  # note: false by default
+
 end.configure! :role_model => 'Troll', :join_model => 'UserTroll'
 </pre>
 

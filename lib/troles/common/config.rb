@@ -1,7 +1,9 @@
 module Troles::Common
   class Config
-    attr_accessor :role_model, :join_model, :role_field, :generic, :clazz, :singularity, :strategy, :orm 
-    #:valid_roles
+    attr_accessor :join_model, :role_field, :clazz, :strategy, :orm 
+
+    attr_reader   :singularity
+    attr_writer   :generic
     
     def initialize clazz, options = {}
       @clazz = clazz 
@@ -14,6 +16,29 @@ module Troles::Common
       options.each_pair do |key, value|
         instance_variable_set("@#{key}", value) if self.respond_to?(:"#{key}")
       end      
+    end
+
+    def singularity= value
+      raise ArgumentError, "Must be :single or :many" if ![:single, :many].include?(value)      
+      @singularity ||= value
+    end
+
+    def static_roles_for_user= value
+      raise ArgumentError, "Must be a boolean" if !boolean?(value)
+      @static_roles_for_user = value      
+    end
+
+    def static_roles_for_class= value
+      raise ArgumentError, "Must be a boolean" if !boolean?(value)
+      @static_roles_for_class = value      
+    end
+
+    def static_roles_for_class?
+      @static_roles_for_class || false
+    end
+
+    def static_roles_for_user?
+      @static_roles_for_user || false
     end
 
     def configure! options = {}
@@ -84,6 +109,10 @@ module Troles::Common
     end
 
     protected
+    
+    def boolean? value
+      [true, false].include? value
+    end
 
     # TODO: Needs extraction into helper module!
 

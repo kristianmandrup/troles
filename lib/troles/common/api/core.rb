@@ -21,8 +21,11 @@ module Troles::Common::Api
     # If this role subject instance should have static (immutable) roles
     # @return [true, false] defaults to false so a role subject is allowed to change roles 
     def static_roles?
-      return self.class.static_roles? if self.class.respond_to? :static_roles?
-      false
+      troles_config.static_roles_for_user?
+    end
+
+    def troles_config
+      self.class.troles_config      
     end
         
     module ClassMethods            
@@ -42,7 +45,7 @@ module Troles::Common::Api
       #
       # @return [true, false] if role subjects have static roles or not (default: false)
       def static_roles?
-        false
+        troles_config.static_roles_for_class?
       end           
     end
   end

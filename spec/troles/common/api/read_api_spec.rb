@@ -1,4 +1,5 @@
 shared_examples_for "Common Read API" do
+  include UserSetup
   specify { user.has_role?(:user).should be_true }
   specify { user.is_role?(:user).should be_true }
         
@@ -10,6 +11,12 @@ shared_examples_for "Common Read API" do
 
   subject { user }
     its(:role_list)     { should include(:user) }
+
+  describe "user without trole_field initialized" do
+    it "should get empty role_list" do
+      user_without_troles_field.role_list.should_not be_nil
+    end
+  end
 
   it 'should cache the role list' do
     # use mock expectation : don't expect strategy to be called!
@@ -30,4 +37,5 @@ shared_examples_for "Common Read API" do
     expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
     user.role_name.should == :editor
   end
+
 end

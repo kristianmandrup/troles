@@ -23,7 +23,7 @@ module Troles::Common::Api
     # @param  [Array<Symbol>] list of roles to add
     # @return [true, false, Error] true if ok, false if static or invalid, Error on some error
     def add_roles *new_roles      
-      store.set_roles (roles | new_roles.to_symbols_uniq) # Set Union (joined set)
+      store.set_roles (roles.list | new_roles.to_symbols_uniq) # Set Union (joined set)
     end  
 
     # Removes a set of new roles to the roles of the subject

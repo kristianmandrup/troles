@@ -13,7 +13,7 @@ module Troles::Storage
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
-      return [] if ds_field_value.empty?
+      return [] if !ds_field_value || ds_field_value.empty?
       ds_field_value.flatten.map do |role| 
         role.name.to_sym 
       end

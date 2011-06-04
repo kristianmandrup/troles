@@ -26,6 +26,11 @@ module UserSetup
   def create_complex_user
     Factory.create :user, :name => 'user and admin', :troles => [ find_role(:user), find_role(:admin) ]
   end
+  
+  def create_user_without_troles_field
+    Factory.create :user, :name => "no roles"
+  end
+
 end
 
 describe Troles::Strategy::RefMany do

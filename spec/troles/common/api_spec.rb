@@ -13,13 +13,14 @@ shared_examples_for "Common API" do
     let(:admin_user)    { create_admin_user  }
   end  
 
+  it_behaves_like "Common Read API" do
+    let(:user_without_troles_field) { create_user_without_troles_field }
+    let(:no_roles_user) { create_no_roles_user  }
+    let(:user)          { create_user  }
+    let(:admin_user)    { create_admin_user  }
+  end  
+
   # it_behaves_like "Common Event API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
-  # end  
-  # 
-  # it_behaves_like "Common Read API" do
   #   let(:no_roles_user) { create_no_roles_user  }
   #   let(:user)          { create_user  }
   #   let(:admin_user)    { create_admin_user  }
@@ -31,11 +32,12 @@ shared_examples_for "Common API" do
   #   let(:admin_user)    { create_admin_user  }
   # end  
   # 
-  # it_behaves_like "Common Write API" do
-  #   let(:no_roles_user) { create_no_roles_user  }
-  #   let(:user)          { create_user  }
-  #   let(:admin_user)    { create_admin_user  }
-  # end  
+  
+  it_behaves_like "Common Write API" do
+    let(:no_roles_user) { create_no_roles_user  }
+    let(:user)          { create_user  }
+    let(:admin_user)    { create_admin_user  }
+  end  
   # 
   # it_behaves_like "Common Operations API" do
   #   let(:no_roles_user) { create_no_roles_user  }

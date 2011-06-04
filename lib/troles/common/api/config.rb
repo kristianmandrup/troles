@@ -1,5 +1,3 @@
-puts "common api"
-
 module Troles::Common::Api
   module Config
     module ClassMethods

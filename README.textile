@@ -327,16 +327,35 @@ module Troles::Common
 
 Change to sth like this for Mongoid:
 <pre>
-  def configure_role_field options = {}
-    type = case options[:type]
-    when :bit
-      Boolean
-    when :string
-     String
-    ... 
+module Trole
+  class Config
+  
+    # more likely, strategy should be part of configuration options directly when Config object is created!
+    def configure_role_field options = {}  
+      strategy = options[:strategy] # || strategy TODO
+      configure_field strategy
+      configure_relation strategy
+    end         
+
+    def configure_relation strategy
+      case strategy
+      when :ref_one
+        clazz.send(:has_one, role_model_key, :class_name => role_model_class_name)
+        role_model.send(:belongs_to, clazz_key, :class_name => clazz_name)
+      when :embed_one
+        clazz.send(:embeds_one, role_model_key, :class_name => role_model_class_name)      
+      end
     end
-    clazz.send(:field, clazz.role_field, type)      
-  end         
+    
+    def configure_field strategy
+      type = case strategy
+      when :bit_one
+        Boolean
+      when :string_one
+       String
+      end
+      clazz.send(:field, role_field, type) if type      
+    end
 </pre>
 
 Then call it like this from the strategy module: @configure_role_field(:type => :string)@ 

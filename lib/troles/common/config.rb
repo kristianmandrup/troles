@@ -14,5 +14,27 @@ module Troles::Common
     def generic?
       @generic.nil? ? true : @generic
     end
+
+    protected
+
+    def clazz_name
+      clazz.to_s
+    end
+
+    def clazz_key
+      make_key clazz_name
+    end
+
+    def role_model_class_name
+      role_model.to_s
+    end
+    
+    def role_model_key
+      make_key role_model_class_name
+    end
+    
+    def make_key name
+      name.gsub(/::/, '__').underscore      
+    end
   end
 end

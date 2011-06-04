@@ -14,7 +14,10 @@ puts "Troles macros enabled!"
 module Troles  
   module Macros
     def troles_strategy strategy_name, options = {}
+      troles_macros.load_adapter options
+
       send :include, troles_macros.strategy_module(strategy_name, options)
+
       troles_macros.apply_strategy_options! self, options
     end     
 
@@ -25,7 +28,7 @@ module Troles
     module ClassMethods
       def strategy_module strategy_name, options = {}
         ns = namespace(strategy_name, options)
-        "#{}::Strategy::#{strategy_name.to_s.camelize}".constantize
+        "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
       end  
 
       def namespace strategy_name, options = {}
@@ -34,11 +37,30 @@ module Troles
         first << "::#{orm.camelize}" if options[:orm]
         first
       end
+
+      def load_adapter options = {}
+        return if !auto_load?(options)
+        orm = options[:orm]
+        return if !orm || orm.empty?
+
+        path = "troles/adapters/#{orm.to_s.underscore}"
+        begin
+          require path
+        rescue
+          raise "Adapter for :#{orm} could not be found at: #{path}"
+        end
+      end
       
       def apply_strategy_options! clazz, options
         StrategyOptions.new(clazz)
         extract_macros(options).each{|m| apply_macro m}
       end      
+
+      protected
+
+      def auto_load? options = {}
+        (options[:auto_load] && options[:orm]) || false
+      end
       
       def extract_macros options = {}
         [:static_role].select {|o| options[o]}

@@ -377,6 +377,15 @@ To use your adapter, simply pass an extra option to the troles_strategy macro:
 
 This even allows you to use different ORM role strategies/storages for different user accounts simultaneously!!!
 
+Using the :auto_load option will 'auto load' (i.e require) the orm adapter from the built-in catalog of adapters that come with troles.
+You can include a specific custom (or 3rd party) adapter manually. In the future it will be possible to configure troles with adapters 
+and specify how/where to load them from as part of this configuration!
+
+<pre>
+  User.troles_strategy :bit_one, :orm => :mongoid, :auto_load => true
+</pre> 
+
+
 h2. License
 
 This project rocks and uses MIT-LICENSE.

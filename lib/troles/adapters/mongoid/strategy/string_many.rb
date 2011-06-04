@@ -10,6 +10,7 @@ module Troles::Mongoid::Strategy
     def self.included(base)
       base.send :include, BaseMany
       base.send :include, InstanceMethods      
+      configure_role_field(:strategy => :string_one)
     end
 
     module InstanceMethods

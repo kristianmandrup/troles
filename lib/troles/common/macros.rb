@@ -14,7 +14,7 @@ puts "Troles macros enabled!"
 module Troles  
   module Macros
     def troles_strategy strategy_name, options = {}
-      send :include, troles_macros.strategy_module(strategy_name)
+      send :include, troles_macros.strategy_module(strategy_name, options)
       troles_macros.apply_strategy_options! self, options
     end     
 
@@ -23,12 +23,16 @@ module Troles
     end
 
     module ClassMethods
-      def strategy_module strategy_name
-        "#{namespace strategy_name}::Strategy::#{strategy_name.to_s.camelize}".constantize
+      def strategy_module strategy_name, options = {}
+        ns = namespace(strategy_name, options)
+        "#{}::Strategy::#{strategy_name.to_s.camelize}".constantize
       end  
 
-      def namespace strategy_name
-        (strategy_name =~ /_many$/) ? 'Troles' : 'Trole'      
+      def namespace strategy_name, options = {}
+        first = (strategy_name =~ /_many$/) ? 'Troles' : 'Trole'      
+        orm = options[:orm]
+        first << "::#{orm.camelize}" if options[:orm]
+        first
       end
       
       def apply_strategy_options! clazz, options

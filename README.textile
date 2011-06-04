@@ -302,32 +302,26 @@ module Troles::Strategy
       end
     end
   end
-end
-  
+end  
 </pre>
 
-Note: By default if using/overriding the Generic strategy, the #generic? config attribute is set to true, which has the effect of adding an attr_accessor _:trole_ or _:troles_ to the role subject. To avoid this when implementing you own, non-generic role strategy set, please set this config:
-
-@User.troles_config.generic = false@   
+Note: By default if using/overriding the Generic strategy, the #generic? config attribute is set to true, which has the effect of adding an attr_accessor _:trole_ or _:troles_ to the role subject. To avoid this when implementing you own, non-generic role strategy set, set up your Config constructor to set generic to false:
 
 <pre>
-module Troles::Common
-  class Config
-
-    # override this in your custom adapter to fx use a special data store macro field
-    # such as #field for Mongoid or #property for Data Store or none for ActiveRecord
-    def configure_role_field options = {}
-      clazz.send(:attr_accessor, clazz.role_field) if generic? # create troles accessor      
-    end       
-      
-    def generic?
-      @generic.nil? ? true : @generic
-    end  
+module Troles::Mongoid::Api
+  module Config
+    def troles_config
+      @troles_config ||= Troles::Mongoid::Config.new self, :generic => false
+    end      
+  end  
+end  
 </pre>
 
-Change to sth like this for Mongoid:
+See _Troles::Common::Config_ for more details.
+
+An adapter requires a custom implementation of the Config class. It could look sth. like this for _Mongoid_:
 <pre>
-module Trole
+module Trole::Mongoid
   class Config < Troles::Common::Config  
 
     def initialize clazz, options = {}
@@ -362,21 +356,26 @@ module Trole
     end
 </pre>
 
-Then call it like this from the strategy module: @configure_role_field(:type => :string)@ 
-
-Note: This config patternt needs more consideration and is bound to change and be improved further!
+Then call it like this from the strategy module: @configure_role_field(:strategy => :string_one)@ 
 
 <pre>
-  module EncryptedStringMany
-
-    # What to add to the role subject class when this role strategy is included
-    # @param [Class] the role subject class to  
-    def self.included(base)
-      base.send :include, BaseMany
-      base.send :include, InstanceMethods
-      base.troles_config.configure_role_field # configure use of generic attr_accessor by default       
-    end  
+  module Troles::Mongoid::Strategy
+    module StringMany
+      def self.included(base)
+        base.send :include, BaseMany
+        base.send :include, InstanceMethods      
+        configure_role_field(:strategy => :string_one)
+      end  
 </pre>
+
+Note: This config pattern needs more consideration and is bound to change and be improved!
+To use your adapter, simply pass an extra option to the troles_strategy macro:
+
+<pre>
+  User.troles_strategy :bit_one, :orm => :mongoid
+</pre> 
+
+This even allows you to use different ORM role strategies/storages for different user accounts simultaneously!!!
 
 h2. License
 

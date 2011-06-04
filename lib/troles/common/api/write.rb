@@ -36,7 +36,9 @@ module Troles::Common::Api
     # @param [Array<Symbol>] list of role names
     # @return [true, false, Error] true if set ok, false if any roles were invalid, Error on some error 
     def set_roles *roles
-      store.set_roles(make_valid_roles *roles) 
+      roles_to_set = make_valid_roles(*roles).flat_uniq
+      return false if !roles_to_set || roles_to_set.empty?
+      store.set_roles(roles_to_set) 
     end  
 
     # Clears all the roles of the subject

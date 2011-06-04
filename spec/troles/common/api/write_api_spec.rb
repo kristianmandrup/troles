@@ -8,12 +8,13 @@ shared_examples_for "Common Write API" do
 
   it 'should invalidate the role list after roles are changed' do
     # expect roles changed event
-    lambda { user.set_roles(:blip) }.should raise_error # invalid role
-    user.role_name.should == :user # invalid role admin
 
-    user.set_role :editor # editor should be a valid role
+    # lambda { user.set_roles(:blip) }.should raise_error # invalid role
+    user.set_roles(:blip).should be_false
+
+    user.set_roles :editor # editor should be a valid role
     expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
-    user.role_name.should == :editor
+    user.has_role?(:editor).should be_true
   end
 
   describe '#set_roles' do

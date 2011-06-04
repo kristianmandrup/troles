@@ -10,5 +10,13 @@ shared_examples_for "Trole Write API" do
       expect { user.add_roles(:admin) }.to change{ user.role_value }
       user.has_role?(:admin).should be_true
     end
+    
+    it 'should invalidate the role list after roles are changed' do
+      # expect roles changed event
+      lambda { user.set_roles(:blip) }.should raise_error # invalid role
+      user.set_role :editor # editor should be a valid role
+      expect { user.role_list }.to change{user.instance_variable_get "@role_list"}
+      user.role_name.should == :editor
+    end    
   end  
 end

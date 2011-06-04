@@ -19,7 +19,7 @@ module Troles::Storage
     # saves the role for the user in the data store
     # @param [Array<Symbol>] roles list
     def set_roles *roles
-      set_ds_field roles.flatten.map(:to_s).join(',')
+      set_ds_field roles.flatten.map(&:to_s).join(',')
     end  
 
     # clears the role of the user in the data store

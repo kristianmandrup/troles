@@ -29,9 +29,9 @@ shared_examples_for "Common API" do
     define_users
   end  
 
-  # it_behaves_like "Common Write API" do
-  #   define_users
-  # end  
+  it_behaves_like "Common Write API" do
+    define_users
+  end  
   # 
   # it_behaves_like "Common Operations API" do
   #   define_users

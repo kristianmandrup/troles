@@ -23,9 +23,9 @@ module Trole::Storage
       set_ds_field Role.create :name => role
     end  
 
-    # sets the role to its default state  
-    def set_default_role!
+    # Clears the role state of the role subject 
+    def clear!
       set_ds_field []
-    end          
+    end
   end      
 end

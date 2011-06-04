@@ -12,7 +12,7 @@ module Troles::Common::Api
     # @return Array<Symbol> Set of role names
     def role_list        
       @role_list ||= begin
-        Set.new store.display_roles
+        store.display_roles.flatten
       end
     end
         
@@ -32,13 +32,13 @@ module Troles::Common::Api
     # @param [Array<Symbol>]
     # @return [true, false]
     def has_roles? *roles
-      (roles.to_symbols - role_list.to_a).empty?
+      (roles.to_symbols - role_list).empty?
     end
 
     # Checks if the role subject has any of the listed roles
     # (see #has_roles?)
     def has_any_role? *roles
-      !(role_list.to_a & roles.to_symbols).empty?
+      !(role_list & roles.to_symbols).empty?
     end    
   end
 end

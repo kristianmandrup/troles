@@ -16,8 +16,7 @@ module Trole::Storage
     # @return [Array<Symbol>] roles list
     def display_roles
       !ds_field_value.empty? ? [ds_field_value.flatten.first.name.to_sym] : []
-    end
-    
+    end    
 
     # saves the role of the role subject in the data store
     # @param [Symbol] the role name
@@ -25,9 +24,9 @@ module Trole::Storage
       set_ds_field role_model.where(:name => role).first
     end  
 
-    # sets the role to its default state
-    def set_default_role!
+    # Clears the role state of the role subject 
+    def clear!
       set_ds_field nil
-    end  
+    end
   end
 end

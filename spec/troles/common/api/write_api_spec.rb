@@ -8,7 +8,7 @@ shared_examples_for "Common Write API" do
 
   it 'should invalidate the role list after roles are changed' do
     # expect roles changed event
-    user.set_roles :blip # invalid role
+    lambda { user.set_roles(:blip) }.should raise_error # invalid role
     user.role_name.should == :user # invalid role admin
 
     user.set_role :editor # editor should be a valid role
@@ -23,18 +23,12 @@ shared_examples_for "Common Write API" do
       user.has_role?(:user).should be_false
     end
   end
-
-  describe '#add_roles' do
-    it "should be that after adding :admin role, he has that role" do
-      expect { user.add_roles(:admin) }.to change{ user.role_value }
-      user.has_role?(:admin).should be_true
-    end
-  end
-
-  describe '#remove_roles' do
-    it "should remove :user role" do
-      expect { user.remove_roles(:user) }.to change{ user.role_value }                   
-      user.has_role?(:user).should be_false
-    end           
-  end
+  
+  # 
+  # describe '#remove_roles' do
+  #   it "should remove :user role" do
+  #     expect { user.remove_roles(:user) }.to change{ user.role_value }                   
+  #     user.has_role?(:user).should be_false
+  #   end           
+  # end
 end

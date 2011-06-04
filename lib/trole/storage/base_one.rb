@@ -29,7 +29,18 @@ module Trole::Storage
     end                 
     
     def role_model
-      sole_subject.class.role_model
+      role_subject.class.role_model
     end
+
+    # saves the role for the user in the data store
+    def set_roles *roles
+      raise ArgumentError, "A single role strategy can only allow setting a single role, was: #{roles}" if (roles.size > 1)
+      set_role roles.flat_uniq.first
+    end  
+    
+    # sets the role to its default state    
+    def set_default_role!
+      clear!
+    end    
   end        
 end

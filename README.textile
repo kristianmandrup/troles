@@ -99,11 +99,11 @@ Example:
   require 'troles/macros'
   
   class UserAccount
-    troles_strategy :string_many
+    troles_strategy(:string_many).configure!
   end
 
   class AdminAccount
-    troles_strategy :bit_one, :static => true
+    troles_strategy(:bit_one, :static => true).configure!
   end  
 </pre>
 
@@ -185,8 +185,8 @@ Example custom SSA - encrypted comma seperated string for multiple roles:
 
 You must implement the following methods:
 - #display_roles (returns symbol list of roles)  
-- #set_role (for Single role strategies only)
 - #clear! (clear the role)
+- #set_roles (set the roles in the datastore)
 
 <pre>
 module Trole::Storage
@@ -196,7 +196,7 @@ module Trole::Storage
     end
 
     def display_roles
-      unencrypted_value.split(',')
+      decrypted_value.split(',')
     end
 
     # saves the role of the role subject in the data store
@@ -212,8 +212,8 @@ module Trole::Storage
 
     protected
 
-    def unencrypted_value
-      ds_field_value.unencrypt!
+    def decrypted_value
+      ds_field_value.decrypt!
     end
 
     def set_encrypted_value value
@@ -231,7 +231,7 @@ For Active Record there is no need for change, as an AR Role model implements th
 module Troles::Storage
   class BaseMany < Troles::Common::Storage
     def find_roles *roles
-      role_model_.where(:name => roles)
+      role_model.where(:name => roles.flatten)
     end  
   ...
 end
@@ -248,7 +248,7 @@ module Troles::MongoidStorage
   class RefMany < Troles::Storage::BaseMany
 
     def find_roles *roles
-      super.all
+      super(roles).all
     end
   ...  
 </pre>
@@ -308,14 +308,28 @@ end
 Note: By default if using/overriding the Generic strategy, the #generic? config attribute is set to true, which has the effect of adding an attr_accessor _:trole_ or _:troles_ to the role subject. To avoid this when implementing you own, non-generic role strategy set, set up your Config constructor to set generic to false:
 
 <pre>
-module Troles::Mongoid::Api
-  module Config
-    def troles_config
-      @troles_config ||= Troles::Mongoid::Config.new self, :generic => false
-    end      
-  end  
-end  
+  module Troles::Mongoid
+    module Strategy    
+      module BaseMany
+        # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
+        #
+        def self.included(base)
+          base.send :include, Troles::Strategy::BaseMany        
+          base.extend Config         
+        end
+
+        module Config
+          def troles_config
+            @troles_config ||= Trole::Mongoid::Config.new self, :generic => :false
+          end
+        end
+      end
+    end
+  end
 </pre>
+
+As an alternative to setting the generic to false via the Config initializer, try this: 
+Define a method #generic? in your custom Config object which returns false always! (see example below)
 
 See _Troles::Common::Config_ for more details.
 
@@ -327,15 +341,13 @@ module Trole::Mongoid
     def initialize clazz, options = {}
       super
     end
-  
-    # more likely, strategy should be part of configuration options directly when Config object is created!
-    def configure_role_field options = {}  
-      strategy = options[:strategy] # || strategy TODO
-      configure_field strategy
-      configure_relation strategy
-    end         
 
-    def configure_relation strategy
+    # This is NOT a generic strategy!
+    def generic?
+      false
+    end
+  
+    def configure_relation
       case strategy
       when :ref_one
         clazz.send(:has_one, role_model_key, :class_name => role_model_class_name)
@@ -345,34 +357,52 @@ module Trole::Mongoid
       end
     end
     
-    def configure_field strategy
+    def configure_field
       type = case strategy
       when :bit_one
         Boolean
       when :string_one
-       String
+        String
       end
       clazz.send(:field, role_field, type) if type      
     end
-</pre>
+</pre>                     
 
-Then call it like this from the strategy module: @configure_role_field(:strategy => :string_one)@ 
+As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships!
+
+Configuring for Many roles strategies:
 
 <pre>
-  module Troles::Mongoid::Strategy
-    module StringMany
-      def self.included(base)
-        base.send :include, BaseMany
-        base.send :include, InstanceMethods      
-        configure_role_field(:strategy => :string_one)
-      end  
-</pre>
+module Troles::Mongoid
+  class Config < Troles::Common::Config  
 
-Note: This config pattern needs more consideration and is bound to change and be improved!
+    def initialize clazz, options = {}
+      super
+    end
+  
+    def configure_relation
+      case strategy
+        ...
+      end
+    end
+    
+    def configure_field
+      type = case strategy
+      when :bit_many
+        Integer
+      when :string_many
+        String
+      end
+      clazz.send(:field, role_field, type) if type      
+    end
+</pre>  
+
+Very easy!
+
 To use your adapter, simply pass an extra option to the troles_strategy macro:
 
 <pre>
-  User.troles_strategy :bit_one, :orm => :mongoid
+  User.troles_strategy(:bit_one, :orm => :mongoid).configure!
 </pre> 
 
 This even allows you to use different ORM role strategies/storages for different user accounts simultaneously!!!
@@ -382,36 +412,23 @@ You can include a specific custom (or 3rd party) adapter manually. In the future
 and specify how/where to load them from as part of this configuration!
 
 <pre>
-  User.troles_strategy :bit_one, :orm => :mongoid, :auto_load => true
+  User.troles_strategy(:bit_one, :orm => :mongoid, :auto_load => true).configure!
 </pre> 
 
-Now there is also support for specifying config options directly via the macro:
 
-<pre>
-  User.troles_strategy :bit_one, :orm => :active_record, :auto_load => true, :role_join_model => 'UserRole'
-</pre> 
+In order to make the configuration even sweeter, the troles_strategy will yield the Config so you can configure it in a block, and when done simply call _configure!_
 
 Here the ActiveRecord Config class has added an extra config property. 
 This property can then be used in order to setup the join model between _User_ and _Role_ models for the M-M _RefMany_ scenario. 
 Expanding the Config object this way as you see fit makes ORM configuration/customization much simpler!   
 
-In order to make the configuration even sweeter, the troles_strategy will yield the Config so you can configure it in a block, and when done simply call _configure!_ 
-
 <pre>
-User.troles_strategy :bit_one do |config|
-  config.orm = :active_record
-  config.role_join_model = 'UserRole'
-  config.auto_load = false
-end.configure! 
-</pre>
-
-Or even:
-
-<pre>
-User.troles_strategy :bit_one do
-  orm = :active_record
-  role_join_model = 'UserRole'
-  auto_load = false
+User.troles_strategy :bit_one do |c|
+  c.orm = :active_record
+  c.role_model = 'Troll'
+  c.role_join_model = 'UserTroll'
+  c.auto_load = false
+  c.valid_roles = [:troll, :warrior]
 end.configure! 
 </pre>
 

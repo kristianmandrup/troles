@@ -1,0 +1,4 @@
+h1. Design Notes for Active Record adapter
+
+The generic strategies and storages should expect a basic Active Model interface for the models, so no need to redefine these for Active Record.
+Only the embed strategy has to be handles specifically, since Relation DBs don't naturally support the concept of embedding.

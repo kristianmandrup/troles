@@ -20,6 +20,19 @@ module Troles::Common
       configure_role_field      
     end
 
+    def configure_role_field
+      configure_field
+      configure_relation
+    end         
+
+    # Adapter should customize this as needed 
+    def configure_field
+    end
+
+    # Adapter should customize this as needed 
+    def configure_relation
+    end
+
     # Sets the role model to use
     # allows different role subject classes (fx User Accounts) to have different role schemas
     # @param [Class] the model class

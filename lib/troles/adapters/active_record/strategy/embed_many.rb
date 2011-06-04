@@ -2,8 +2,8 @@
 #
 # Many roles strategy to operate on role as a comma seperated String
 #
-module Troles::Mongoid::Strategy
-  module StringMany
+module Troles::ActiveRecord::Strategy
+  module EmbedMany
 
     # What to add to the role subject class when this role strategy is included
     # @param [Class] the role subject class to  
@@ -16,7 +16,7 @@ module Troles::Mongoid::Strategy
       # The storage strategy class
       # @return [Class] a storage subclass
       def storage 
-        Troles::Mongoid::Storage::StringMany
+        Troles::ActiveRecord::Storage::EmbedMany
       end      
     end
   end

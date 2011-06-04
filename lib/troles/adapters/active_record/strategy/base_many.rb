@@ -1,4 +1,4 @@
-module Troles::Mongoid
+module Troles::ActiveRecord
   module Strategy    
     module BaseMany
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
@@ -10,10 +10,9 @@ module Troles::Mongoid
       
       module Config
         def troles_config
-          @troles_config ||= Trole::Mongoid::Config.new self
+          @troles_config ||= Troles::ActiveRecord::Config.new self
         end
       end
     end
   end
 end
-      

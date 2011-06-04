@@ -11,7 +11,7 @@ module Troles
       # @param  [Array<Symbol>] list of role names to find Roles for
       # @return [Array<Role>] references to Role instances
       def find_roles *roles
-        role_model.where(:name => roles)
+        role_model.where(:name => roles.flatten)
       end
 
       # get list of embedded Role instances

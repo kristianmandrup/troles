@@ -1,0 +1,3 @@
+h1. Design Notes for Mongoid adapter
+
+We have to come up with an easier way to initialize the Config object than to do the whole API thing!

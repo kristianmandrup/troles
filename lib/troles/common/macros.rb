@@ -36,12 +36,22 @@ module Troles
       end      
       
       def strategy_module strategy_name, options = {}
-        ns = namespace(strategy_name, options)
-        "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
+        ns = full_namespace(strategy_name, options)
+        begin
+          "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
+        rescue
+          # use generic if no ORM specific strategy found!
+          ns = namespace(strategy_name, options)
+          "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
+        end
       end  
 
       def namespace strategy_name, options = {}
         first = (strategy_name =~ /_many$/) ? 'Troles' : 'Trole'      
+      end
+
+      def full_namespace strategy_name, options = {}
+        first = namespace strategy_name, options
         orm = options[:orm]
         first << "::#{orm.camelize}" if options[:orm]
         first

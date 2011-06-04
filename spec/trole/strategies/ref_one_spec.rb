@@ -20,7 +20,7 @@ module UserSetup
   end
 end
 
-describe Trole::Strategy::RefOne do
+describe 'Trole strategy ref_one' do
   it_should_behave_like "Common API"
   it_should_behave_like "Trole API"  
 end    

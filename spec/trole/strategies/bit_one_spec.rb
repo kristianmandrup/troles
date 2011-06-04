@@ -14,7 +14,7 @@ module UserSetup
   end
 end
 
-describe Trole::Strategy::BitOne do
+describe 'Trole strategy bit_one' do
   it_should_behave_like "Common API"
   it_should_behave_like "Trole API"  
 end    

@@ -1,5 +1,7 @@
-require 'troles_spec'
-User.troles_strategy :ref_many do |c|
+require 'trole_spec'
+require 'active_record_helper'
+
+User.troles_strategy :ref_one do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
 end.configure!
 
@@ -9,7 +11,7 @@ module UserSetup
   def find_role name
     Role.where :name => name.to_sym
   end
-  
+
   def create_no_roles_user
     Factory.create :user, :name => 'no roles', :troles => []
   end
@@ -27,7 +29,9 @@ module UserSetup
   end
 end
 
-describe 'Troles strategy ref_many' do
-  it_should_behave_like "Common API"
-  it_should_behave_like "Troles API"  
-end    
+describe 'Active Record Adapter' do
+  describe 'RefOne strategy' do
+    it_should_behave_like "Common API"
+    it_should_behave_like "Trole API"  
+  end
+end

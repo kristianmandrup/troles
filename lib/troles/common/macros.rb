@@ -22,6 +22,10 @@ module Troles
       troles_macros.apply_strategy_options! self, options
       troles_macros.define_hooks self, options
       
+      if strategy_name == :bit_one 
+        troles_config.valid_roles = [:user, :admin] # default binary roles 
+      end
+      
       yield troles_config if block_given?
       troles_config
     end     
@@ -35,17 +39,31 @@ module Troles
         options[:strategy] = strategy_name
         options[:singularity] = extract_singularity(options)
       end      
-      
+
+      # Try each of these!
+      # TODO: Refactor cleanup and DRY!
       def strategy_module strategy_name, options = {}        
-        begin
-          ns = full_namespace(strategy_name, options)
-          "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
-        rescue
-          # use generic if no ORM specific strategy found!
-          ns = namespace(strategy_name, options)
-          "#{ns}::Strategy::#{strategy_name.to_s.camelize}".constantize
+        ns = full_namespace(strategy_name, options)          
+        ["#{ns}::Strategy::#{strategy_name.to_s.camelize}", "#{ns}::Strategy::BaseMany"].each do |full_name|
+          mod_name = try_module(full_name)
+          return mod_name if mod_name
+        end
+
+        # use generic if no ORM specific strategy found!
+        ns = namespace(strategy_name, options)
+        ["#{ns}::Strategy::#{strategy_name.to_s.camelize}", "#{ns}::Strategy::BaseMany"].each do |full_name|
+          mod_name = try_module(full_name)
+          return mod_name if mod_name          
         end
       end  
+
+      def try_module full_name
+        begin
+          full_name.constantize
+        rescue
+          false
+        end
+      end
 
       def namespace strategy_name, options = {}
         first = (strategy_name =~ /_many$/) ? 'Troles' : 'Trole'      
@@ -83,6 +101,11 @@ module Troles
         clazz.send :define_method, :storage do 
           @storage ||= storage_class
         end
+
+        config_class = get_config_class(options) 
+        clazz.meta_def :troles_config do
+          @troles_config ||= config_class.new self
+        end
       end
 
       protected
@@ -96,6 +119,18 @@ module Troles
           # use generic if no ORM specific strategy found!
           ns = namespace(strategy, options)
           "#{ns}::Storage::#{strategy.to_s.camelize}".constantize
+        end        
+      end
+
+      def get_config_class options = {}
+        strategy = options[:strategy]
+        begin
+          ns = full_namespace(strategy, options)
+          "#{ns}::Config".constantize
+        rescue
+          # use generic if no ORM specific strategy found!
+          ns = namespace(strategy, options)
+          "#{ns}::Config".constantize
         end        
       end
 

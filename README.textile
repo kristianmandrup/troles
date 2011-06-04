@@ -181,12 +181,15 @@ The Roles Operations object is available on user#roles
 
 h3. Creating a custom Strategy Storage Adapter (SSA)
 
-Example custom SSA - encrypted comma seperated string for multiple roles:
-
 You must implement the following methods:
 - #display_roles (returns symbol list of roles)  
-- #clear! (clear the role)
+- #clear! (clear the roles in the datastore)
 - #set_roles (set the roles in the datastore)
+- #set_role  (as #set_roles)
+
+Note: #set_role is only required for :single role strategies. In this case #set_roles impl. is not required, as the default impl. proxies #set_role
+
+Example custom SSA (encrypted comma seperated string for multiple roles):
 
 <pre>
 module Trole::Storage
@@ -279,9 +282,12 @@ end
 
 h3. Custom troles strategy
 
-To add a new strategy, create a special Strategy module that acts as the module included by the troles macro.
+To add a new strategy, you CAN create a special Strategy module that acts as the module included by the troles macro.
 Using standard naming convention it will be found and used by the _troles_strategy_ macro method :)  
-Using naming conventions it will use a storage class of the form: _Troles::Storage::EncryptedStringMany_ in the example below (substitute Strategy for Storage). 
+If you don't create such a Strategy module, troles will just use the BaseOne or BaseMany for the given namespace.
+
+Using naming conventions, the strategy will always try to use a storage class of the form: _Troles::Storage::EncryptedStringMany_ 
+in the example below (substitute Strategy for Storage).
 
 <pre>
 module Troles::Strategy
@@ -308,20 +314,15 @@ Example: _BaseMany_, used as the base for all Many roles strategies
         #
         def self.included(base)
           base.send :include, Troles::Strategy::BaseMany        
-          base.extend Config         
-        end
-
-        module Config
-          def troles_config
-            @troles_config ||= Troles::Mongoid::Config.new self
-          end
         end
       end
     end
   end
 </pre>
 
-An adapter requires a custom implementation of the Config class. Look at the _troles/common/config.rb_ to see what functionality is available that you can use.
+Note: You only need to implement this if you want to use it as a hook to add some extra strategy implementation code, such as custom modules etc. 
+
+An adapter usuaully requires a custom implementation of the Config class. Look at the _troles/common/config.rb_ to see what functionality is available that you can use.
 A custom Config class for :single role strategies using _Mongoid_ could look sth. like this:
 
 <pre>
@@ -335,10 +336,10 @@ module Trole::Mongoid
     def configure_relation
       case strategy
       when :ref_one
-        clazz.send(:has_one, role_model_key, :class_name => role_model_class_name)
-        role_model.send(:belongs_to, clazz_key, :class_name => clazz_name)
+        has_one_for clazz, :role
+        belongs_to_for role_model, :user
       when :embed_one
-        clazz.send(:embeds_one, role_model_key, :class_name => role_model_class_name)      
+        embeds_one_for clazz, :role
       end
     end
     
@@ -353,7 +354,7 @@ module Trole::Mongoid
     end
 </pre>                     
 
-As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships!
+As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships! (see _Troles::Common::Config_)
 
 Example: Config class for :many roles strategies with _Mongoid_
 

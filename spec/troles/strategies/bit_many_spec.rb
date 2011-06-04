@@ -22,7 +22,7 @@ module UserSetup
   end
 end
 
-describe Troles::Strategy::BitMany do
+describe 'Troles strategy bit_many' do
   it_should_behave_like "Common API"
   it_should_behave_like "Troles API"  
 end    

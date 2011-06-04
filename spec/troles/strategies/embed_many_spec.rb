@@ -26,7 +26,7 @@ module UserSetup
   end
 end
 
-describe Troles::Strategy::EmbedMany do
+describe 'Troles strategy embed_many' do
   it_should_behave_like "Common API"
   it_should_behave_like "Troles API"  
 end    

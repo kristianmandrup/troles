@@ -85,9 +85,15 @@ module Troles::Common
     
     def role_field= field_name
       name = field_name.to_s.alpha_numeric.to_sym
-      raise ArgumentException, "Not a valid field name: #{field_name}" if !name || name.empty? 
+      raise ArgumentException, "Not a valid role field name: #{field_name}"  if !valid_field_name?(name)
       @role_field ||= name
     end     
+
+    def valid_field_name? name
+      return false if !name || name.empty?
+      raise ArgumentException, "Role field must not be named role or roles as these names are reserved by troles!" if [:role, :roles].include? name.to_sym
+      true
+    end
 
     def valid_roles= *roles
       vrs = roles.flatten.map{|r| r.to_s.alpha_numeric}.map(&:to_sym).uniq

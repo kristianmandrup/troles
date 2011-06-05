@@ -21,7 +21,7 @@ module Troles::Common::Api
     # If this role subject instance should have static (immutable) roles
     # @return [true, false] defaults to false so a role subject is allowed to change roles 
     def static_roles?
-      troles_config.static_roles_for_user?
+      false
     end
 
     def troles_config

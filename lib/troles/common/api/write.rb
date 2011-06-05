@@ -4,19 +4,32 @@
 #
 module Troles::Common::Api
   module Write
+
+    # Do we need a static_roles! method? I think so!
+    def static_role! role_name
+      raise ArgumentError, "Take a single role name, was: #{role_name}" if !role_name || !role_name.kind_of_label?
+      troles_config.add_valid_roles role_name
+      if set_roles role_name      
+        define_method :static_roles? do
+          true
+        end
+      end
+    end
         
     # Add a single new role to the roles of the subject
     # @param  [Symbol] role to add
     # @return (see #add_roles)
-    def add_role new_role
-      add_roles new_role
+    def add_role role_name
+      raise ArgumentError, "Take a single role name, was: #{role_name}" if !role_name || !role_name.kind_of_label?
+      add_roles role_name
     end  
 
     # Remove a single role from the roles of the subject
     # @param  [Symbol] role to remove
     # @return (see #remove_roles)
-    def remove_role a_role
-      remove_roles a_role
+    def remove_role role_name
+      raise ArgumentError, "Take a single role name, was: #{role_name}" if !role_name || !role_name.kind_of_label?
+      remove_roles role_name
     end    
 
     # Adds a set of new roles to the roles of the subject

@@ -435,7 +435,7 @@ In the new system, I propose the following
 <pre>     
 class GuestUserAccount
   troles_strategy(:bit_one) do |c|
-    c.static_roles! :guest
+    c.static_role! :guest
     # c.valid_roles = [:guest] # uses roles defined in static_roles!
   end.configure!
 end

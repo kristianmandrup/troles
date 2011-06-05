@@ -24,6 +24,15 @@ shared_examples_for "Common Write API" do
       user.has_role?(:user).should be_false
     end
   end
+
+  describe '#set_static_role!' do
+    it "should set set roles to :user only" do
+      user.static_role!(:guest)
+      user.has_role?(:guest).should be_true
+      user.valid_roles.should include(:guest)
+      lambda { user.set_roles(:admin) }.should raise_error
+    end
+  end
   
   # 
   # describe '#remove_roles' do

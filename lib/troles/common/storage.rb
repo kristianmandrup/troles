@@ -46,9 +46,9 @@ module Troles::Common
 
     # Attempts to persist the role field changes
     # @return [true, false, error] true if saved, false if no save! method, Error on some error
-    def persist_role_changes!
+    def persist_role_changes!  
       return false if !role_subject.respond_to? :save!
-      role_subject.save! 
+      role_subject.save!
       role_subject.publish_change :roles
     end 
 

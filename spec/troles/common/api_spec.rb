@@ -13,29 +13,29 @@ end
 shared_examples_for "Common API" do
   include UserSetup 
      
-  it_behaves_like "Common Core API" do
-    define_users
-  end  
-
-  it_behaves_like "Common Event API" do
-    define_users
-  end  
-  
-  it_behaves_like "Common Read API" do
-    define_users
-  end  
-  
-  it_behaves_like "Common Validation API" do
-    define_users
-  end  
+  # it_behaves_like "Common Core API" do
+  #   define_users
+  # end  
+  # 
+  # it_behaves_like "Common Event API" do
+  #   define_users
+  # end  
+  # 
+  # it_behaves_like "Common Read API" do
+  #   define_users
+  # end  
+  # 
+  # it_behaves_like "Common Validation API" do
+  #   define_users
+  # end  
   
   it_behaves_like "Common Write API" do
     define_users
   end  
   
-  it_behaves_like "Common Operations API" do
-    define_users
-  end  
+  # it_behaves_like "Common Operations API" do
+  #   define_users
+  # end  
 end 
 
 # Customizing shared example groups

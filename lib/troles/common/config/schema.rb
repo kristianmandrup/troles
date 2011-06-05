@@ -47,7 +47,7 @@ module Troles::Common
       end
 
       def configure_role_field options = {}
-        clazz.send(:attr_accessor, role_field) if generic? || orm == nil # create troles accessor      
+        clazz.send(:attr_accessor, role_field) if generic? || orm == :generic # create troles accessor      
       end       
 
       protected

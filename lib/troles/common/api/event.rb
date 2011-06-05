@@ -9,13 +9,13 @@ module Troles::Common::Api
     # this can be used to update both the Role cache of the user and fx the RolePermit cache.
     # A Role Groups listener can also subscribe to this event
     def update_roles
-      publish_change(:roles) if field_changed?(self.class.role_field)
+      publish_change(:roles) if role_field_changed?(troles_config.role_field)
     end
 
     # Check if a field on the model changed
     # For Rails 3, See http://api.rubyonrails.org/classes/ActiveModel/Dirty.html
     # @param [String] the field to test for change
-    def field_changed? name
+    def role_field_changed? name
       begin
         send :"#{name}_changed?"
       rescue

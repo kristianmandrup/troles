@@ -13,16 +13,28 @@ module Troles::Common
       send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
     end
 
-    attr_accessor :clazz, :strategy, :orm 
+    attr_accessor :clazz, :strategy
 
     attr_reader   :singularity
-    attr_writer   :generic
+    attr_writer   :generic, :orm
     
     def initialize clazz, options = {}
       @clazz = clazz 
 
       # set instance var for each pair in options
       apply_options! options
+    end
+
+    class << self
+      attr_reader :default_orm
+      
+      def default_orm= orm
+        @default_orm ||= orm
+      end
+    end
+
+    def orm
+      @orm || self.class.default_orm
     end
 
     def apply_options! options = {}

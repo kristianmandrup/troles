@@ -1,4 +1,7 @@
-require 'troles_spec'
+require 'trole_spec_helper'
+require 'troles_spec'                          
+require 'models'
+
 User.troles_strategy :embed_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
 end.configure!

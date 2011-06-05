@@ -1,6 +1,5 @@
 require 'trole'
 require 'trole/macros'
-require 'trole_spec_helper'
 require 'troles'
 
 require 'troles/common/api_spec' # Common API examples

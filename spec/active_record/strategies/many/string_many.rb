@@ -1,12 +1,10 @@
-require 'trole_spec_helper'
-require 'troles_spec'                          
-require 'models'
+require "active_record/strategy_helper"
+require "active_record/migrations/many/string_many"
+CreateStringMany.up # run migration
 
 User.troles_strategy :string_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
 end.configure!
-
-User.valid_roles = [:user, :admin, :blogger, :editor]
 
 module UserSetup
   def create_no_roles_user
@@ -26,7 +24,14 @@ module UserSetup
   end
 end
 
-describe 'Troles strategy string_many' do
+
+require 'troles/common/api_spec' # Common API examples  
+
+describe 'Troles strategy string_many' do  
+  after do
+    CreateStringMany.down
+  end
+
   it_should_behave_like "Common API"
-  it_should_behave_like "Troles API"  
+  # it_should_behave_like "Troles API"  
 end    

@@ -1,4 +1,6 @@
-require 'troles_spec'
+require 'trole_spec_helper'
+require 'troles_spec'      
+require 'models'
 
 User.troles_strategy :bit_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]

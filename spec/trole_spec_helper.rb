@@ -3,7 +3,6 @@ require 'require_all'
 require 'factory_girl'
 require 'mocha'
 require 'factories'
-require 'models'
 require 'support/shared_examples'
 
 module Config

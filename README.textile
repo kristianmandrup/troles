@@ -422,7 +422,64 @@ User.troles_strategy :bit_one, :orm => :active_record do |c|
 end.configure! :role_model => 'Troll', :join_model => 'UserTroll'
 </pre>
 
-Enjoy :)
+Enjoy :)  
+
+h2. Other notes on Application-User control
+
+_troles_ will be part of a larger project under development that will go under the name "dancing tango with trolls". This will be a rework of _cream_ and _cancan-permits_ that will target use in apllications with multiple user accounts and multiple sub applications. In this new system, _dancing_ will be the replacement of _cream_ and _tango_ the replacement of _cancan-permits_. I hope to give a talk on RubyConf 2011 about this system. 
+
+h3. Guest users
+
+In the new system, I propose the following
+
+<pre>     
+class GuestUserAccount
+  troles_strategy(:bit_one) do |c|
+    c.static_roles! :guest
+    # c.valid_roles = [:guest] # uses roles defined in static_roles!
+  end.configure!
+end
+
+class UserAccount
+  include Mongoid::Document
+
+  troles_strategy(:bit_many, :orm => :mongoid) do |c|
+    c.valid_roles = [:user, :admin, :guest]
+  end.configure!
+end
+
+class BloggerAccount
+  include Mongoid::Document
+
+  troles_strategy(:string_many, :orm => :mongoid) do |c|
+    c.valid_roles = [:blogger, :editor, :admin]
+  end.configure!
+end
+
+
+module BaseUser  
+end
+  
+class User
+  include Mongoid::Document
+  include BaseUser
+  
+  has_one :user_account
+  has_one :admin_account
+  has_one :blogger_account
+  ...
+end
+
+class GuestUser
+  include BaseUser
+
+  has_one :guest_user_account
+end
+</pre>
+
+The Guest class should be set up to only have relationship to those special guest user accounts. The Guest class should implement the same API as User but can stub or hardcode much functionality in order to act as a guest and not a "real" user.
+
+The guest user should (usually) not have any user info persisted, so it makes sense to use a generic account that is in-memory.
 
 h2. License
 

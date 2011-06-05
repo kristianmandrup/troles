@@ -430,14 +430,105 @@ _troles_ will be part of a larger project under development that will go under t
 
 h3. Guest users
 
-In the new system, I propose the following
+From the Devise wiki: https://github.com/plataformatec/devise/wiki/How-To:-Create-a-guest-user
+
+"In some applications, it's useful to have a guest User object to pass around even before the (human) user has registered or logged in. Normally, you want this guest user to persist as long as the browser session persists.
+
+Our approach is to create a guest user object in the database and store its id in session[:guest_user_id]. When (and if) the user registers or logs in, we delete the guest user and clear the session variable. A helper function, current_or_guest_user, returns guest_user if the user is not logged in and current_user if the user is logged in."
+
+<pre>
+module ApplicationHelper
+  ...
+  # if user is logged in, return current_user, else return guest_user
+  def current_or_guest_user
+    if current_user
+      if session[:guest_user_id]
+        logging_in
+        guest_user.destroy
+        session[:guest_user_id] = nil
+      end
+      current_user
+    else
+      guest_user
+    end
+  end
+
+  # find guest_user object associated with the current session, 
+  # creating one as needed
+  def guest_user
+    guest_user_id = session[:guest_user_id] ||= User.create(:name => "guest").id
+    User.find(guest_user_id)
+  end
+
+  # called (once) when the user logs in, insert any code your application needs
+  # to hand off from guest_user to current_user.
+  def logging_in
+  end      
+  ...
+end  
+</pre>
+
+In the new system, I propose the following:
+
+<pre>
+
+# this will make the current user the guest user account for the given scope!
+def sign_in_guest scope, options = {}
+  warden.set_user(guest_user.account, options.merge!(:scope => scope))
+end
+
+#   sign_in :user, @user                      # sign_in(scope, resource)
+#   sign_in @user                             # sign_in(resource)
+#   sign_in @user, :event => :authentication  # sign_in(resource, options)
+#   sign_in @user, :bypass => true            # sign_in(resource, options)
+# 
+def sign_in(resource_or_scope, *args)
+  ...
+  post_sign_in resource, scope
+end
+
+def post_sign_in resource, scope
+  user = warden.user(scope)
+  return if !user
+
+  user.transfer_guest(guest_user) if guest_user? && user.respond_to?(:transfer)
+  session[:guest_user] = nil
+end
+
+def guest_user?
+  !session[:guest_user].nil?
+end
+
+def guest_user
+  session[:guest_user] ||= GuestUser.new
+end  
+</pre>
 
 <pre>     
 class GuestUserAccount
-  troles_strategy(:bit_one) do |c|
-    c.static_role! :guest
-    # c.valid_roles = [:guest] # uses roles defined in static_roles!
+  troles_strategy(:static_one, :role => :guest) do |c|
+    # c.valid_roles = [:guest] not needed!
   end.configure!
+
+  attr_accessor :guest
+
+  def user
+    guest
+  end
+  
+  def initialize
+    roles.set_default!
+  end
+end
+</pre>
+
+Here the special _:static_many_ strategy is used, which means that whatever the _role_list_ is first set to can never change for that user.
+
+<pre>
+module BaseAccount
+  # transfer guest settings to logged_in user/account
+  def transfer_guest(guest_user)
+  end  
 end
 
 class UserAccount
@@ -454,27 +545,38 @@ class BloggerAccount
   troles_strategy(:string_many, :orm => :mongoid) do |c|
     c.valid_roles = [:blogger, :editor, :admin]
   end.configure!
+end  
+</pre>
+
+There will soon be a global ORM configuration options for troles, so you can do sth. like:
+
+@Troles::Common::Config.default_orm = :mongoid@
+
+And troles will use this settingin case you don't specify the orm when you configure a troles strategy.
+
+<pre>
+module BaseUser
 end
 
-
-module BaseUser  
-end
-  
 class User
   include Mongoid::Document
   include BaseUser
-  
+
   has_one :user_account
   has_one :admin_account
   has_one :blogger_account
   ...
-end
+end  
+</pre>
 
+<pre>
 class GuestUser
   include BaseUser
 
-  has_one :guest_user_account
-end
+  def account
+    @guest_user_account ||= GuestUserAccount.new
+  end
+end  
 </pre>
 
 The Guest class should be set up to only have relationship to those special guest user accounts. The Guest class should implement the same API as User but can stub or hardcode much functionality in order to act as a guest and not a "real" user.

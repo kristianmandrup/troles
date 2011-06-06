@@ -6,7 +6,6 @@ class Role
     raise ArgumentError, "Not a valid role label, was: #{name}" if !name.kind_of_label?
     @name = name
     role = self if !Role.exists?(@name)
-    puts "Role :#{role.name} added" if role
     Role.roles << role if role
   end
   

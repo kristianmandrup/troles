@@ -13,6 +13,7 @@ module Troles
         @strategy = strategy
         @orm = options[:orm] || Troles::Config.default_orm
         @auto_load = options[:auto_load]
+        options[:strategy] = strategy
         @options = options
       end
 
@@ -46,7 +47,7 @@ module Troles
 
         config_class = config_loader.config_class
         role_subject_class.meta_def :troles_config do
-          @troles_config ||= config_class.new role_subject_class
+          @troles_config ||= config_class.new role_subject_class, strategy, options
         end
       end
 

@@ -14,13 +14,10 @@ module Troles::Common
     end
 
     attr_accessor :clazz, :strategy
-
-    attr_reader   :singularity
     attr_writer   :generic, :orm
     
     def initialize clazz, options = {}
-      @clazz = clazz 
-
+      @clazz = clazz
       # set instance var for each pair in options
       apply_options! options
     end
@@ -34,7 +31,15 @@ module Troles::Common
     end
 
     def role_field
-      @role_field || default_role_field
+      @role_field ||= begin
+        default_role_field
+      end
+    end
+
+    def role_field= field_name
+      name = field_name.to_s.alpha_numeric.to_sym
+      raise ArgumentException, "Not a valid role field name: #{field_name}"  if !valid_field_name?(name)
+      @role_field ||= name
     end
 
     def default_role_field
@@ -46,15 +51,19 @@ module Troles::Common
     end
 
     def apply_options! options = {}
-      options.each_pair do |key, value|
-        instance_variable_set("@#{key}", value) if self.respond_to?(:"#{key}")
+      options.each_pair do |key, value| 
+        send("#{key}=", value) if self.respond_to?(:"#{key}")
       end      
     end
 
-    def singularity= value
-      raise ArgumentError, "Must be :single or :many" if ![:single, :many].include?(value)      
-      @singularity ||= value
+    def singularity
+      @singularity ||= (strategy =~ /_many$/) ? :many : :one
     end
+
+    # def singularity= value
+    #   raise ArgumentError, "Must be :many or :one" if ![:one, :many].include?(value)      
+    #   @singularity ||= value
+    # end
 
     def configure! options = {}
       apply_options! options

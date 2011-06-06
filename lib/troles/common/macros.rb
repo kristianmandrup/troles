@@ -19,12 +19,8 @@ module Troles
       configuration = Configuration.new self, strategy, options
 
       configuration.load_adapter
-      begin
-        puts "strategy module: #{configuration.strategy_module}"
-        send :include, configuration.strategy_module
-      # rescue
-      #   raise "No matching strategy module found for strategy: #{strategy} and options: #{options}"
-      end
+      puts "strategy module: #{configuration.strategy_module}"
+      send :include, configuration.strategy_module
 
       configuration.apply_strategy_options!
       configuration.define_hooks

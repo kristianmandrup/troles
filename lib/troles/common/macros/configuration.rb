@@ -12,7 +12,7 @@ module Troles
         @role_subject_class = role_subject_class
         @strategy = strategy
         @orm = options[:orm] || Troles::Config.default_orm
-        @auto_load = options[:auto_load]
+        @auto_load = options[:auto_load] || Troles::Config.auto_load?
         options[:strategy] = strategy
         @options = options
       end
@@ -22,7 +22,7 @@ module Troles
       end
             
       def load_adapter
-        return false if !auto_load?(options) || !orm
+        return false if !auto_load?
 
         path = "troles/adapters/#{orm.to_s.underscore}"
         begin
@@ -44,11 +44,13 @@ module Troles
         role_subject_class.send :define_method, :storage do 
           @storage ||= storage_class
         end
-
+        
         config_class = config_loader.config_class
-        role_subject_class.meta_def :troles_config do
-          @troles_config ||= config_class.new role_subject_class, strategy, options
-        end
+        role_subject_class.singleton_class.class_eval %{
+          def troles_config
+            @troles_config ||= #{config_class}.new #{role_subject_class}, #{options.inspect}
+          end
+        }
       end
 
       protected
@@ -70,7 +72,7 @@ module Troles
       end
 
 
-      def auto_load? options = {}
+      def auto_load?
         (auto_load && orm) || false
       end
   

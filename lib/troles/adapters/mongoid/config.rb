@@ -2,7 +2,7 @@ module Troles::Mongoid
   class Config < Troles::Common::Config  
     
     def initialize clazz, options = {}
-      super     
+      super
     end
 
     # more likely, strategy should be part of configuration options directly when Config object is created!
@@ -22,15 +22,21 @@ module Troles::Mongoid
     end
     
     def configure_field
+      # puts "mongoid configure_field: #{strategy}"
       type = case strategy
       when :bit_many
         Integer
       when :string_many
         String
       end
-      # field :name, :type => String
-      clazz.send(:field, role_field, type: => type) if type      
+      # field :name, :type => String       
+      # puts "#{clazz} -> field, #{role_field}, #{type_opts(type)}"
+      clazz.send(:field, role_field, type_opts(type)) if type      
     end     
+    
+    def type_opts type
+      { :type => type }
+    end
     
     protected
     

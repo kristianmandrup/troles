@@ -8,6 +8,7 @@ require 'require_all'
 require 'active_record/models'
 
 Troles::Config.default_orm = :active_record
+Troles::Config.auto_load = true
 
 dbconfig_path = File.dirname(__FILE__) + '/db/database.yml'
 dbfile = File.open(dbconfig_path)

@@ -22,8 +22,8 @@ module Troles
       puts "strategy module: #{configuration.strategy_module}"
       send :include, configuration.strategy_module
 
-      configuration.apply_strategy_options!
       configuration.define_hooks
+      configuration.apply_strategy_options!
       
       if strategy == :bit_one 
         troles_config.valid_roles = [:user, :admin] # default binary roles 

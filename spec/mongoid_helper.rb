@@ -5,6 +5,7 @@ require 'bson'
 require 'mongoid/models'
 
 Troles::Config.default_orm = :mongoid
+Troles::Config.auto_load = true
 
 Mongoid.configure.master = Mongo::Connection.new.db('troles_mongoid')
 

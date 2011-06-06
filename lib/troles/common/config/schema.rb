@@ -4,16 +4,24 @@ module Troles::Common
       attr_accessor :join_model
 
       def configure_role_field
+        configure_generic
         configure_field
         configure_relation
       end         
 
+      def configure_generic
+        clazz.send(:attr_accessor, role_field) if generic? || orm == :generic # create troles accessor      
+      end       
+
+
       # Adapter should customize this as needed 
       def configure_field
+        # puts "configure_field - empty"
       end
 
       # Adapter should customize this as needed 
       def configure_relation
+        # puts "configure_relation - empty"
       end
 
       def join_model
@@ -44,10 +52,6 @@ module Troles::Common
         return Role if defined? Role
         raise "Troles could not figure out what Role model to use, please define a class Role or set the #role_model class method to point to a model of your choice!"
       end
-
-      def configure_role_field options = {}
-        clazz.send(:attr_accessor, role_field) if generic? || orm == :generic # create troles accessor      
-      end       
 
       protected
                      

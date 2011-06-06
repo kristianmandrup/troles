@@ -7,7 +7,7 @@ module Troles::Macros
       end
 
       def config_class
-        begin
+        begin       
           "#{orm_namespace}::Config".constantize
         rescue
           # use generic if no ORM specific strategy found!

@@ -8,7 +8,7 @@ module Troles::Common
     def self.sub_modules
       [:valid_roles, :static_roles, :schema]
     end
-
+    
     sub_modules.each do |name|    
       send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
     end
@@ -23,11 +23,20 @@ module Troles::Common
     end
 
     class << self
-      attr_reader :default_orm
+      attr_reader :default_orm, :auto_load
       
       def default_orm= orm
         @default_orm ||= orm
       end
+      
+      def auto_load= mode
+        raise "Autoload must be set to true or false" if ![true, false].include? mode
+        @auto_load = mode
+      end
+
+      def auto_load?
+        @auto_load
+      end      
     end
 
     def role_field

@@ -4,7 +4,7 @@ module Trole
       super
     end
 
-    def configure_role_field options = {}
+    def configure_role_field
       super
     end       
         

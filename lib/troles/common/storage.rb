@@ -28,6 +28,7 @@ module Troles::Common
     # sets the value of the role field (@trole or @troles) and persists the value (in the data store)
     # @param [Object] the value to set on the role field of the role subject
     def set_ds_field value
+      puts "ds_field_name: #{ds_field_name} = #{value}"
       role_subject.send(:"#{ds_field_name}=", value)
       persist_role_changes!
     end

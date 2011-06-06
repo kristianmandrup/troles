@@ -13,11 +13,16 @@ module Troles::Storage
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
-      return [] if ds_field_value.empty?
+      return [] if !ds_field_value?
       ds_field_value.flatten.map do |role| 
         role.name.to_sym 
       end
     end
+
+    # is it set?
+    def ds_field_value?
+      ds_field_value && !ds_field_value.empty?
+    end      
     
     # saves the role for the user in the data store
     def set_roles *roles
@@ -28,9 +33,7 @@ module Troles::Storage
 
     # clears the role of the user in the data store
     def clear!
-      puts "clear: #{ds_field_value}"
       set_ds_field []
-      puts "after clear: #{ds_field_value}"
     end
     
     # sets the role to default setting

@@ -13,19 +13,15 @@ module Troles
         base_class = base_name(strategy_name) 
         
         mods_found = ["#{ns}::Strategy::#{strategy_name.to_s.camelize}", "#{ns}::Strategy::#{base_class}"].select do |full_name|
-          puts "try: #{full_name}"
           try_module(full_name)
         end
-        puts "modules found: #{mods_found}"
         return mods_found.first.constantize if !mods_found.empty?
 
         # use generic if no ORM specific strategy found!
         ns = namespace(strategy_name, options)
         mods_found = ["#{ns}::Strategy::#{strategy_name.to_s.camelize}", "#{ns}::Strategy::#{base_class}"].select do |full_name|
-          puts "try: #{full_name}"
           try_module(full_name)
         end        
-        puts "modules found: #{mods_found}"
         return mods_found.first.constantize if !mods_found.empty?
 
         raise "No matching strategy module found for strategy: #{strategy_name} and options: #{options}"

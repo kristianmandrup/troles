@@ -19,7 +19,7 @@ module Troles
       troles_macros.load_adapter options
       strat_module = troles_macros.strategy_module(strategy_name, options)
 
-      puts "strat_module: #{strat_module}"
+      puts "strategy module used: #{strat_module}"
       send :include, strat_module
 
       troles_macros.set_options! strategy_name, options

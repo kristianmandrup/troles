@@ -14,14 +14,21 @@ module Trole::Storage
 
     # display the role as a list of one symbol
     # @return [Array<Symbol>] roles list
-    def display_roles
-      !ds_field_value.empty? ? [ds_field_value.flatten.first.name.to_sym] : []
+    def display_roles 
+      return [] if !ds_field_value?
+      [ds_field_value.name.to_sym]
     end    
+
+    # is it set?
+    def ds_field_value?
+      ds_field_value
+    end      
 
     # saves the role of the role subject in the data store
     # @param [Symbol] the role name
     def set_role role
-      set_ds_field role_model.where(:name => role).first
+      role_to_set = role_model.where(:name => role).first
+      set_ds_field role_to_set
     end  
 
     # Clears the role state of the role subject 

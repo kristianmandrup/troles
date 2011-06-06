@@ -35,7 +35,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
-    # migrate('users')
+    migrate_up
     # api_migrate      
   end
 

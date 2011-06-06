@@ -13,19 +13,47 @@ module Troles::Common
 
       # TODO: Needs extraction into helper module!
 
-      def belong_to from, to
-        make_relationship :belongs_to, from, to
+      def belong_to from, to, options = {}
+        make_relationship :belongs_to, from, to, options
       end
 
-      def has_many_for from, to, through = nil
-        make_relationship :has_many, from, to, through
+      def has_many_for from, to, options = nil
+        make_relationship :has_many, from, to, options
       end
 
-      def make_relationship type, from, to, through
-        model_key = send "#{from}_key"
-        class_name = send "#{to}_class_name"
+      # To setup sth like this:
+      #
+      # class UserAccount < ActiveRecord::Base    
+      #   has_and_belongs_to_many :troles, :class_name => 'Role'
+      # end
+      # 
+      # class Role < ActiveRecord::Base    
+      #   has_and_belongs_to_many :user_accounts, :class_name => 'User'
+      # end
+      def has_and_belongs_many from, to, options = {}
+        make_relationship :has_and_belongs_to_many, from, to, :key => role_field
+        make_relationship :has_and_belongs_to_many, to, from, options
+      end
+
+      def get_model_type class_name
+        return :user if class_name == clazz
+        return :role if class_name == role_model
+        raise "Not a known model: #{class_name}"
+      end
+
+      # options: 
+      # - :opts, extras options, fx to set the :through relationship
+      # - :key (usually to enforce use of role_field as key name)      
+      def make_relationship type, from, to, options = {}
+        from_type = get_model_type from
+        to_type = get_model_type to
+
+        model_key = option[:key] ? option[:key] : send("#{from_type}_key")
+
+        class_name = send "#{to_type}_class_name"
+
         options = {:class_name => class_name}
-        options.merge!(through) if through
+        options.merge!(options[:opts]) if options[:opts]
         from.send(type, model_key, options)
       end
 
@@ -54,7 +82,7 @@ module Troles::Common
       end
 
       def make_key name
-        name.gsub(/::/, '__').underscore      
+        name.gsub(/::/, '__').underscore.pluralize      
       end
     end
   end

@@ -28,7 +28,9 @@ module Troles::Storage
 
     # clears the role of the user in the data store
     def clear!
+      puts "clear: #{ds_field_value}"
       set_ds_field []
+      puts "after clear: #{ds_field_value}"
     end
     
     # sets the role to default setting

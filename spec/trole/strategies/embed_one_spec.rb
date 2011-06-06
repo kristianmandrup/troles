@@ -1,4 +1,4 @@
-require 'trole_spec'
+require 'strategy_helper'
 
 User.troles_strategy :embed_one do |c|
   c.valid_roles = [:user, :admin, :editor, :blogger]

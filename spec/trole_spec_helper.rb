@@ -7,7 +7,7 @@ require 'support/shared_examples'
 
 module Config
   def self.create_role name
-    Role.create(name)
+    Role.create(:name => name.to_s)
   end
 
   def self.add_roles *names

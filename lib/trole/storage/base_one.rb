@@ -29,7 +29,7 @@ module Trole::Storage
     end                 
     
     def role_model
-      role_subject.class.role_model
+      role_subject.class.troles_config.role_model
     end
 
     # saves the role for the user in the data store

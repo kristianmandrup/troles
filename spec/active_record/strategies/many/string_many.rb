@@ -1,6 +1,13 @@
 require "active_record/strategy_helper"
 require "active_record/migrations/many/string_many"
-CreateStringMany.up # run migration
+
+def migrate_up
+  CreateStringMany.up # run migration
+end
+
+def migrate_down
+  CreateStringMany.down
+end      
 
 User.troles_strategy :string_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
@@ -24,14 +31,9 @@ module UserSetup
   end
 end
 
-
 require 'troles/common/api_spec' # Common API examples  
 
-describe 'Troles strategy string_many' do  
-  after do
-    CreateStringMany.down
-  end
-
+describe 'Troles strategy :string_many' do  
   it_should_behave_like "Common API"
   # it_should_behave_like "Troles API"  
 end    

@@ -10,7 +10,7 @@ def migrate_down
   CreateRefOne.down
 end      
 
-User.troles_strategy :ref_one, :orm => :active_record do |c|
+User.troles_strategy :ref_one do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
 end.configure!
 

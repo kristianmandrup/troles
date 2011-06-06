@@ -13,7 +13,7 @@ module Troles::Common
       send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
     end
 
-    attr_accessor :clazz, :strategy
+    attr_accessor :clazz, :strategy, :log_on
     attr_writer   :generic, :orm
     
     def initialize clazz, options = {}
@@ -24,6 +24,11 @@ module Troles::Common
 
     class << self
       attr_reader :default_orm, :auto_load
+      attr_accessor :log_on
+
+      def log_on?
+        log_on || false
+      end
       
       def default_orm= orm
         @default_orm ||= orm
@@ -37,6 +42,10 @@ module Troles::Common
       def auto_load?
         @auto_load
       end      
+    end
+
+    def log_on?
+      log_on || Troles::Config.log_on
     end
 
     def role_field

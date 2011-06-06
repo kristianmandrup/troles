@@ -8,13 +8,14 @@ module Trole::ActiveRecord
     def configure_relation
       case strategy
       when :ref_one
-        has_one_for clazz, :role
-        belongs_to_for role_model, :user
+        belongs_to_for clazz, role_model, :key => role_field 
+        has_many_for role_model, clazz
       when :embed_one
-        raise "Embed one is not yet implemented for Active Record. Please add support using #serialize, to store the field as YAML"
+        raise "EmbedOne is currently not supported by the Active Record adapter. It will be soon..."
+        #clazz.send(:embeds_many, role_model_key, :class_name => role_model_class_name)      
       end
     end
-
+    
     # AR sets this up ont its own using DB Table info    
     def configure_field
     end       

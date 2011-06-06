@@ -24,7 +24,7 @@ module Troles
       def load_adapter
         return false if !auto_load?
 
-        path = "troles/adapters/#{orm.to_s.underscore}"
+        path = "#{namespace}/adapters/#{orm.to_s.underscore}"
         begin
           require path
         rescue
@@ -46,6 +46,7 @@ module Troles
         end
         
         config_class = config_loader.config_class
+        puts "config_class: #{config_class}" if Troles::Config.log_on
         role_subject_class.singleton_class.class_eval %{
           def troles_config
             @troles_config ||= #{config_class}.new #{role_subject_class}, #{options.inspect}
@@ -54,6 +55,10 @@ module Troles
       end
 
       protected
+
+      def namespace
+        singularity == :many ? 'troles' : 'trole'      
+      end
 
       def singularity
         @singularity ||= (strategy =~ /_many$/) ? :many : :one

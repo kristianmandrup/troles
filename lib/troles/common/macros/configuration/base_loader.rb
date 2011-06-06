@@ -17,7 +17,7 @@ module Troles::Macros
           full_name.constantize
           true
         rescue
-          puts "module #{full_name} not found!"
+          # puts "module #{full_name} not found!"
           false
         end
       end

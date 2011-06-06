@@ -19,7 +19,7 @@ module Troles
       configuration = Configuration.new self, strategy, options
 
       configuration.load_adapter
-      puts "strategy module: #{configuration.strategy_module}"
+      # puts "strategy module: #{configuration.strategy_module}"
       send :include, configuration.strategy_module
 
       configuration.define_hooks

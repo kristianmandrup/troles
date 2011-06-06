@@ -4,19 +4,16 @@ module Troles::ActiveRecord
     attr_accessor :role_join_model
     
     def initialize clazz, options = {}
-      super
+      super 
     end
     
     def configure_relation
       case strategy
       when :ref_many
         return configure_join_model if role_join_model
-
         has_and_belongs_many clazz, role_model, :key => :accounts         
-
-      when :embed_one
-        raise "EmbedOne is currently not supported by the Active Record adapter. It will be soon..."
-        #clazz.send(:embeds_many, role_model_key, :class_name => role_model_class_name)      
+      when :embed_many
+        raise "Embed many configuration not yet implemented for ActiveRecord" 
       end
     end
 

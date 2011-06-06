@@ -16,12 +16,10 @@ module Troles::Common
 
       # Adapter should customize this as needed 
       def configure_field
-        # puts "configure_field - empty"
       end
 
       # Adapter should customize this as needed 
       def configure_relation
-        # puts "configure_relation - empty"
       end
 
       def join_model

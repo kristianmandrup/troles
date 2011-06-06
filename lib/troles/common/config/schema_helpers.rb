@@ -13,12 +13,16 @@ module Troles::Common
 
       # TODO: Needs extraction into helper module!
 
-      def belong_to from, to, options = {}
+      def belongs_to_for from, to, options = {}
         make_relationship :belongs_to, from, to, options
       end
 
-      def has_many_for from, to, options = nil
+      def has_many_for from, to, options = {}
         make_relationship :has_many, from, to, options
+      end
+
+      def has_one_for from, to, options = {}
+        make_relationship :has_one, from, to, options
       end
 
       # To setup sth like this:
@@ -45,6 +49,7 @@ module Troles::Common
       # - :opts, extras options, fx to set the :through relationship
       # - :key (usually to enforce use of role_field as key name)      
       def make_relationship type, from, to, options = {}
+        # puts "type: #{type}, #{from}, #{to}"
         from_type = get_model_type from
         to_type = get_model_type to
 
@@ -54,6 +59,7 @@ module Troles::Common
 
         options = {:class_name => class_name}
         options.merge!(options[:opts]) if options[:opts]
+        puts "#{from}.#{type} :#{model_key}, #{options.inspect}" if log_on?
         from.send(type, model_key, options)
       end
 

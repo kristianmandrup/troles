@@ -1,6 +1,14 @@
 require "active_record/strategy_helper"
 require "active_record/migrations/many/bit_many"
-CreateBitMany.up # run migration
+
+def migrate_up
+  CreateBitMany.up # run migration
+end
+
+def migrate_down
+  CreateBitMany.down
+end      
+
 
 User.troles_strategy :bit_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
@@ -28,10 +36,6 @@ end
 require 'troles/common/api_spec' # Common API examples  
 
 describe 'Troles strategy :bit_many' do  
-  after do
-    CreateBitMany.down
-  end
-
   it_should_behave_like "Common API"
   # it_should_behave_like "Troles API"  
 end    

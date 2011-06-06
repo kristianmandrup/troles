@@ -1,4 +1,3 @@
-require 'trole'
 require "active_record/strategy_helper"
 require 'active_record/models/ref_one'
 
@@ -21,15 +20,15 @@ module UserSetup
   end
 
   def create_no_roles_user
-    Factory.create :user, :name => 'no roles', :troles => nil
+    Factory.create :user, :name => 'no roles', :trole => nil
   end
 
   def create_user
-    Factory.create :user, :name => 'normal', :troles => find_role(:user)
+    Factory.create :user, :name => 'normal', :trole => find_role(:user)
   end
 
   def create_admin_user
-    Factory.create :user, :name => 'admin', :troles => find_role(:admin)
+    Factory.create :user, :name => 'admin', :trole => find_role(:admin)
   end
 end
 

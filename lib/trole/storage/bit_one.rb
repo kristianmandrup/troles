@@ -19,7 +19,12 @@ module Trole::Storage
     # @return [Array<Symbol>] roles list
     def display_roles
       raise "BitOne requires exactly two valid roles, was: #{valid_roles}" if !(valid_roles.size == 2)
+      return [] if !ds_field_value?      
       [bitmask.read].flatten
+    end
+
+    def ds_field_value?
+      ds_field_value == 0
     end
         
     # saves the role for the role subject in the data store

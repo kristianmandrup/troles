@@ -10,20 +10,20 @@ def migrate_down
 end      
 
 User.troles_strategy :bit_one do |c|
-  c.valid_roles = [:user, :admin, :blogger, :editor]
+  c.valid_roles = [:user, :admin]
 end.configure!
 
 module UserSetup
   def create_no_roles_user
-    Factory.create :user, :name => 'no roles', :troles => false
+    Factory.create :user, :name => 'no roles', :trole => false
   end
 
   def create_user
-    Factory.create :user, :name => 'normal', :troles => false
+    Factory.create :user, :name => 'normal', :trole => false
   end
 
   def create_admin_user
-    Factory.create :user, :name => 'admin', :troles => true
+    Factory.create :user, :name => 'admin', :trole => true
   end
 end
 

@@ -15,15 +15,15 @@ end.configure!
 
 module UserSetup
   def create_no_roles_user
-    Factory.create :user, :name => 'no roles', :troles => ''
+    Factory.create :user, :name => 'no roles', :trole => ''
   end
 
   def create_user
-    Factory.create :user, :name => 'normal', :troles => 'user'
+    Factory.create :user, :name => 'normal', :trole => 'user'
   end
 
   def create_admin_user
-    Factory.create :user, :name => 'admin', :troles => 'admin'
+    Factory.create :user, :name => 'admin', :trole => 'admin'
   end
 end
 

@@ -1,5 +1,5 @@
 class CreateRefOne < ActiveRecord::Migration
-  def change
+  def self.up
     create_table :users do |t|
       t.string :name
       t.integer :role_id # a user can have ONE role
@@ -11,5 +11,10 @@ class CreateRefOne < ActiveRecord::Migration
       t.timestamps
     end
   end
+  
+  def self.down
+    drop_table :users
+    drop_table :roles
+  end  
 end
 

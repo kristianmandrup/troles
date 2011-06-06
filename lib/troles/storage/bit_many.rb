@@ -16,7 +16,12 @@ module Troles::Storage
     # see Troles::Marshaller::Bitmask    
     # @return [Array<Symbol>] roles list
     def display_roles
+      return [] if !ds_field_value?
       bitmask.read
+    end
+
+    def ds_field_value?
+      ds_field_value == 0
     end
   
     # saves the roles for the role subject in the data store

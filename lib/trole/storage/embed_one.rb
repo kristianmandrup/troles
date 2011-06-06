@@ -15,8 +15,13 @@ module Trole::Storage
     # display the role as a list of one symbol
     # @return [Array<Symbol>] roles list
     def display_roles
-      !ds_field_value.empty? ? [ds_field_value.first.name.to_sym] : []
+      return [] if !ds_field_value?
+      [ds_field_value.first.name.to_sym]
     end
+
+    def ds_field_value?
+      ds_field_value && !ds_field_value.empty?
+    end    
 
     # saves the role for the user in the data store
     def set_role role

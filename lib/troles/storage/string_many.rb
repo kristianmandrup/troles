@@ -13,7 +13,12 @@ module Troles::Storage
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_roles
+      return [] if !ds_field_value?
       ds_field_value.split(',').map{|r| r.strip }.map(&:to_sym)
+    end
+
+    def ds_field_value?
+      ds_field_value && !ds_field_value.empty?      
     end
     
     # saves the role for the user in the data store

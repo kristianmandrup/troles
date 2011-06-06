@@ -26,7 +26,7 @@ module Troles::Mongoid
       when :bit_many
         Integer
       when :string_many
-       String
+        String
       end
       # field :name, :type => String
       clazz.send(:field, role_field, type: => type) if type      

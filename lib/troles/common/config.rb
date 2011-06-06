@@ -33,6 +33,14 @@ module Troles::Common
       end
     end
 
+    def role_field
+      @role_field || default_role_field
+    end
+
+    def default_role_field
+      singularity == :many ? :troles : :trole
+    end
+
     def orm
       @orm || self.class.default_orm
     end

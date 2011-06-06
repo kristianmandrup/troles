@@ -20,7 +20,7 @@ module Trole::Mongoid
       when :bit_one
         Boolean
       when :string_one
-       String
+        String
       end
       clazz.send(:field, role_field, type) if type      
     end   

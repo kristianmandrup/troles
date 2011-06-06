@@ -31,12 +31,12 @@ end
 RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-    # DatabaseCleaner.clean    
+    DatabaseCleaner.clean_with(:truncation)    
   end
 
   config.before(:each) do    
     DatabaseCleaner.start
+    DatabaseCleaner.drop_tables :users, :roles, :users_roles
     migrate_up
     # api_migrate      
   end

@@ -1,6 +1,6 @@
 class CreateBitMany < ActiveRecord::Migration
   def self.up
-    down
+    # down
     
     create_table :users do |t|
       t.string  :name

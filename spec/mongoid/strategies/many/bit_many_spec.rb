@@ -1,6 +1,4 @@
-require "active_record/strategy_helper"
-require "active_record/migrations/many/bit_many"
-CreateBitMany.up # run migration
+require "mongoid/strategy_helper"
 
 User.troles_strategy :bit_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]

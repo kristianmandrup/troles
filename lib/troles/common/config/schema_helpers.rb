@@ -48,7 +48,7 @@ module Troles::Common
         from_type = get_model_type from
         to_type = get_model_type to
 
-        model_key = option[:key] ? option[:key] : send("#{from_type}_key")
+        model_key = options[:key] ? options[:key] : send("#{from_type}_key")
 
         class_name = send "#{to_type}_class_name"
 

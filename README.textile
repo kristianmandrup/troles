@@ -519,9 +519,9 @@ User.troles_strategy :bit_one, :orm => :active_record do |c|
   c.auto_load = false
   c.valid_roles = [:troll_commander, :troll_warrior]
 
-  c.static_roles = true # note: false by default
+  c.auto_config[:relations] = false # to take over control of setting up model relationships
 
-end.configure! :role_model => 'Troll', :join_model => 'UserTroll'
+end.configure! :role_model => 'Troll', :role_join_model => 'UserTroll'
 </pre>
 
 Enjoy :)  

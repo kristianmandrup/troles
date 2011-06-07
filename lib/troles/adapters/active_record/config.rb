@@ -1,7 +1,5 @@
 module Troles::ActiveRecord
   class Config < Troles::Common::Config  
-
-    attr_accessor :role_join_model
     
     def initialize clazz, options = {}
       super 
@@ -23,11 +21,28 @@ module Troles::ActiveRecord
     
     protected
 
+    def role_join_model
+      @join_model_found ||= begin
+        models = [@join_model, 'UsersRoles'].select do |class_name|
+          try_class(class_name.to_s.camelize)
+        end.compact
+        # puts "role models found: #{models}"
+        raise "No User - Role join class defined, define UsersRoles or set which class to use, using the :role_join_model option on configuration" if models.empty?
+        models.first.to_s.constantize
+      end
+    end
+
+    def role_join_model= model_class
+      @join_model = model_class and return if model_class.kind_of?(Class, String, Symbol)
+      raise "The role model must be a Class, was: #{model_class}"
+    end
+
+
     def join_key
       make_key role_join_model
     end
     
-    def join_model
+    def configure_join_model
       # UserAccount
       # has_many :troles, :class_name => 'Role', :through => :users_roles
       has_many_for clazz, role_model, :through => join_key 

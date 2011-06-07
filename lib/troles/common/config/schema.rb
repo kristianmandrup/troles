@@ -1,8 +1,6 @@
 module Troles::Common
   class Config
     module Schema
-      attr_accessor :join_model
-
       def configure_role_field
         configure_generic
         configure_field
@@ -21,18 +19,6 @@ module Troles::Common
       def configure_relation
       end
 
-      def join_model
-        @join_model ||= begin
-          return UsersRoles if defined? UsersRoles
-          raise "Join model not defined"
-        end
-      end
-
-      def join_model= model_class
-        @join_model = model_class and return if model_class.kind_of?(Class)
-        raise "The role model must be a Class, was: #{model_class}"
-      end
-
       # Sets the role model to use
       # allows different role subject classes (fx User Accounts) to have different role schemas
       # @param [Class] the model class
@@ -47,10 +33,10 @@ module Troles::Common
       def role_model
         @role_model_found ||= begin
           models = [@role_model, 'Role'].select do |class_name|
-            try_class(class_name.to_s)
+            try_class(class_name.to_s.camelize)
           end.compact
           # puts "role models found: #{models}"
-          raise "No Role class defined, define Role one or set using #role_model method on config" if models.empty?
+          raise "No Role class defined, define Role or set which class to use, using the :role_model option on configuration" if models.empty?
           models.first.to_s.constantize
         end
       end

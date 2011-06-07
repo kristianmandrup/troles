@@ -185,17 +185,87 @@ The Roles Operations object is available on user#roles
   user.roles.clear!  
 </pre>
 
+h3. Creating a custom Data Store Adapter (DSA)
+
+An adapter almost always requires a custom Config class implementation. Look at the _troles/common/config.rb_ to see what functionality is available that you can use. 
+
+Note that :single role strategies always have the namespace 'Trole' whereas for :many it is 'Troles'. This convention is used throughout troles and breaking this convention will thus break the troles functionality.
+
+A custom Config class for _:single_ role strategies using _Mongoid_ could look sth. like this:
+
+<pre>
+module Trole::Mongoid
+  class Config < Troles::Common::Config  
+
+    def initialize clazz, options = {}
+      super
+    end
+  
+    def configure_relation
+      case strategy
+      when :ref_one
+        has_one_for clazz, :role
+        belongs_to_for role_model, :user
+      when :embed_one
+        embeds_one_for clazz, :role
+      end
+    end
+    
+    def configure_field
+      type = case strategy
+      when :bit_one
+        Boolean
+      when :string_one
+        String
+      end
+      clazz.send(:field, role_field, type) if type      
+    end
+</pre>                     
+
+As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships! 
+See the _schema_helpers.rb_ file for more details!
+
+Example: Config class for :many roles strategies with _Mongoid_
+
+<pre>
+module Troles::Mongoid
+  class Config < Troles::Common::Config  
+
+    def initialize clazz, options = {}
+      super
+    end
+  
+    def configure_relation
+      case strategy
+        ...
+      end
+    end
+    
+    def configure_field
+      type = case strategy
+      when :bit_many
+        Integer
+      when :string_many
+        String
+      end
+      clazz.send(:field, role_field, type: => type) if type      
+    end
+</pre>
+
 h3. Creating a custom Strategy Storage Adapter (SSA)
 
+Often you need to define Storage class implementations for some of the strategies, especially those that reference or embed other models. 
+
 You must implement the following methods:
+
 - #display_roles (returns symbol list of roles)  
 - #clear! (clear the roles in the datastore)
 - #set_roles (set the roles in the datastore)
 - #set_role  (as #set_roles)
 
-Note: #set_role is only required for :single role strategies. In this case #set_roles impl. is not required, as the default impl. proxies #set_role
+Note: #set_role is only required for :single role strategies. In this case #set_roles is not required, as the superclass implementation simply calls #set_role with the first role.
 
-Example custom SSA (encrypted comma seperated string for multiple roles):
+Example custom SSA (encrypted role string):
 
 <pre>
 module Trole::Storage
@@ -234,30 +304,27 @@ end
 
 h3. Custom Storage for an ORM (or data store)
 
-For Active Record there is no need for change, as an AR Role model implements the _where_ API used in the default _#find_roles_ implementation of the generic _BaseMany_ storage.
+In some cases it is useful to rewrite part of the base Storage functionality. One such method is #find_roles.
 
 <pre>
 module Troles::Storage
   class BaseMany < Troles::Common::Storage
     def find_roles *roles
-      role_model.where(:name => roles.flatten)
+      role_model.where(:name => roles.flatten).all
     end  
   ...
 end
 </pre>
 
-However for Mongoid, there is a need to use _#all_ on the result of the query to get the array: 
-
-@role_model_.where(:name => roles).all@
-
-This can be done elegantly using super, and having the MongoidStorage inherit from the Generic one.
+Active Record and Mongoid both implement the above API, so no need to customize this method in the Storage adapter.
+For most other ORMs/data stores you will likely have to write your own logic to achieve this.
 
 <pre>
 module Troles::MongoidStorage
   class RefMany < Troles::Storage::BaseMany
 
     def find_roles *roles
-      super(roles).all
+      # my own custom datastore logic!!!
     end
   ...  
 </pre>
@@ -286,14 +353,70 @@ module Troles::Marshaller
 end
 </pre>
 
+h3. Using a custom Marshaller in a Storage implementation
+
+The following example is taken from the BitOne Storage implementation that is part of troles:
+
+<pre>
+require 'troles/common/marshaller'
+
+module Trole::Storage 
+  class BitOne < BaseOne
+    # display the role as a list of one symbol
+    # see Troles::Marshaller::Bitmask    
+    # @return [Array<Symbol>] roles list
+    def display_roles
+      raise "BitOne requires exactly two valid roles, was: #{valid_roles}" if !(valid_roles.size == 2)
+      [bitmask.read].flatten
+    end
+      
+    # saves the role for the role subject in the data store
+    # @param [Symbol] role name
+    def set_role role
+      num = bitmask.write role
+      set_ds_field(num == 1 ? false : true) # boolean field in Data store
+    end  
+
+    # Clears the role state of the role subject 
+    def clear!
+      set_ds_field false
+    end
+  
+    protected
+
+    def bitmask
+      @bitmask ||= Troles::Common::Marshaller::Bitmask.new role_subject
+    end
+  ...        
+</pre>
+
+Note that the same _BitMask_ marshaller is also reused in the _BitMany_ storage!
+
+The _#bitmask_ method returns an instance of the _Bitmask_ marshaller, instantiated with the _role_subject_ (the instance that has the #role_list method, typically the user or user account). To use the _Encryption_ marshaller in an Encryption storage we could create a _#marshaller_ method:
+
+<pre>
+  def marshaller
+    @marshaller ||= Troles::Marshaller::Encryption.new role_subject
+  end  
+</pre>
+
+Then use @marshaller.write(*roles)@ in the _set_xxxx_ methods and @marshaller.read@ in _#display_roles_ method of the storage, as needed.
+
 h3. Custom troles strategy
 
-To add a new strategy, you CAN create a special Strategy module that acts as the module included by the troles macro.
+To add a new strategy, you can optionally create a special Strategy module that acts as the module included by the troles macro.
 Using standard naming convention it will be found and used by the _troles_strategy_ macro method :)  
-If you don't create such a Strategy module, troles will just use the BaseOne or BaseMany for the given namespace.
+If you don't create a specialized Strategy module, troles will just use the _BaseOne_ or _BaseMany_ depending on the singularity (one or many) 
+of the strategy.
 
-Using naming conventions, the strategy will always try to use a storage class of the form: _Troles::Storage::EncryptedStringMany_ 
-in the example below (substitute Strategy for Storage).
+Using naming conventions, the strategy will always try to use a matching storage class (substitute Strategy for Storage). 
+If you don't define a custom Strategy module or Storage class, troles will just use a generic implementation. 
+
+Try to keep it simple and start by defining only a Config class and then see if you need to implement a custom Storage class. 
+You rarely need to implement a custom Strategy module or custom API implementations. 
+
+Here is an example of a custom Strategy implementation for _EncryptedStringMany_ that simply wraps the _BaseMany_ strategy implementation.
+This example demonstrates how you can easily override functionality with custom implementations by including modules "on top".
 
 <pre>
 module Troles::Strategy
@@ -303,12 +426,24 @@ module Troles::Strategy
     # @param [Class] the role subject class to  
     def self.included(base)
       base.send :include, BaseMany
+      base.send :include, InstanceMethods      
+      base.extend ClassMethods            
+    end
+
+    module ClassMethods
+      # .. my custom class methods
+    end
+    
+    module InstanceMethods
+      # .. my custom instance methods
     end
   end
 end  
 </pre>
 
 h3. Creating a Base strategy for an Adapter
+
+In some cases you need a custom Base strategy that contains common functionality shared among strategies with the same singularity (one or many).
 
 Example: _BaseMany_, used as the base for all Many roles strategies
 
@@ -320,77 +455,15 @@ Example: _BaseMany_, used as the base for all Many roles strategies
         #
         def self.included(base)
           base.send :include, Troles::Strategy::BaseMany        
+
+          # base.send :include, InstanceMethods      
+          # base.extend ClassMethods            
         end
       end
     end
   end
 </pre>
-
-Note: You only need to implement this if you want to use it as a hook to add some extra strategy implementation code, such as custom modules etc. 
-
-An adapter usuaully requires a custom implementation of the Config class. Look at the _troles/common/config.rb_ to see what functionality is available that you can use.
-A custom Config class for :single role strategies using _Mongoid_ could look sth. like this:
-
-<pre>
-module Trole::Mongoid
-  class Config < Troles::Common::Config  
-
-    def initialize clazz, options = {}
-      super
-    end
   
-    def configure_relation
-      case strategy
-      when :ref_one
-        has_one_for clazz, :role
-        belongs_to_for role_model, :user
-      when :embed_one
-        embeds_one_for clazz, :role
-      end
-    end
-    
-    def configure_field
-      type = case strategy
-      when :bit_one
-        Boolean
-      when :string_one
-        String
-      end
-      clazz.send(:field, role_field, type) if type      
-    end
-</pre>                     
-
-As you can see, you have several nice convenience methods available to help set up these somewhat complex model relationships! (see _Troles::Common::Config_)
-
-Example: Config class for :many roles strategies with _Mongoid_
-
-<pre>
-module Troles::Mongoid
-  class Config < Troles::Common::Config  
-
-    def initialize clazz, options = {}
-      super
-    end
-  
-    def configure_relation
-      case strategy
-        ...
-      end
-    end
-    
-    def configure_field
-      type = case strategy
-      when :bit_many
-        Integer
-      when :string_many
-        String
-      end
-      clazz.send(:field, role_field, type: => type) if type      
-    end
-</pre>  
-
-Very easy!
-
 To use your adapter, simply pass an extra option to the _troles_strategy_ macro:
 
 <pre>
@@ -417,18 +490,41 @@ The _troles_strategy_ macro will yield the Config object if you pass it a block.
 This allows you to configure your stategy with troles inside the block and then call _configure!_ on end of the block.
 Using all this in combination, you could configure it all doing sth. like this:
 
-<pre>
+<pre>  
+require 'my/own/active_record/adapter'  
+  
 User.troles_strategy :bit_one, :orm => :active_record do |c|
   c.auto_load = false
-  c.valid_roles = [:troll, :warrior]
+  c.valid_roles = [:troll_commander, :troll_warrior]
 
-  c.static_roles_for_class = false # note: false by default
-  c.static_roles_for_user = false  # note: false by default
+  c.static_roles = true # note: false by default
 
 end.configure! :role_model => 'Troll', :join_model => 'UserTroll'
 </pre>
 
 Enjoy :)  
+
+h2. Global configuration
+
+The following is a list of the global Troles common configuration options:
+
+* default_orm
+* auto_load (true|false)
+* log_on (true|false)
+
+Examples:
+
+@Troles::Common::Config.default_orm = :mongoid@
+
+Troles uses this as the ORM setting in case you don't specify the orm when you configure a troles strategy.
+
+@Troles::Common::Config.auto_load = true@
+
+Ensures the adapter is autoloaded from the troles internal _/adapter_ folder. Leave this to false (defalt) if you have rolled your own or use a 3rd party adapter.
+
+@Troles::Common::Config.log_on = true@
+
+Turns on some logging to make it easier to debug what goes on behind the curtain (note: to be improved...). 
 
 h2. Other notes on Application-User control
 
@@ -554,11 +650,7 @@ class BloggerAccount
 end  
 </pre>
 
-There is now also a global ORM configuration options for troles, so you can do sth. like:
-
-@Troles::Common::Config.default_orm = :mongoid@
-
-Troles uses this setting in case you don't specify the orm when you configure a troles strategy.
+And here the User setup:
 
 <pre>
 module BaseUser

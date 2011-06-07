@@ -4,7 +4,7 @@ module Troles::Common
       def configure_role_field
         configure_generic
         configure_field
-        configure_relation
+        configure_relation if auto_relations?
       end         
 
       def configure_generic                    

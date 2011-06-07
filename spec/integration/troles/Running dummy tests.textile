@@ -1,0 +1,35 @@
+h1. Running dummy tests
+
+See the:
+
+* migration files in db/migration
+* seed file in db/seed.rb
+* models in /models
+* troles.rb initializer in config/initializers (set up globals)
+
+<pre>
+rake db:drop
+rake db:create
+rake db:migrate
+rake db:seed
+
+rails c  
+</pre> 
+
+Add the :admin role to the first user!
+
+@RefManyUser.first.roles << :admin@
+
+<pre>
+> RefManyUser.first.roles << :admin
+config_class: Troles::ActiveRecord::Config
+role models found: ["Role"]
+RefManyUser.has_and_belongs_to_many :troles, {:class_name=>"Role"}
+Role.has_and_belongs_to_many :accounts, {:class_name=>"RefManyUser"}
+  RefManyUser Load (0.1ms)  SELECT "ref_many_users".* FROM "ref_many_users" LIMIT 1
+  Role Load (0.2ms)  SELECT "roles".* FROM "roles" INNER JOIN "ref_many_users_roles" ON "roles"."id" = "ref_many_users_roles"."role_id" WHERE "ref_many_users_roles"."ref_many_user_id" = 1
+  Role Load (0.2ms)  SELECT "roles".* FROM "roles" WHERE "roles"."name" IN ('admin')
+ => true   
+</pre>
+
+Oh yeah!

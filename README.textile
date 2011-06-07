@@ -533,7 +533,9 @@ The following is a list of the global Troles common configuration options:
 * default_orm
 * auto_load (true|false)
 * log_on (true|false)
-* auto_relations (true|false)
+* auto_config(:models) (true|false)
+* auto_config(:fields) (true|false)
+* auto_config(:relations) (true|false)
 
 Examples:
 
@@ -549,9 +551,17 @@ Ensures the adapter is autoloaded from the troles internal _/adapter_ folder. Le
 
 Turns on some logging to make it easier to debug what goes on behind the curtain (note: to be improved...). 
 
-@Troles::Common::Config.auto_relations = false@
+@Troles::Common::Config.auto_config(:models) = false@
+
+Disables troles auto configuration of models, allowing you full control. 
+
+@Troles::Common::Config.auto_config(:relations) = false@
 
 Disables troles auto configuration of model relationships (has_many, belongs_to and such), allowing you full control. 
+
+@Troles::Common::Config.auto_config(:fields) = false@
+
+Disables troles auto configuration of model fields (for data stores such as Data Mapper, Mongoid etc that have the concept of data fields), allowing you full control. 
 
 Note: For all the global on/off options you can opt to use same option on an individual strategy basis as part of an individual strategy configuration.
 

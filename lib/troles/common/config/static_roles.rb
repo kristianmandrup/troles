@@ -1,13 +1,13 @@
 module Troles::Common
   class Config
     module StaticRoles    
-      def static_roles_for_class= value
+      def static_roles= value
         raise ArgumentError, "Must be a boolean" if !boolean?(value)
-        @static_roles_for_class = value      
+        @static_roles = value      
       end
 
-      def static_roles_for_class?
-        @static_roles_for_class || false
+      def static_roles?
+        @static_roles || false
       end
     end
   end

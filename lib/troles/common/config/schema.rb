@@ -3,8 +3,8 @@ module Troles::Common
     module Schema
       def configure_role_field
         configure_generic
-        configure_field
-        configure_relation if auto_relations?
+        configure_field if auto_config?(:fields)
+        configure_relation if auto_config?(:relations)
       end         
 
       def configure_generic                    

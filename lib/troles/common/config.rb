@@ -24,11 +24,7 @@ module Troles::Common
 
     class << self
       attr_reader :default_orm, :auto_load
-      attr_accessor :log_on, :auto_relations
-
-      def auto_relations?
-        auto_relations || true
-      end
+      attr_accessor :log_on
 
       def log_on?
         log_on || false
@@ -46,14 +42,56 @@ module Troles::Common
       def auto_load?
         @auto_load
       end      
+
+      def auto_config name
+        auto_config_setings[name]
+      end 
+      
+      def auto_config? name
+        auto_config_setings[name]
+      end
+      
+      protected
+
+
+      def auto_config_setings
+        @auto_config_setings ||= auto_config_defaults
+      end
+
+      # default auto_config settings
+      def auto_config_defaults
+        {:models => true, :relations => true, :fields => true}
+      end      
     end
 
     def log_on?
       log_on || Troles::Config.log_on
     end
 
-    def auto_relations?
-      auto_relations || Troles::Config.auto_relations?
+    def auto_config name
+      auto_config_setings[name] 
+    end 
+    
+    def auto_config? name
+      return auto_config_setings[name] if auto_config_setings[name]
+      Troles::Config.auto_config?(name)
+    end
+
+    def apply_options! options = {}
+      options.each_pair do |key, value| 
+        send("#{key}=", value) if self.respond_to?(:"#{key}")
+      end      
+    end
+
+    def configure! options = {}
+      apply_options! options
+      configure_role_field if auto_config?(:models)
+    end
+    
+    # protected
+
+    def auto_config_setings
+      @auto_config_setings ||= {}
     end
 
     def role_field
@@ -76,12 +114,6 @@ module Troles::Common
       @orm || self.class.default_orm
     end
 
-    def apply_options! options = {}
-      options.each_pair do |key, value| 
-        send("#{key}=", value) if self.respond_to?(:"#{key}")
-      end      
-    end
-
     def singularity
       @singularity ||= (strategy =~ /_many$/) ? :many : :one
     end
@@ -90,11 +122,6 @@ module Troles::Common
     #   raise ArgumentError, "Must be :many or :one" if ![:one, :many].include?(value)      
     #   @singularity ||= value
     # end
-
-    def configure! options = {}
-      apply_options! options
-      configure_role_field
-    end
             
     def generic?
       return true if orm.nil?

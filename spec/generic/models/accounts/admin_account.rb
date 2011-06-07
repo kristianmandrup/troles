@@ -1,4 +1,4 @@
-require "models/user"
+require "generic/models/user"
 
 class AdminAccount < User
   def initialize options = {}

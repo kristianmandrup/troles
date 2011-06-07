@@ -1,7 +1,7 @@
-require 'strategy_helper'
+require 'trole/strategy_helper'
 
-User.troles_strategy :bit_one do |c|
-  c.valid_roles = [:user, :admin]
+User.troles_strategy :bit_one, :generic => true do |c|
+  # c.valid_roles = [:user, :admin]
 end.configure!
 
 module UserSetup
@@ -15,6 +15,8 @@ module UserSetup
 end
 
 describe 'Trole strategy bit_one' do
-  it_should_behave_like "Common API"
-  it_should_behave_like "Trole API"  
+  it_behaves_like "Common API"
+  it_behaves_like "Common API for two roles :bit_one"
+
+  it_behaves_like "Trole API"  
 end    

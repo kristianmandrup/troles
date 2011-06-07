@@ -1,4 +1,4 @@
-require "models/base_user"
+require "generic/models/base_user"
 
 class User < BaseUser
   def initialize options = {}

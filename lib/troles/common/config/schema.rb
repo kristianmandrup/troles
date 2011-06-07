@@ -9,8 +9,13 @@ module Troles::Common
         configure_relation
       end         
 
-      def configure_generic
-        clazz.send(:attr_accessor, role_field) if generic? || orm == :generic # create troles accessor      
+      def configure_generic                    
+        if generic? || orm == :generic # create troles accessor      
+          puts "set generic #{role_field}"
+          clazz.send(:attr_accessor, role_field) 
+        else
+          puts "not generic: #{generic?} #{orm}"
+        end
       end       
 
 

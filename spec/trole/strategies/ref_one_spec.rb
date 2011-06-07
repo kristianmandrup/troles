@@ -21,7 +21,9 @@ module UserSetup
 end
 
 describe 'Trole strategy ref_one' do
-  it_should_behave_like "Common API"
-  it_should_behave_like "Trole API"  
+  it_behaves_like "Common API"
+  it_behaves_like "Common API for multiple roles"  
+
+  it_behaves_like "Trole API"  
 end    
 

@@ -13,8 +13,8 @@ module Troles::Common
       send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
     end
 
-    attr_accessor :clazz, :strategy, :log_on
-    attr_writer   :generic, :orm
+    attr_accessor :clazz, :strategy, :log_on, :generic
+    attr_writer   :orm
     
     def initialize clazz, options = {}
       @clazz = clazz
@@ -89,6 +89,7 @@ module Troles::Common
     end
             
     def generic?
+      return true if orm.nil?
       @generic.nil? ? false : @generic
     end
   end

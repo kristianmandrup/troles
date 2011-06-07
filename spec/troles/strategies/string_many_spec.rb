@@ -25,6 +25,8 @@ module UserSetup
 end
 
 describe 'Troles strategy string_many' do
-  it_should_behave_like "Common API"
-  it_should_behave_like "Troles API"  
+  it_behaves_like "Common API"
+  it_behaves_like "Common API for multiple roles"  
+
+  it_behaves_like "Troles API"  
 end    

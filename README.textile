@@ -49,6 +49,17 @@ puts User.decorator(:troles_group).public_api(:write).methods.sort
 puts User.decorator(:troles_group).internal_api(:write).methods.sort
 </pre>
 
+I will use the new Decorator API very soon... sth like this:
+
+<pre>
+User.decorator(:trole_groups).configure(:strategy) :ref_one do |strategy|
+  strategy.orm = :mongoid
+  strategy.auto_load = true
+end.configure!  
+</pre>
+
+Awesome! 
+
 h3. Yard documentation
 
 I'm using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.

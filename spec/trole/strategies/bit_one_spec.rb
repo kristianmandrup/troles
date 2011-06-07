@@ -16,7 +16,7 @@ end
 
 describe 'Trole strategy bit_one' do
   it_behaves_like "Common API"
-  it_behaves_like "Common API for two roles :bit_one"
+  it_behaves_like "Trole API for two roles :bit_one"
 
   it_behaves_like "Trole API"  
 end    

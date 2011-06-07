@@ -4,7 +4,6 @@
 
 require_all File.dirname(__FILE__) + '/api'
 
-require 'troles/common/two_roles_spec'
 require 'troles/common/multi_roles_spec'
 
 def define_users
@@ -42,26 +41,10 @@ shared_examples_for "Common API" do
   # end  
 end 
 
-# All strategies EXCEPT :bit_one strategy
-
 shared_examples_for "Common API for multiple roles" do
+  include UserSetup 
+    
   it_behaves_like "Common Write API for multiple roles" do
-    define_users
-  end  
-  
-  it_behaves_like "Common Operations API for multiple roles" do
-    define_users
-  end  
-end
-
-# Specs for :bit_one strategy
-
-shared_examples_for "Common API for two roles :bit_one" do
-  it_behaves_like "Common Write API for two roles :bit_one" do
-    define_users
-  end  
-  
-  it_behaves_like "Common Operations API for two roles :bit_one" do
     define_users
   end  
 end

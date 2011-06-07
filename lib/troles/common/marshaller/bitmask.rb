@@ -17,6 +17,8 @@ module Troles::Common
       end
 
       def write *roles
+        roles = roles.uniq.compact
+        return as_number(false) if roles.empty?
         roles.to_symbols.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }          
       end
       

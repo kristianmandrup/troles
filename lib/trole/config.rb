@@ -5,7 +5,6 @@ module Trole
     end
 
     def configure_role_field
-      puts "configure_role_field!!!"
       super
     end       
         

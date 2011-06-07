@@ -24,16 +24,17 @@ module Troles::ActiveRecord
     def role_join_model
       @join_model_found ||= begin
         models = [@join_model, 'UsersRoles'].select do |class_name|
+          puts "try: #{class_name.to_s.camelize}"
           try_class(class_name.to_s.camelize)
         end.compact
         # puts "role models found: #{models}"
-        raise "No User - Role join class defined, define UsersRoles or set which class to use, using the :role_join_model option on configuration" if models.empty?
+        raise "No #{clazz} to #{role_model} join class defined, define a #{clazz.to_s.pluralize}#{role_model.to_s.pluralize} model class or set which class to use, using the :role_join_model option on configuration" if models.empty?
         models.first.to_s.constantize
       end
     end
 
     def role_join_model= model_class
-      @join_model = model_class and return if model_class.kind_of?(Class, String, Symbol)
+      @join_model = model_class and return if model_class.any_kind_of?(Class, String, Symbol)
       raise "The role model must be a Class, was: #{model_class}"
     end
 

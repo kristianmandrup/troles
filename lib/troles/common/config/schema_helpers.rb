@@ -88,7 +88,7 @@ module Troles::Common
       end
 
       def make_key name
-        name.gsub(/::/, '__').underscore.pluralize      
+        name.to_s.gsub(/::/, '__').underscore.pluralize      
       end
     end
   end

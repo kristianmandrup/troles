@@ -43,8 +43,8 @@ module Troles::Common
         @auto_load
       end      
 
-      def auto_config name
-        auto_config_setings[name]
+      def auto_config
+        auto_config_setings
       end 
       
       def auto_config? name
@@ -68,12 +68,12 @@ module Troles::Common
       log_on || Troles::Config.log_on
     end
 
-    def auto_config name
-      auto_config_setings[name] 
+    def auto_config
+      auto_config_setings 
     end 
     
     def auto_config? name
-      return auto_config_setings[name] if auto_config_setings[name]
+      return auto_config_setings[name] if !auto_config_setings[name].nil?
       Troles::Config.auto_config?(name)
     end
 

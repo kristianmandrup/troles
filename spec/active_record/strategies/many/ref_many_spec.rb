@@ -12,7 +12,8 @@ end
 
 User.troles_strategy :ref_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
-end.configure!
+  c.auto_config[:relations] = false
+end.configure! :role_join_model => 'MyUsersRoles'
 
 module UserSetup
   def find_role name

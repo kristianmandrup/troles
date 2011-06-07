@@ -14,6 +14,7 @@ group :development, :test do
   gem 'mocha'
   gem 'database_cleaner', '~> 0.6.8', :git => "git://github.com/kristianmandrup/database_cleaner.git" 
 
+  gem 'rake',         '~> 0.9.0'
   gem 'bundler',      '>= 1'
   gem 'jeweler',      '>= 1.5'
   gem 'rdoc',         '>= 3.6'

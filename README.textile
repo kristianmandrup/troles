@@ -12,17 +12,13 @@ The roles list cache of a role subject (fx a user) is only updated (retrieved fr
 
 Note: Troles is a full redesign of _roles generic_ and company, using lessons learned. Troles uses a much cleaner design. It is aimed at being easy to extend and easy to create adapters for etc.
 
-h2. Status June 2, 2011
+h2. Status June 7, 2011 
 
-Trole and Troles are now mostly implemented. Looks like a very clean and intuitive design, and now (almost) fully documented!
-The specs are mostly in place, but there is a need to test more usage of the APIs to ensure corner cases are covered
-with ArgumentException raised and such. Also needs some debugging/finetuning in various places. 
+I'm now in the process of implementing TroleGroups! Finally a fully integrated role groups solution for Ruby and Rails ;)
+Due to the flexible design ot troles and trole, I can reuse the same infrastructure/design/architecture to implement trole_groups! 
+*Yiii...haaa!*
 
-h3. Active Record specs!!!
-
-The Active Record specs infrastructure is finally set up and ready. Try: @$ rspec spec/active_record/strategies/many/string_many.rb@
-
-h3. Yard docu
+h3. Yard documentation
 
 I'm using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
 

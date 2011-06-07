@@ -7,7 +7,9 @@ require "action_view/railtie"
 require "action_mailer/railtie"
 
 Bundler.require
+# require 'trole'
 require "troles"
+require 'troles/macros'
 
 module Dummy
   class Application < Rails::Application

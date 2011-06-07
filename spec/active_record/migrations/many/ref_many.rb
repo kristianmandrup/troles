@@ -3,21 +3,23 @@ class CreateRefMany < ActiveRecord::Migration
     # down
 
     create_table :users do |t|
+      # implicit user_id binds to user_id of roles_users join table
       t.string :name
-      t.string :troles
       t.timestamps
     end
 
-    create_table :roles do |t|
-      t.string :name
-      t.timestamps
-    end
-    
     # join table
     create_table :roles_users, :id => false do |t|
       t.integer :user_id
       t.integer :role_id
-    end        
+    end
+
+    
+    create_table :roles do |t|
+      # implicit role_id binds to role_id of roles_users join table
+      t.string :name
+      t.timestamps
+    end    
   end
   
   def self.down  

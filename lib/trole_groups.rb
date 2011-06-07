@@ -1,7 +1,7 @@
 require 'troles/common'
 require 'troles/macros'
 
-module Troles  
+module TroleGroups  
   autoload :Config,         'trole_groups/config'
   autoload :Api,            'trole_groups/api'
   autoload :Operations,     'trole_groups/operations'

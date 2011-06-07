@@ -1,28 +1,14 @@
 class RoleGroup
   attr_accessor :name
   
-  def initialize *roles
-    @troles = roles
+  def initialize options = {}
+    @name = name
+    roles = options[:roles]
   end
 
   class << self
-    def valid_roles      
+    def create options = {}
+      self.new options
     end
-  end    
-
-  def roles
-    @troles
-  end
-
-  def roles= *roles
-    @troles = roles.flatten.compact.uniq
-  end
-
-  def add_roles *role_names
-    roles = (roles & role_names)
-  end
-
-  def remove_roles *role_names
-    roles = (roles - role_names)    
   end
 end

@@ -1,4 +1,4 @@
-module Troles::Macros
+module TroleGroups::Macros
   class Configuration  
     class StrategyLoader < BaseLoader
 

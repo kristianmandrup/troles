@@ -1,28 +1,24 @@
 h1. Role groups
+
+A RoleGroup is simply another role_subject and can thus be configured with a given role strategy! Sweet :)
+
 In some scenarios it makes sense to allow a user to be assigned one or more role groups.
+
+<pre>
+  Rolegroup.get(:bloggers).set_roles :blog_admin, :admin
+  Rolegroup.get(:super_admin).set_roles :blog_admin, :admin
+  Rolegroup.create(:super_admin, :roles => [:blog_admin, :admin])
+
+  Rolegroup.create(:super_admin).set_roles :blog_admin, :admin
+</pre>
 
 <pre>
   user.rolegroups << [:bloggers, :admins]
   user.in_rolegroup? :bloggers  
 </pre>
 
-one rolegroup from a set of valid rolegroups
 many rolegroups from a set of valid rolegroups 
 
-Single role strategy
-
-Schema
-  String field on the User class
-  One reference to a RoleGroup
-  Embeds one RoleGroup (document store)
-
-
-
-Field stored in the datastore for Admin and Single strategies
-
-trolegroup
-
-The field is named trolegroup, in order not to conflict with the method #rolegroup used in the role group DSL.
 
 Multiple roles strategy
 
@@ -40,13 +36,6 @@ The field is named trolegroups, in order not to conflict with the method #rolegr
 
 These strategies can be named:
 
-Admin role group
-  bit_one
-Single role group
-  string_one
-  ref_one
-  embed_one
-Multiple role groups
   bit_many
   string_many
   ref_many
@@ -55,9 +44,6 @@ Multiple role groups
 These strategies can be implemented for any data store using any schema format.
 
 <pre>
-User
- include Troles::GroupAdapter::RefOne
-
 User
  include Troles::GroupAdapter::RefMany  
 </pre>

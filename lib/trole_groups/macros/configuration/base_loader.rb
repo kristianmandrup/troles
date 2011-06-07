@@ -1,4 +1,4 @@
-module Troles::Macros
+module TroleGroups::Macros
   class Configuration  
     class BaseLoader
       attr_reader :strategy, :orm
@@ -6,10 +6,6 @@ module Troles::Macros
       def initialize strategy, orm
         @strategy = strategy
         @orm = orm || Troles::Config.default_orm
-      end
-
-      def singularity
-        (strategy =~ /_many$/) ? :many : :one
       end
       
       def try_module full_name
@@ -23,11 +19,11 @@ module Troles::Macros
       end
 
       def base_class
-        "Base#{singularity.to_s.camelize}"
+        "BaseMany"
       end
 
       def namespace
-        singularity == :many ? 'Troles' : 'Trole'      
+        'TroleGroups'
       end
 
       def orm_namespace

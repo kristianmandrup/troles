@@ -1,4 +1,5 @@
-shared_examples_for "TrolegroupGroup Read API" do
+shared_examples_for "TroleGroup Read API" do
+
   specify { user.has_rolegroup?(:blog_admin).should be_true }
   specify { user.is_rolegroup?(:blog_admin).should be_false }
         

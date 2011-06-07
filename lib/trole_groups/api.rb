@@ -1,12 +1,12 @@
 module TroleGroups
   module Api
-    autoload :Core,       'trole_groups/common/api/core'
-    autoload :Cache,      'trole_groups/common/api/cache'
-    autoload :Config,     'trole_groups/common/api/config'
-    autoload :Event,      'trole_groups/common/api/event'
-    autoload :Read,       'trole_groups/common/api/read'
-    autoload :Write,      'trole_groups/common/api/write'
-    autoload :Validation, 'trole_groups/common/api/validation'
+    autoload :Core,       'trole_groups/api/core'
+    autoload :Cache,      'trole_groups/api/cache'
+    autoload :Config,     'trole_groups/api/config'
+    autoload :Event,      'trole_groups/api/event'
+    autoload :Read,       'trole_groups/api/read'
+    autoload :Write,      'trole_groups/api/write'
+    autoload :Validation, 'trole_groups/api/validation'
 
 
     module ClassMethods

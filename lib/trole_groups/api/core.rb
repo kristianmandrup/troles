@@ -3,13 +3,13 @@ module TroleGroups::Api
     # Access to the Troles operations API
     # @return [Troles::Operations] the operations API object 
     def rolegroups
-      @rolegroups ||= Troles::Operations.new(self)
+      @rolegroups ||= TroleGroups::Operations.new(self)
     end       
 
     # Sets the roles of the subject
     # (see #set_roles)
     def rolegroups= *new_rolegroups
-      rolegroups.set_roles new_rolegroups
+      rolegroups.set_rolegroups new_rolegroups
     end       
 
     # If this role subject instance should have static (immutable) roles
@@ -18,14 +18,14 @@ module TroleGroups::Api
       false
     end
 
-    def trolesgroup_config
-      self.class.trolesgroup_config      
+    def trolegroups_config
+      self.class.trolegroups_config      
     end
       
     module ClassMethods            
     
-      def valid_roles
-        trolesgroup_config.valid_roles
+      def valid_rolegroups
+        trolegroups_config.valid_roles
       end
 
       # # TODO: make sure alphanumeric only
@@ -39,7 +39,7 @@ module TroleGroups::Api
       #
       # @return [true, false] if role subjects have static roles or not (default: false)
       def static_roles?
-        trolesgroup_config.static_roles?
+        trolegroups_config.static_roles?
       end           
     end
   end

@@ -1,4 +1,5 @@
 shared_examples_for "TroleGroup Write API" do
+
   describe '#clear_rolegroups!' do
     it "should clear rolegroups and invalidate rolegroups cache" do
       user.set_rolegroups :admin

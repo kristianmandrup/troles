@@ -6,6 +6,7 @@ The project currently consists of:
 
 * Trole - for single role strategies 
 * Troles - for many roles strategies
+* TroleGroups - for groups of roles
 
 The Troles project uses _role caching_ to optimize performance! 
 The roles list cache of a role subject (fx a user) is only updated (retrieved from data store) when the roles of the role subject changes!
@@ -17,6 +18,10 @@ h2. Status June 7, 2011
 I'm now in the process of implementing TroleGroups! Finally a fully integrated role groups solution for Ruby and Rails ;)
 Due to the flexible design ot troles and trole, I can reuse the same infrastructure/design/architecture to implement trole_groups! 
 *Yiii...haaa!*   
+                 
+"A RoleGroup is simply another role_subject and can thus be configured with a given role strategy!" 
+
+Simple and Sweet :)
 
 h2. The Ruby Class Decorator (RCD) pattern is born!!!
 

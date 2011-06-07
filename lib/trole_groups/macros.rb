@@ -13,9 +13,9 @@ puts "TroleGroups macros enabled!"
 
 module TroleGroups
   module Macros
-    autoload :Configuration, 'trole_groups/common/macros/configuration'
+    autoload :Configuration, 'trole_groups/macros/configuration'
     
-    def troles_strategy strategy, options = {}, &block
+    def trolegroups_strategy strategy, options = {}, &block
       configuration = Configuration.new self, strategy, options
 
       configuration.load_adapter
@@ -26,11 +26,11 @@ module TroleGroups
       configuration.apply_strategy_options!
       
       if strategy == :bit_one 
-        troles_config.valid_roles = [:user, :admin] # default binary roles 
+        trolegroups_config.valid_roles = [:user, :admin] # default binary roles 
       end
       
-      yield troles_config if block_given?
-      troles_config
+      yield trolegroups_config if block_given?
+      trolegroups_config
     end     
   end  
 end

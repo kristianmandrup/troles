@@ -55,15 +55,15 @@ module TroleGroups
       protected
 
       def troles_config
-        rolegroup_subject.class.trolegroup_config
+        rolegroup_subject.class.trolegroups_config
       end
 
       def trolegroup_field      
-        trolegroup_config.rolegroup_field
+        trolegroups_config.rolegroup_field
       end
 
       def rolegroup_model
-        trolegroup_config.rolegroup_model
+        trolegroups_config.rolegroup_model
       end
 
       def role_list

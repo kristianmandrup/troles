@@ -1,12 +1,12 @@
 # @author Kristian Mandrup
-module Trole_groupsGroups
+module TroleGroups
   class Operations
     module Write
       
       # Test role_groups equality
       # @param [Array<Symbol>] role_groups list to test
       def == *role_groups
-        rolegroup_subject.rolegroup_list == role_groups.flatten
+        rolegroup_subject.rolegroup_list == role_groups.to_symbols_uniq
       end
       alias_method :equal, :"=="
       alias_method :same_as, :"=="
@@ -15,7 +15,7 @@ module Trole_groupsGroups
       # @param  [Array<Symbol>] role_groups list to add
       # @return [true, false, Error] true if added, false if static or invalid, Error on some error
       def + *role_groups
-        rolegroup_subject.add_role_groups role_groups
+        rolegroup_subject.add_role_groups role_groups.to_symbols_uniq
       end
       alias_method :<<, :+
       alias_method :add, :+
@@ -25,7 +25,7 @@ module Trole_groupsGroups
       # @param  [Array<Symbol>] role_groups list to add
       # @return [true, false, Error] true if removed, false if static or invalid, Error on some error
       def - *role_groups
-        rolegroup_subject.remove_role_groups role_groups
+        rolegroup_subject.remove_role_groups role_groups.to_symbols_uniq
       end
       alias_method :remove, :-
       alias_method :remove!, :-

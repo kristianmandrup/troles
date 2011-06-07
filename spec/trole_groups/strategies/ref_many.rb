@@ -1,16 +1,24 @@
-require 'strategy_helper'
+require 'trole_groups/strategy_helper'
 
-User.trolesgroup_strategy :ref_many do |c|
+# define how User stores rolegroups
+User.trolegroups_strategy :ref_many do |c|
   c.valid_rolegroups = [:blog_admin, :super_admin]
 end.configure!
 
+# define how User stores roles
 User.troles_strategy :ref_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
 end.configure!
 
+# define how RoleGroup stores roles! 
+RoleGroup.troles_strategy :ref_many do |c|
+  c.valid_roles = [:user, :admin, :blogger, :editor]
+end.configure!
+
+# Add them roles
 Config.add_roles [:user, :admin, :editor, :blogger]
 
-Config.add_rolegroups {:blog_admin => [:blogger, :blog_editor], :super_admin => [:admin, :blog_admin] }
+Config.add_rolegroups :blog_admin => [:blogger, :blog_editor], :super_admin => [:admin, :blog_admin]
 
 module UserSetup
   def find_role name
@@ -38,9 +46,6 @@ module UserSetup
   end
 end
 
-describe 'Troles strategy ref_many' do
-  it_behaves_like "Common API"
-  it_behaves_like "Common API for multiple roles"  
-
-  it_behaves_like "Troles API"  
+describe 'TroleGroup strategy :ref_many' do
+  it_behaves_like "Rolegroup API"
 end    

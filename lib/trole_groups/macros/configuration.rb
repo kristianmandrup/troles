@@ -1,15 +1,15 @@
 module TroleGroups  
   module Macros    
     class Configuration
-      autoload :BaseLoader,     'troles/common/macros/configuration/base_loader'
-      autoload :ConfigLoader,   'troles/common/macros/configuration/config_loader'
-      autoload :StrategyLoader, 'troles/common/macros/configuration/strategy_loader'
-      autoload :StorageLoader,  'troles/common/macros/configuration/storage_loader'      
+      autoload :BaseLoader,     'trole_groups/macros/configuration/base_loader'
+      autoload :ConfigLoader,   'trole_groups/macros/configuration/config_loader'
+      autoload :StrategyLoader, 'trole_groups/macros/configuration/strategy_loader'
+      autoload :StorageLoader,  'trole_groups/macros/configuration/storage_loader'      
       
-      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :role_subject_class
+      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :rolegroup_subject_class
       
-      def initialize role_subject_class, strategy, options = {}
-        @role_subject_class = role_subject_class
+      def initialize rolegroup_subject_class, strategy, options = {}
+        @rolegroup_subject_class = rolegroup_subject_class
         @strategy = strategy
         @orm = options[:orm] || Troles::Config.default_orm
         @auto_load = options[:auto_load] || Troles::Config.auto_load?
@@ -33,7 +33,7 @@ module TroleGroups
       end
   
       def apply_strategy_options!
-        role_subject_class.troles_config.apply_options! options
+        rolegroup_subject_class.trolegroups_config.apply_options! options
 
         # StrategyOptions.new(clazz)
         # extract_macros(options).each{|m| apply_macro m}
@@ -41,15 +41,15 @@ module TroleGroups
 
       def define_hooks
         storage_class = storage_loader.storage_class
-        role_subject_class.send :define_method, :storage do 
+        rolegroup_subject_class.send :define_method, :storage do 
           @storage ||= storage_class
         end
         
         config_class = config_loader.config_class
         puts "config_class: #{config_class}" if Troles::Config.log_on
-        role_subject_class.singleton_class.class_eval %{
-          def troles_config
-            @troles_config ||= #{config_class}.new #{role_subject_class}, #{options.inspect}
+        rolegroup_subject_class.singleton_class.class_eval %{
+          def trolegroups_config
+            @trolegroups_config ||= #{config_class}.new #{rolegroup_subject_class}, #{options.inspect}
           end
         }
       end
@@ -57,11 +57,7 @@ module TroleGroups
       protected
 
       def namespace
-        singularity == :many ? 'troles' : 'trole'      
-      end
-
-      def singularity
-        @singularity ||= (strategy =~ /_many$/) ? :many : :one
+        'trole_groups'
       end
 
       def storage_loader
@@ -75,7 +71,6 @@ module TroleGroups
       def strategy_loader
         @strategy_loader ||= StrategyLoader.new strategy, orm
       end
-
 
       def auto_load?
         (auto_load && orm) || false

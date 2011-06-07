@@ -5,8 +5,8 @@
 #
 module TroleGroups::Api
   module Cache
-    def invalidate_role_cache!
-      @role_list = nil      
+    def invalidate_rolegroups_cache!
+      invalidate_role_cache!
       @rolegroup_list = nil
     end
   end  

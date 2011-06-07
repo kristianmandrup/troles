@@ -1,5 +1,5 @@
 module TroleGroups
-  class Operations < Troles::Common::Operations
+  class Operations # < Troles::Common::Operations
     autoload :Read,     'trole_groups/operations/read'
     autoload :Write,    'trole_groups/operations/write'
     

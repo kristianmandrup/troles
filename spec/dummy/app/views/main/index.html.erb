@@ -1,2 +1,3 @@
-<%= link_to "Trole", trole_path %><br/>
-<%= link_to "Troles", troles_path %>
+<% @users.each do |user| %>
+  <%= "#{user.name} has roles #{user.role_list.map(&:to_s).join(',') } " %>
+<% end %>

@@ -38,7 +38,7 @@ module Troles::Common
       # allows different role subject classes (fx User Accounts) to have different role schemas
       # @param [Class] the model class
       def role_model= model_class
-        @role_model = model_class and return if model_class.kind_of?(Class)
+        @role_model = model_class.to_s and return if model_class.any_kind_of?(Class, String, Symbol)
         raise "The role model must be a Class, was: #{model_class}"
       end
 
@@ -46,12 +46,26 @@ module Troles::Common
       # see (#role_model=)
       # @return [Class] the model class (defaults to Role)
       def role_model
-        return @role_model if @role_model && defined? @role_model
-        return Role if defined? Role
-        raise "Troles could not figure out what Role model to use, please define a class Role or set the #role_model class method to point to a model of your choice!"
+        @role_model_found ||= begin
+          models = [@role_model, 'Role'].select do |class_name|
+            try_class(class_name.to_s)
+          end.compact
+          # puts "role models found: #{models}"
+          raise "No Role class defined, define Role one or set using #role_model method on config" if models.empty?
+          models.first.to_s.constantize
+        end
       end
 
       protected
+
+      def try_class clazz
+        begin
+          clazz = clazz.constantize if clazz.kind_of?(String)
+          clazz
+        rescue          
+          false
+        end
+      end
                      
       include SchemaHelpers
  end

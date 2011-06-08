@@ -7,8 +7,10 @@ module Troles::ActiveRecord
     
     def configure_relation
       case strategy
+      when :join_ref_many
+        configure_join_model
       when :ref_many
-        return configure_join_model if role_join_model
+        return configure_join_model if join_model
         has_and_belongs_many subject_class, object_model, :key => :accounts         
       when :embed_many
         raise "Embed many configuration not yet implemented for ActiveRecord" 
@@ -24,6 +26,11 @@ module Troles::ActiveRecord
     def object_model
       role_model
     end
+
+    def join_model
+      role_join_model
+    end
+
 
     def role_join_model
       @join_model_found ||= begin
@@ -50,10 +57,17 @@ module Troles::ActiveRecord
       make_key role_join_model
     end
     
-    def configure_join_model
+    def configure_join_model           
+      if Troles::Common::Config.log_on?
+        puts "configuring join model..." 
+        puts "Subject class: #{subject_class}"
+        puts "Role class: #{object_model}"
+        puts "Join class: #{join_model}"
+      end
+
       # UserAccount
       # has_many :troles, :class_name => 'Role', :through => :users_roles
-      has_many_for subject_class, role_model, :through => join_key 
+      has_many_for subject_class, object_model, :through => join_key 
       # has_many :user_roles, :class_name => 'UserRole'
       has_many_for subject_class, role_join_model, :key => join_key
 
@@ -65,10 +79,10 @@ module Troles::ActiveRecord
 
       # Role
       # has_many :accounts, :class_name => 'User', :through => :user_roles      
-      has_many_for role, subject_class, :through => join_key, :key => :accounts
+      has_many_for object_model, subject_class, :through => join_key, :key => :accounts
 
       # has_many :user_roles, :class_name => 'UserRole'
-      has_many_for role, role_join_model, :key => join_key      
+      has_many_for object_model, role_join_model, :key => join_key      
     end
   end
 end

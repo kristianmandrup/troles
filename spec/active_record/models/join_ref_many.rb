@@ -1,4 +1,4 @@
-require "active_record/migrations/many/ref_many_join"
+require "active_record/migrations/many/join_ref_many"
 
 class User < ActiveRecord::Base    
   # has_and_belongs_to_many :troles, :class_name => 'Role'

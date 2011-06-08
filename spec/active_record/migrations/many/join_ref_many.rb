@@ -1,4 +1,4 @@
-class CreateRefManyJoin < ActiveRecord::Migration
+class CreateJoinRefMany < ActiveRecord::Migration
   def self.up
     # down
 

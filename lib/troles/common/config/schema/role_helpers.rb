@@ -11,7 +11,7 @@ module Troles::Common
         end
 
         def join_class_name
-          join_model.to_s
+          role_join_model.to_s
         end
 
         def join_key

@@ -41,8 +41,9 @@ module Troles::Common
         end
 
         def get_model_type class_name
-          return :user if class_name == subject_class
-          return :role if class_name == object_model
+          return :subject if class_name == subject_class
+          return :object  if class_name == object_model
+          return :join    if class_name == role_join_model
           raise "Not a known model: #{class_name}"
         end
 

@@ -1,16 +1,16 @@
 require "active_record/strategy_helper"
-require 'active_record/models/ref_many_join'
+require 'active_record/models/join_ref_many'
 
 def migrate_up
-  CreateRefManyJoin.up # run migration
+  CreateJoinRefMany.up # run migration
   Config.add_roles [:user, :admin, :editor, :blogger]
 end
 
 def migrate_down
-  CreateRefManyJoin.down
+  CreateJoinRefMany.down
 end      
 
-User.troles_strategy :ref_many_join do |c|
+User.troles_strategy :join_ref_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
   # c.auto_config[:relations] = false
 end.configure!

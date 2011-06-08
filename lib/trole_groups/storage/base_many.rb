@@ -52,10 +52,16 @@ module TroleGroups
 
       # Attempts to persist the role field changes
       # @return [true, false, error] true if saved, false if no save! method, Error on some error
-      def persist_role_changes!  
-        return false if !rolegroup_subject.respond_to? :save
-        rolegroup_subject.save
-        rolegroup_subject.publish_change :role_groups
+      def persist_role_changes!
+        puts "TroleGroups::Storage::BaseMany.persist_role_changes!" if Troles::Common::Config.log_on?
+        if !rolegroup_subject.respond_to? :save
+          puts "could not save since no #save method on subject: #{rolegroup_subject}" if Troles::Common::Config.log_on?
+          return false 
+        else      
+          puts "#{rolegroup_subject}.save" if Troles::Common::Config.log_on?         
+          rolegroup_subject.save
+          rolegroup_subject.publish_change :role_groups
+        end
       end 
 
       protected

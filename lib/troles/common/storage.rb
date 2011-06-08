@@ -29,6 +29,12 @@ module Troles::Common
     # @param [Object] the value to set on the role field of the role subject
     def set_ds_field value
       return if ds_field_value == value
+
+      if Troles::Common::Config.log_on?
+        puts "Troles::Common::Storage.set_ds_field:"
+        puts "#{rolegroup_subject}.#{ds_field_name} = #{value}"
+      end
+
       role_subject.send(:"#{ds_field_name}=", value)
       persist_role_changes!
     end
@@ -48,8 +54,8 @@ module Troles::Common
     # Attempts to persist the role field changes
     # @return [true, false, error] true if saved, false if no save! method, Error on some error
     def persist_role_changes!  
-      return false if !role_subject.respond_to? :save!
-      role_subject.save!
+      return false if !role_subject.respond_to? :save
+      role_subject.save
       role_subject.publish_change :roles
     end 
 

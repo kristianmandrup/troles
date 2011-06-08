@@ -28,7 +28,11 @@ module TroleGroups
       # sets the value of the role field (@trole or @troles) and persists the value (in the data store)
       # @param [Object] the value to set on the role field of the role subject
       def set_ds_field value
-        return if ds_field_value == value
+        return if ds_field_value == value 
+        if Troles::Common::Config.log_on?
+          puts "TroleGroups::Storage::BaseMany.set_ds_field:"
+          puts "#{rolegroup_subject}.#{ds_field_name} = #{value}"
+        end
         rolegroup_subject.send(:"#{ds_field_name}=", value)
         persist_role_changes!
       end
@@ -42,6 +46,7 @@ module TroleGroups
       # the current value of the role field
       # @return [Object] the value
       def ds_field_value
+        # puts "#{rolegroup_subject}.#{ds_field_name}" if Troles::Common::Config.log_on?
         rolegroup_subject.send(ds_field_name)
       end      
 

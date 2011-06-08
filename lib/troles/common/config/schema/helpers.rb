@@ -80,7 +80,14 @@ module Troles::Common
         end
         
         def make_key name, options = {}
-          key = name.to_s.gsub(/::/, '__').underscore.pluralize      
+          name = name.to_s.gsub(/::/, '__').underscore.pluralize
+          parts = name.split('_')
+          name = parts.inject([]) do |res, part|
+            res << (part != parts.last ? part.singularize : part)
+            res
+          end.join('_')
+          
+          key = name
           options[:prefix] ? "t#{key}" : key
         end
       end

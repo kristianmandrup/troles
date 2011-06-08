@@ -13,11 +13,11 @@ module Troles::Common
       send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
     end
 
-    attr_accessor :clazz, :strategy, :log_on, :generic, :auto_relations
+    attr_accessor :subject_class, :strategy, :log_on, :generic, :auto_relations
     attr_writer   :orm
     
-    def initialize clazz, options = {}
-      @clazz = clazz
+    def initialize subject_class, options = {}
+      @subject_class = subject_class
       # set instance var for each pair in options
       apply_options! options
     end
@@ -85,7 +85,7 @@ module Troles::Common
 
     def configure! options = {}
       apply_options! options
-      configure_role_field if auto_config?(:models)
+      configure_models if auto_config?(:models)
     end
     
     # protected

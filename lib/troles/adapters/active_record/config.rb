@@ -1,7 +1,7 @@
 module Troles::ActiveRecord
   class Config < Troles::Common::Config  
     
-    def initialize clazz, options = {}
+    def initialize subject_class, options = {}
       super 
     end
     
@@ -9,7 +9,7 @@ module Troles::ActiveRecord
       case strategy
       when :ref_many
         return configure_join_model if role_join_model
-        has_and_belongs_many clazz, role_model, :key => :accounts         
+        has_and_belongs_many subject_class, object_model, :key => :accounts         
       when :embed_many
         raise "Embed many configuration not yet implemented for ActiveRecord" 
       end
@@ -21,16 +21,23 @@ module Troles::ActiveRecord
     
     protected
 
+    def object_model
+      role_model
+    end
+
     def role_join_model
       @join_model_found ||= begin
-        models = [@join_model, 'UsersRoles'].select do |class_name|
-          puts "try: #{class_name.to_s.camelize}"
+        models = [@join_model, join_model_best_guess].select do |class_name|
           try_class(class_name.to_s.camelize)
         end.compact
         # puts "role models found: #{models}"
-        raise "No #{clazz} to #{role_model} join class defined, define a #{clazz.to_s.pluralize}#{role_model.to_s.pluralize} model class or set which class to use, using the :role_join_model option on configuration" if models.empty?
+        raise "No #{subject_class} to #{object_model} join class defined, define a #{join_model_best_guess} model class or set which class to use, using the :role_join_model option on configuration" if models.empty?
         models.first.to_s.constantize
       end
+    end
+
+    def join_model_best_guess
+      "#{subject_class.to_s.pluralize}#{object_model.to_s.pluralize}"
     end
 
     def role_join_model= model_class
@@ -46,19 +53,19 @@ module Troles::ActiveRecord
     def configure_join_model
       # UserAccount
       # has_many :troles, :class_name => 'Role', :through => :users_roles
-      has_many_for clazz, role_model, :through => join_key 
+      has_many_for subject_class, role_model, :through => join_key 
       # has_many :user_roles, :class_name => 'UserRole'
-      has_many_for clazz, role_join_model, :key => join_key
+      has_many_for subject_class, role_join_model, :key => join_key
 
       # UserRole (custom join class name)
       # belongs_to :user, :class_name => 'UserAccount'      
-      belongs_to_for role_join_model, clazz
+      belongs_to_for role_join_model, subject_class
       # belongs_to :role, :class_name => 'Role'      
       belongs_to_for role_join_model, role_model
 
       # Role
       # has_many :accounts, :class_name => 'User', :through => :user_roles      
-      has_many_for role, clazz, :through => join_key, :key => :accounts
+      has_many_for role, subject_class, :through => join_key, :key => :accounts
 
       # has_many :user_roles, :class_name => 'UserRole'
       has_many_for role, role_join_model, :key => join_key      

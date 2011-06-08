@@ -1,4 +1,4 @@
-module TrolesGroups
+module TroleGroups
   class Operations
     module Read      
       # The roles list of the role subject

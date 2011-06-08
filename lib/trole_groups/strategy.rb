@@ -15,20 +15,16 @@ module TroleGroups
       #
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
       #
-      def self.included(base)
+      def self.included(base)  
         base.send :include, TroleGroups::Api
       end      
 
       # The storage to use
-      # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy
-      def store
-        @store ||= storage.new self
+      # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy      
+      def group_store
+        @store ||= group_storage.new self
       end
-
-      # @return [Class] the storage strategy class
-      def storage 
-        raise "Must be implemented by subclass" # Troles::Storage::BaseMany
-      end      
+      
     end
   end
 end

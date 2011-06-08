@@ -1,7 +1,7 @@
 module Troles::Mongoid
   class Config < Troles::Common::Config  
     
-    def initialize clazz, options = {}
+    def initialize subject_class, options = {}
       super
     end
 
@@ -9,15 +9,15 @@ module Troles::Mongoid
     def configure_relation
       case strategy
       when :ref_many      
-        has_many_for clazz, :role, :through => join_key 
+        has_many_for subject_class, :role, :through => join_key 
         
-        belongs_to_for join_model, :user
-        belongs_to_for join_model, :role
+        belongs_to_for join_model, subject_class
+        belongs_to_for join_model, object_model
 
-        has_many_for role, :user, :through => join_key 
+        has_many_for role, subject_class, :through => join_key 
         
       when :embed_many
-        embeds_many clazz, :role
+        embeds_many subject_class, object_model
       end
     end
     
@@ -29,7 +29,7 @@ module Troles::Mongoid
         String
       end
       # field :name, :type => String       
-      clazz.send(:field, role_field, type_opts(type)) if type      
+      subject_class.send(:field, role_field, type_opts(type)) if type      
     end     
     
     def type_opts type

@@ -6,10 +6,10 @@ module Troles
       autoload :StrategyLoader, 'troles/common/macros/configuration/strategy_loader'
       autoload :StorageLoader,  'troles/common/macros/configuration/storage_loader'      
       
-      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :role_subject_class
+      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :subject_class
       
-      def initialize role_subject_class, strategy, options = {}
-        @role_subject_class = role_subject_class
+      def initialize subject_class, strategy, options = {}
+        @subject_class = subject_class
         @strategy = strategy
         @orm = options[:orm] || Troles::Config.default_orm
         @auto_load = options[:auto_load] || Troles::Config.auto_load?
@@ -33,23 +33,23 @@ module Troles
       end
   
       def apply_strategy_options!
-        role_subject_class.troles_config.apply_options! options
+        subject_class.troles_config.apply_options! options
 
-        # StrategyOptions.new(clazz)
+        # StrategyOptions.new(subject_class)
         # extract_macros(options).each{|m| apply_macro m}
       end      
 
       def define_hooks
         storage_class = storage_loader.storage_class
-        role_subject_class.send :define_method, :storage do 
+        subject_class.send :define_method, :storage do 
           @storage ||= storage_class
         end
         
         config_class = config_loader.config_class
         puts "config_class: #{config_class}" if Troles::Config.log_on
-        role_subject_class.singleton_class.class_eval %{
+        subject_class.singleton_class.class_eval %{
           def troles_config
-            @troles_config ||= #{config_class}.new #{role_subject_class}, #{options.inspect}
+            @troles_config ||= #{config_class}.new #{subject_class}, #{options.inspect}
           end
         }
       end

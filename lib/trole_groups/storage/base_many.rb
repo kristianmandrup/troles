@@ -28,6 +28,7 @@ module TroleGroups
       # sets the value of the role field (@trole or @troles) and persists the value (in the data store)
       # @param [Object] the value to set on the role field of the role subject
       def set_ds_field value
+        return if ds_field_value == value
         rolegroup_subject.send(:"#{ds_field_name}=", value)
         persist_role_changes!
       end
@@ -49,16 +50,16 @@ module TroleGroups
       def persist_role_changes!  
         return false if !rolegroup_subject.respond_to? :save!
         rolegroup_subject.save!
-        rolegroup_subject.publish_change :roles
+        rolegroup_subject.publish_change :role_groups
       end 
 
       protected
 
-      def troles_config
+      def trolegroups_config
         rolegroup_subject.class.trolegroups_config
       end
 
-      def trolegroup_field      
+      def rolegroup_field      
         trolegroups_config.rolegroup_field
       end
 

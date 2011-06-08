@@ -16,13 +16,14 @@ module TroleGroups::Api
     # can be customized
     # here uses singleton EventManager
     def publish_change event
+      send :invalidate_rolegroups_cache! if event == :role_groups
       event_manager.publish_change event, :from => self
     end
     
     protected
     
     def event_manager
-      Roles::EventManager
+      Troles::Common::EventManager
     end      
   end
 end

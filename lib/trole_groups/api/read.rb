@@ -12,16 +12,16 @@ module TroleGroups::Api
     end
 
     # subtraction of role_groups from rolegroups_list is empty
-    def in_all_rolegroups? *rolegroups
+    def in_rolegroups? *rolegroups
       (rolegroups.to_symbols - rolegroup_list).empty?
     end
-    alias_method :has_all_rolegroups?, :in_all_rolegroup?
+    alias_method :has_rolegroups?, :in_rolegroups?
 
     # union of rolegroups and rolegroups_list is not empty
     def in_any_rolegroup? *rolegroups
       !(rolegroup_list & rolegroups.to_symbols).empty?
     end
-    alias_method :has_any_rolegroups?, :in_any_rolegroup?
+    alias_method :has_any_rolegroup?, :in_any_rolegroup?
 
     # return roles of that rolegroup
     def roles_of rolegroup
@@ -32,7 +32,7 @@ module TroleGroups::Api
     # This set should be cached and only invalidated when the user has a change of roles
     def rolegroup_list
       @rolegroup_list ||= begin
-        store.display_rolegroups.flatten
+        group_store.display_rolegroups.flatten
       end
     end
   end

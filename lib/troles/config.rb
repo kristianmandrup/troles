@@ -1,10 +1,10 @@
 module Troles
   class Config < Troles::Common::Config    
-    def initialize clazz, options = {}
+    def initialize subject_class, options = {}
       super
     end
 
-    def configure_role_field
+    def configure_models
       super
     end       
         

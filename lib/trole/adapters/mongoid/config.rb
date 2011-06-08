@@ -1,17 +1,17 @@
 module Trole::Mongoid
   class Config < Troles::Common::Config  
     
-    def initialize clazz, options = {}
+    def initialize subject_class, options = {}
       super
     end
     
     def configure_relation
       case strategy
       when :ref_one
-        has_one_for clazz, :role
-        belongs_to_for role_model, :user
+        has_one_for subject_class, object_model
+        belongs_to_for object_model, subject_class
       when :embed_one
-        embeds_one clazz, :role
+        embeds_one subject_class, object_model
       end
     end
     
@@ -22,7 +22,7 @@ module Trole::Mongoid
       when :string_one
         String
       end
-      clazz.send(:field, role_field, type) if type      
+      subject_class.send(:field, role_field, type) if type      
     end   
     
     protected

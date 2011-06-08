@@ -12,7 +12,7 @@ shared_examples_for "TroleGroup Write API" do
       user.set_rolegroups :admin
       user.clear_rolegroups!
       expect { user.rolegroup_list }.to change{user.rolegroup_list_value }
-      user.clear_rolegroups!      
+      user.clear_rolegroups!
       expect { user.rolegroup_list }.to_not change{user.rolegroup_list_value }
     end
   end

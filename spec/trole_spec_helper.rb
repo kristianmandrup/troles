@@ -15,7 +15,7 @@ module Config
   end
 
   def self.add_rolegroups hash
-    names.flatten.each_pair {|name, roles| create_rolegroup(name, :roles => roles) }
+    hash.each_pair {|name, roles| create_rolegroup(name, :roles => roles) }
   end
 
 

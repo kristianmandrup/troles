@@ -6,10 +6,10 @@ module TroleGroups
       autoload :StrategyLoader, 'trole_groups/macros/configuration/strategy_loader'
       autoload :StorageLoader,  'trole_groups/macros/configuration/storage_loader'      
       
-      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :rolegroup_subject_class
+      attr_reader :strategy, :singularity, :orm, :auto_load, :options, :subject_class
       
-      def initialize rolegroup_subject_class, strategy, options = {}
-        @rolegroup_subject_class = rolegroup_subject_class
+      def initialize subject_class, strategy, options = {}
+        @subject_class = subject_class
         @strategy = strategy
         @orm = options[:orm] || Troles::Config.default_orm
         @auto_load = options[:auto_load] || Troles::Config.auto_load?
@@ -32,24 +32,29 @@ module TroleGroups
         end
       end
   
-      def apply_strategy_options!
-        rolegroup_subject_class.trolegroups_config.apply_options! options
+      def apply_strategy_options!        
+        trolegroups_config.apply_options! options
 
-        # StrategyOptions.new(clazz)
+        # StrategyOptions.new(subject_class)
         # extract_macros(options).each{|m| apply_macro m}
       end      
 
+      def trolegroups_config
+        subject_class.trolegroups_config
+      end
+
       def define_hooks
         storage_class = storage_loader.storage_class
-        rolegroup_subject_class.send :define_method, :storage do 
-          @storage ||= storage_class
+        # puts "storage_class: #{storage_class}"
+        subject_class.send :define_method, :group_storage do 
+          @group_storage ||= storage_class
         end
         
         config_class = config_loader.config_class
         puts "config_class: #{config_class}" if Troles::Config.log_on
-        rolegroup_subject_class.singleton_class.class_eval %{
+        subject_class.singleton_class.class_eval %{
           def trolegroups_config
-            @trolegroups_config ||= #{config_class}.new #{rolegroup_subject_class}, #{options.inspect}
+            @trolegroups_config ||= #{config_class}.new #{subject_class}, #{options.inspect}
           end
         }
       end

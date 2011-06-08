@@ -21,7 +21,8 @@ module TroleGroups::Storage
     # saves the role for the user in the data store
     def set_rolegroups *rolegroups
       # finds and sets references to existing Role instances from symbols
-      set_ds_field find_rolegroups(*rolegroups)
+      found = find_rolegroups(*rolegroups)
+      set_ds_field found
     end  
 
     # clears the role of the user in the data store

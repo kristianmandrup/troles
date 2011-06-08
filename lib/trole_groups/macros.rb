@@ -9,7 +9,7 @@
 #     troles_strategy :bit_many
 #
 
-puts "TroleGroups macros enabled!"
+# puts "TroleGroups macros enabled!"
 
 module TroleGroups
   module Macros
@@ -19,12 +19,16 @@ module TroleGroups
       configuration = Configuration.new self, strategy, options
 
       configuration.load_adapter
-      # puts "strategy module: #{configuration.strategy_module}"
-      send :include, configuration.strategy_module
+      # puts "strategy module: #{configuration.strategy_module}" 
+      begin
+        self.send :include, configuration.strategy_module
+      rescue
+        puts "error loading strategy: #{configuration.strategy_module}"
+      end
 
       configuration.define_hooks
       configuration.apply_strategy_options!
-      
+
       if strategy == :bit_one 
         trolegroups_config.valid_roles = [:user, :admin] # default binary roles 
       end

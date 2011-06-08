@@ -1,17 +1,17 @@
 module Troles  
   module Macros    
     class StrategyOptions
-      attr_reader :clazz
+      attr_reader :subject_class
   
-      def initialize clazz
-        @clazz = clazz
+      def initialize subject_class
+        @subject_class = subject_class
       end
 
       # @param [Symbol] name of the macro to run
       def apply_macro name
         # overrides default method that returns false
         begin 
-          clazz.send :include,  "Troles::Macros::#{strategy_name.to_s.camelize}".constantize
+          subject_class.send :include,  "Troles::Macros::#{strategy_name.to_s.camelize}".constantize
         rescue
         end
       end

@@ -1,13 +1,13 @@
 require 'trole_groups/strategy_helper'
 
-# define how User stores rolegroups
-User.trolegroups_strategy :ref_many do |c|
-  c.valid_rolegroups = [:blog_admin, :super_admin]
-end.configure!
-
 # define how User stores roles
 User.troles_strategy :ref_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
+end.configure!
+
+# define how User stores rolegroups
+User.trolegroups_strategy :ref_many do |c|
+  c.valid_rolegroups = [:blog_admin, :super_admin]
 end.configure!
 
 # define how RoleGroup stores roles! 
@@ -47,5 +47,5 @@ module UserSetup
 end
 
 describe 'TroleGroup strategy :ref_many' do
-  it_behaves_like "Rolegroup API"
+  it_behaves_like "TroleGroup API"
 end    

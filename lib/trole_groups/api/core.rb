@@ -23,6 +23,10 @@ module TroleGroups::Api
     end
       
     module ClassMethods            
+
+      def rolegroup_field
+        trolegroups_config.rolegroup_field
+      end
     
       def valid_rolegroups
         trolegroups_config.valid_roles
@@ -39,7 +43,7 @@ module TroleGroups::Api
       #
       # @return [true, false] if role subjects have static roles or not (default: false)
       def static_roles?
-        trolegroups_config.static_roles?
+        false # trolegroups_config.static_roles?
       end           
     end
   end

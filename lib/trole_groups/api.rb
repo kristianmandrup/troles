@@ -19,8 +19,9 @@ module TroleGroups
           begin
             base.include_and_extend :"#{api.to_s.camelize}"
           rescue
+            puts "include error: #{api}"
           end
-        end      
+        end
       end
     end
     extend ClassMethods

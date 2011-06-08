@@ -1,25 +1,38 @@
 module TroleGroups
-  class Config    
-    # autoload :ValidRoles,     'trole_groups/config/valid_roles'        
-    # autoload :StaticRoles,    'trole_groups/config/static_roles'
-    # autoload :Schema,         'trole_groups/config/schema'
-    # autoload :SchemaHelpers,  'trole_groups/config/schema_helpers'
+  class Config        
+    autoload :ValidRoleGroups,      'trole_groups/config/valid_role_groups'        
+    autoload :Schema,               'trole_groups/config/schema'
 
-    # def self.sub_modules
-    #   [:valid_roles, :static_roles, :schema]
-    # end
-    # 
-    # sub_modules.each do |name|    
-    #   send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
-    # end
+    def self.sub_modules
+      [:valid_role_groups, :schema] # , :static_roles, , 
+    end
+    
+    sub_modules.each do |name|
+      begin
+        self.send :include, "TroleGroups::Config::#{name.to_s.camelize}".constantize
+      rescue Error => e 
+        puts "include sub-module #{name}, error: #{e}"
+      end
+    end
 
-    attr_accessor :clazz, :strategy, :log_on, :generic, :auto_relations
+    attr_accessor :subject_class, :strategy, :log_on, :generic, :auto_relations
     attr_writer   :orm
 
-    def initialize clazz, options = {}
-      @clazz = clazz
+    def initialize subject_class, options = {}
+      @subject_class = subject_class
       # set instance var for each pair in options
       apply_options! options
+    end
+
+    def apply_options! options = {}
+      options.each_pair do |key, value| 
+        send("#{key}=", value) if self.respond_to?(:"#{key}")
+      end      
+    end
+
+    def configure! options = {}
+      apply_options! options
+      configure_models if auto_config?(:models)
     end
 
     class << self
@@ -77,37 +90,27 @@ module TroleGroups
       Troles::Config.auto_config?(name)
     end
 
-    def apply_options! options = {}
-      options.each_pair do |key, value| 
-        send("#{key}=", value) if self.respond_to?(:"#{key}")
-      end      
-    end
-
-    def configure! options = {}
-      apply_options! options
-      configure_role_field if auto_config?(:models)
-    end
-
-    # protected
 
     def auto_config_setings
       @auto_config_setings ||= {}
     end
-
+    
     def role_field
       @role_field ||= begin
         default_role_field
       end
     end
+    alias_method :rolegroup_field, :role_field
 
     def role_field= field_name
       name = field_name.to_s.alpha_numeric.to_sym
       raise ArgumentException, "Not a valid role field name: #{field_name}"  if !valid_field_name?(name)
       @role_field ||= name
     end
+    alias_method :rolegroup_field=, :role_field=
 
     def default_role_field
-      singularity == :many ? :troles : :trole
+      :trole_groups
     end
 
     def orm

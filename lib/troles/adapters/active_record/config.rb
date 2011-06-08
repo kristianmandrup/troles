@@ -67,7 +67,7 @@ module Troles::ActiveRecord
 
       # UserAccount
       # has_many :troles, :class_name => 'Role', :through => :users_roles
-      has_many_for subject_class, object_model, :through => join_key 
+      has_many_for subject_class, object_model, :opts => {:through => join_key}
       # has_many :user_roles, :class_name => 'UserRole'
       has_many_for subject_class, role_join_model, :key => join_key
 
@@ -79,7 +79,7 @@ module Troles::ActiveRecord
 
       # Role
       # has_many :accounts, :class_name => 'User', :through => :user_roles      
-      has_many_for object_model, subject_class, :through => join_key, :key => :accounts
+      has_many_for object_model, subject_class, :key => :accounts, :opts => {:through => join_key}
 
       # has_many :user_roles, :class_name => 'UserRole'
       has_many_for object_model, role_join_model, :key => join_key      

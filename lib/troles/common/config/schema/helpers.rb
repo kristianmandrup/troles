@@ -55,22 +55,33 @@ module Troles::Common
           from_type = get_model_type from
           to_type = get_model_type to
 
-          model_key = options[:key] ? options[:key] : send("#{from_type}_key")
+          key_opts = key_options(type, to_type)
+
+          model_key = options[:key] ? options[:key] : send("#{to_type}_key", key_opts)
 
           class_name = send "#{to_type}_class_name"
 
-          options = {:class_name => class_name}
-          options.merge!(options[:opts]) if options[:opts]
-          puts "#{from}.#{type} :#{model_key}, #{options.inspect}" if log_on?
-          from.send(type, model_key, options)
+          rel_options = {:class_name => class_name}   
+
+          rel_options.merge!(options[:opts]) if options[:opts]
+
+          puts "#{from}.#{type} :#{model_key}, #{rel_options.inspect}" if log_on?
+          
+          from.send(type, model_key, rel_options)
         end
             
-        def object_key
-          make_key object_class_name
+        def object_key options = {}
+          make_key "#{object_class_name}", options
         end
 
-        def make_key name
-          name.to_s.gsub(/::/, '__').underscore.pluralize      
+        def key_options type, obj
+          return {:prefix => 't'} if (type == :has_many && obj == :object) 
+          {}
+        end
+        
+        def make_key name, options = {}
+          key = name.to_s.gsub(/::/, '__').underscore.pluralize      
+          options[:prefix] ? "t#{key}" : key
         end
       end
     end

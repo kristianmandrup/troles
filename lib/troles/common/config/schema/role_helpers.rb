@@ -6,16 +6,16 @@ module Troles::Common
           subject_class.to_s
         end
 
-        def subject_key
-          make_key subject_class_name
+        def subject_key options = {}
+          make_key subject_class_name, options
         end
 
         def join_class_name
           role_join_model.to_s
         end
 
-        def join_key
-          make_key join_class_name
+        def join_key options = {}
+          make_key join_class_name, options
         end
 
         def object_class_name

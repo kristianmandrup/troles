@@ -21,7 +21,8 @@ class BaseUser
     false
   end
   
-  def save!
+  def save
     true
   end
+  alias_method :save!, :save
 end

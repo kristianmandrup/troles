@@ -48,8 +48,8 @@ module TroleGroups
       # Attempts to persist the role field changes
       # @return [true, false, error] true if saved, false if no save! method, Error on some error
       def persist_role_changes!  
-        return false if !rolegroup_subject.respond_to? :save!
-        rolegroup_subject.save!
+        return false if !rolegroup_subject.respond_to? :save
+        rolegroup_subject.save
         rolegroup_subject.publish_change :role_groups
       end 
 

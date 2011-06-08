@@ -1,5 +1,13 @@
 module TroleGroups::Api
   module Read
+    def roles_from_rolegroups
+      group_store.display_roles
+    end
+    
+    def roles_for *names
+      group_store.display_roles_for *names
+    end
+    
     # any? on rolegroups_list
     def in_rolegroup? rolegroup
       rolegroup_list.include? rolegroup.to_sym
@@ -32,8 +40,17 @@ module TroleGroups::Api
     # This set should be cached and only invalidated when the user has a change of roles
     def rolegroup_list
       @rolegroup_list ||= begin
-        group_store.display_rolegroups.flatten
+        group_store.display_rolegroups
       end
     end
+    
+    # Ensures that the common API methods always have a common underlying model to work on
+    # @note This Set should be cached and only invalidated when the user has a change of roles    
+    # @return Array<Symbol> Set of role names
+    def role_list        
+      @role_list ||= begin
+        (store.display_roles | group_store.display_roles)
+      end
+    end    
   end
 end

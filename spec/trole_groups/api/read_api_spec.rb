@@ -14,7 +14,11 @@ shared_examples_for "TroleGroup Read API" do
   it "should be in 2 role groups" do
     user.add_rolegroups :super_admin      
     user.has_rolegroups?(:blog_admin, :super_admin).should be_true
-    user.has_any_rolegroup?(:super_admin).should be_true
+    user.has_any_rolegroup?(:super_admin).should be_true    
+
+    # adding single roles and role groups together produces union of roles from all :)
+    user.add_roles :editor    
+    user.role_list.should include(:editor, :blogger, :blog_editor, :admin, :blog_admin)
   end
         
   specify { user.has_any_rolegroup?(:blog_admin, :admin).should be_true }

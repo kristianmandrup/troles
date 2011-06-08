@@ -1,10 +1,18 @@
 module TroleGroups
   class Operations
     module Read      
+      def roles
+        
+      end
+
+      def roles_for *names
+        rolegroup_subject.roles_for *names
+      end
+      
       # The roles list of the role subject
       # @return [Array<Symbol>] the list of roles
       def list
-        rolegroup_subject.role_list
+        rolegroup_subject.rolegroup_list
       end
 
       # Test if the role subject has exactly the given roles

@@ -4,6 +4,15 @@ module TroleGroups::Storage
       super
     end
 
+    def display_roles
+      display_roles_for rolegroup_list
+    end
+
+    def display_roles_for *names
+      groups = find_rolegroups names.to_symbols_uniq
+      groups.inject([]) {|res, group| res << group.roles }.flat_uniq
+    end
+
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
     def display_rolegroups

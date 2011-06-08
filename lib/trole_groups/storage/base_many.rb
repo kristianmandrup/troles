@@ -67,6 +67,10 @@ module TroleGroups
         trolegroups_config.rolegroup_model
       end
 
+      def rolegroup_list
+        rolegroup_subject.rolegroup_list
+      end
+
       def role_list
         rolegroup_subject.role_list
       end

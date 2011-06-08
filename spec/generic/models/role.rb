@@ -31,7 +31,8 @@ class Role
     end
 
     def where options = {}
-      Role.roles.select {|r| r.name == options[:name].to_sym }
+      names = [options[:name]].flatten
+      Role.roles.select {|r| names.include?(r.name.to_sym) }
     end  
   end
 end

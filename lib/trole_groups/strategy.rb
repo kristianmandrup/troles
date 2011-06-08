@@ -22,7 +22,7 @@ module TroleGroups
       # The storage to use
       # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy      
       def group_store
-        @store ||= group_storage.new self
+        @group_store ||= group_storage.new self
       end
       
     end

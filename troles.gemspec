@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{troles}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Kristian Mandrup}]
-  s.date = %q{2011-06-07}
+  s.date = %q{2011-06-08}
   s.description = %q{Ruby roles solution that has an easy to extend API, configuration and nice Adapter interface to ORMs and data stores}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "config/database.yml",
-    "development.sqlite3",
     "lib/trole.rb",
     "lib/trole/adapters/active_record.rb",
     "lib/trole/adapters/active_record/config.rb",
@@ -54,6 +53,44 @@ Gem::Specification.new do |s|
     "lib/trole/storage/ref_one.rb",
     "lib/trole/storage/string_one.rb",
     "lib/trole/strategy.rb",
+    "lib/trole_groups.rb",
+    "lib/trole_groups/READ THIS.textile",
+    "lib/trole_groups/Rolegroups design.textile",
+    "lib/trole_groups/adapters/active_record.rb",
+    "lib/trole_groups/adapters/active_record/config.rb",
+    "lib/trole_groups/adapters/active_record/storage.rb",
+    "lib/trole_groups/adapters/active_record/strategy.rb",
+    "lib/trole_groups/adapters/mongoid.rb",
+    "lib/trole_groups/adapters/mongoid/config.rb",
+    "lib/trole_groups/api.rb",
+    "lib/trole_groups/api/cache.rb",
+    "lib/trole_groups/api/config.rb",
+    "lib/trole_groups/api/core.rb",
+    "lib/trole_groups/api/event.rb",
+    "lib/trole_groups/api/read.rb",
+    "lib/trole_groups/api/validation.rb",
+    "lib/trole_groups/api/write.rb",
+    "lib/trole_groups/config.rb",
+    "lib/trole_groups/config/schema.rb",
+    "lib/trole_groups/config/schema/helpers.rb",
+    "lib/trole_groups/config/schema/role_group_helpers.rb",
+    "lib/trole_groups/config/valid_role_groups.rb",
+    "lib/trole_groups/macros.rb",
+    "lib/trole_groups/macros/configuration.rb",
+    "lib/trole_groups/macros/configuration/base_loader.rb",
+    "lib/trole_groups/macros/configuration/config_loader.rb",
+    "lib/trole_groups/macros/configuration/storage_loader.rb",
+    "lib/trole_groups/macros/configuration/strategy_loader.rb",
+    "lib/trole_groups/macros/static_roles.rb",
+    "lib/trole_groups/macros/strategy_options.rb",
+    "lib/trole_groups/operations.rb",
+    "lib/trole_groups/operations/read.rb",
+    "lib/trole_groups/operations/write.rb",
+    "lib/trole_groups/storage.rb",
+    "lib/trole_groups/storage/base_many.rb",
+    "lib/trole_groups/storage/embed_many.rb",
+    "lib/trole_groups/storage/ref_many.rb",
+    "lib/trole_groups/strategy.rb",
     "lib/troles.rb",
     "lib/troles/adapters/active_record.rb",
     "lib/troles/adapters/active_record/Design Notes.textile",
@@ -83,7 +120,8 @@ Gem::Specification.new do |s|
     "lib/troles/common/api/write.rb",
     "lib/troles/common/config.rb",
     "lib/troles/common/config/schema.rb",
-    "lib/troles/common/config/schema_helpers.rb",
+    "lib/troles/common/config/schema/helpers.rb",
+    "lib/troles/common/config/schema/role_helpers.rb",
     "lib/troles/common/config/static_roles.rb",
     "lib/troles/common/config/valid_roles.rb",
     "lib/troles/common/dependencies.rb",
@@ -227,6 +265,16 @@ Gem::Specification.new do |s|
     "spec/trole/strategies/string_one_spec.rb",
     "spec/trole/strategy_helper.rb",
     "spec/trole/two_roles_spec.rb",
+    "spec/trole_groups/api/core_api_spec.rb",
+    "spec/trole_groups/api/read_api_spec.rb",
+    "spec/trole_groups/api/write_api_spec.rb",
+    "spec/trole_groups/api_spec.rb",
+    "spec/trole_groups/generic/models.rb",
+    "spec/trole_groups/generic/models/role_group.rb",
+    "spec/trole_groups/generic/models/user.rb",
+    "spec/trole_groups/strategies/ref_many.rb",
+    "spec/trole_groups/strategy_helper.rb",
+    "spec/trole_groups_spec.rb",
     "spec/trole_spec.rb",
     "spec/trole_spec_helper.rb",
     "spec/troles/api/cache_api_spec.rb",

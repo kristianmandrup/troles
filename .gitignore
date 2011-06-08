@@ -7,3 +7,4 @@ spec/dummy/tmp/
 .DS_Store
 */.DS_Store
 .yardoc/
+*.sqlite3

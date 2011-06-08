@@ -1,19 +1,19 @@
 require "active_record/strategy_helper"
-require 'active_record/models/ref_many'
+require 'active_record/models/custom_join'
 
 def migrate_up
-  CreateRefMany.up # run migration
+  CreateCustomJoin.up # run migration
   Config.add_roles [:user, :admin, :editor, :blogger]
 end
 
 def migrate_down
-  CreateRefMany.down
+  CreateCustomJoin.down
 end      
 
 User.troles_strategy :ref_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]
   # c.auto_config[:relations] = false
-end.configure!
+end.configure! :role_join_model => 'RolesUsersJoin'
 
 module UserSetup
   def find_role name
@@ -40,7 +40,7 @@ end
 
 require 'troles/common/api_spec' # Common API examples  
 
-describe 'Troles strategy :ref_many' do
+describe 'Troles strategy Custom Join' do
   it_should_behave_like "Common API"
   # it_should_behave_like "Troles API"  
 end    

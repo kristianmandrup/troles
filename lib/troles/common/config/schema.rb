@@ -35,7 +35,7 @@ module Troles::Common
       # @return [Class] the model class (defaults to Role)
       def role_model
         @role_model_found ||= begin
-          models = [@role_model, role_class_name].select do |class_name|
+          models = [@role_model, default_role_class_name].select do |class_name|
             try_class(class_name.to_s.camelize)
           end.compact
           # puts "role models found: #{models}"
@@ -46,7 +46,7 @@ module Troles::Common
 
       protected
 
-      def role_class_name
+      def default_role_class_name
         'Role'
       end
 

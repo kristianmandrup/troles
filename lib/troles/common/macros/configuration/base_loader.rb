@@ -22,6 +22,10 @@ module Troles::Macros
         end
       end
 
+      def strategy_class
+        strategy.to_s.camelize
+      end
+      
       def base_class
         "Base#{singularity.to_s.camelize}"
       end

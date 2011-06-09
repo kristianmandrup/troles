@@ -58,7 +58,11 @@ User.decorator(:trole_groups).configure(:strategy) :ref_one do |strategy|
 end.configure!  
 </pre>
 
-Awesome! 
+Awesome!   
+
+h3. Auto-configuration of model relationships
+
+I'm in the process of generalizing auto-configuration of model relationships (has_many, belongs_to etc.), so it will be much easier to define this for a given behavior, and customize for multiple data stores without all the pain it causes now. Check out the _troles/common/config/schema_ and the _/models_ folder under here. The _subject-, join' and object_model_ files are to contain the logic required to define simple or complex relationships. I plan to implement the same API for Mongoid and then others can follow.
 
 h3. Yard documentation
 

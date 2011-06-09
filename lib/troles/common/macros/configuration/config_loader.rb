@@ -7,12 +7,7 @@ module Troles::Macros
       end
 
       def config_class
-        begin       
-          "#{orm_namespace}::Config".constantize
-        rescue
-          # use generic if no ORM specific strategy found!
-          "#{namespace}::Config".constantize
-        end        
+        @config_class ||= find_first_class("#{orm_namespace}::Config", "#{namespace}::Config")
       end
     end
   end

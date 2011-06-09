@@ -1,7 +1,7 @@
 module Troles::Common
   class Config
     module Schema
-      class JoinModel < BaseRelations
+      class JoinModel < BaseModel
 
         def initialize models, clazz
           super

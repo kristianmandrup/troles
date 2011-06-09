@@ -1,8 +1,13 @@
 module Troles::Common
   class Config
     module Schema
-      autoload :Helpers,      'troles/common/config/schema/helpers'
-      autoload :RoleHelpers,  'troles/common/config/schema/role_helpers'
+      autoload :Helpers,        'troles/common/config/schema/helpers'
+
+      autoload :Models,         'troles/common/config/schema/models'
+      autoload :BaseModel,      'troles/common/config/schema/models/base_model'
+      autoload :SubjectModel,   'troles/common/config/schema/models/subject_model'
+      autoload :ObjectModel,    'troles/common/config/schema/models/object_model'
+      autoload :JoinModel,      'troles/common/config/schema/models/join_model'
       
       def configure_models
         configure_generic
@@ -34,14 +39,7 @@ module Troles::Common
       # see (#role_model=)
       # @return [Class] the model class (defaults to Role)
       def role_model
-        @role_model_found ||= begin
-          models = [@role_model, default_role_class_name].select do |class_name|
-            try_class(class_name.to_s.camelize)
-          end.compact
-          # puts "role models found: #{models}"
-          raise "No #{role_class_name} class defined, define a #{role_class_name} class or set which class to use, using the :role_model option on configuration" if models.empty?
-          models.first.to_s.constantize
-        end
+        @role_model_found ||= find_first_class(role_model, default_role_class_name)
       end
 
       protected
@@ -50,14 +48,8 @@ module Troles::Common
         'Role'
       end
 
-      def try_class clazz
-        begin
-          clazz = clazz.constantize if clazz.kind_of?(String)
-          clazz
-        rescue          
-          false
-        end
-      end
+      # from sugar-high gem
+      include ClassExt
                      
       include Helpers
       include RoleHelpers      

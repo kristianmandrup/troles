@@ -13,25 +13,11 @@ module Troles::Macros
       protected
 
       def orm_strategy_module
-        @orm_strategy_module ||= begin         
-          mods_found = ["#{orm_namespace}::Strategy::#{strategy.to_s.camelize}", "#{namespace}::Strategy::#{base_class}"].select do |full_name|
-            try_module(full_name)
-          end
-          !mods_found.empty? ? mods_found.first.constantize : nil
-        end
+        @orm_strategy_module ||= find_first_module("#{orm_namespace}::Strategy::#{strategy_class}", "#{namespace}::Strategy::#{base_class}")
       end
 
       def generic_strategy_module strategy_name, options
-        @generic_module ||= begin
-          base_class = base_name(strategy_name) 
-  
-          # use generic if no ORM specific strategy found!
-          ns = namespace(strategy_name, options)
-          mods_found = ["#{namespace}::Strategy::#{strategy.to_s.camelize}", "#{namespace}::Strategy::#{base_class}"].select do |full_name|
-            try_module(full_name)
-          end        
-          !mods_found.empty? ? mods_found.first.constantize : nil
-        end
+        @generic_module ||= find_first_module("#{namespace}::Strategy::#{strategy_class}", "#{namespace}::Strategy::#{base_class}")
       end
     end
   end

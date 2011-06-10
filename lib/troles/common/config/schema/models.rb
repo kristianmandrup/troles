@@ -4,9 +4,8 @@ module Troles::Common
       class Models
         attr_accessor :subject_model, :object_model, :join_model
         
-        def initialize subject_class, object_class, join_class
-
-          @subject_model  = SubjectModel.new self, subject_class
+        def initialize subject_class, object_class, join_class, options = {}
+          @subject_model  = SubjectModel.new self, subject_class, options[:subject_key]
           @object_model   = ObjectModel.new self, object_class
           @join_model     = JoinModel.new self, join_class          
         end
@@ -15,6 +14,10 @@ module Troles::Common
           make_key get_class(type)
           class_key 
         end                
+        
+        def configure
+          [subject_model, object_model, join_model].each {|model| model.configure}          
+        end
                                    
         protected
         

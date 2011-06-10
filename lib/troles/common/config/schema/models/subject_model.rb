@@ -1,18 +1,18 @@
 module Troles::Common
   class Config
     module Schema
-      class SubjectModel < BaseRelations
+      class SubjectModel < BaseModel
 
         attr_accessor :main_field
 
-        def initialize model, main_field
-          super model
+        def initialize models, clazz, main_field
+          super models, clazz
           @main_field = main_field
         end
 
-        def my_class
-          subject
-        end
+        # def my_class
+        #   subject_class
+        # end
 
         def quick_join options = {}
           create_has_and_belongs_to_many :object

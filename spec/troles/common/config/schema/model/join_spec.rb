@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'troles/common/config/schema/models_helper'
 
 class UsersRoles < ActiveRecord::Base  
 end
@@ -13,6 +13,8 @@ describe join_model_class do
   end
   
   describe '#configure' do
-    join_model.configure
+    it 'should configure join model' do
+      join_model.configure
+    end
   end
 end

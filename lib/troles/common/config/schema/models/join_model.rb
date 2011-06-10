@@ -7,9 +7,9 @@ module Troles::Common
           super
         end
 
-        def key
-          my_class_name.underscore
-        end
+        # def key
+        #   my_class_name.underscore
+        # end
                 
         def configure
           # UserRole (custom join class name)

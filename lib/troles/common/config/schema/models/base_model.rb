@@ -12,6 +12,10 @@ module Troles::Common
         
         protected
 
+        def log_on?
+          Troles::Common::Config.log_on?
+        end
+
         def class_name
           my_class.to_s
         end
@@ -23,8 +27,12 @@ module Troles::Common
 
         model_types.each do |model_type|
           class_eval %{
+            def #{model_type}_model
+              models.#{model_type}_model
+            end
+
             def #{model_type}_class
-              models.object_class
+              models.#{model_type}_class
             end
 
             def #{model_type}_class_name
@@ -66,27 +74,27 @@ module Troles::Common
         end              
         
         def key type
-          model.key type
+          models.key type
         end                
             
         def source_option class_name
-          {:source => source class_name}
+          {:source => source(class_name) }
         end
 
         def class_name_option class_name
-          {:class_name => class_name.to_s}
+          {:class_name => class_name.to_s }
         end
 
         def through_option 
-          {:through => join_class.key)}
+          {:through => join_class.key }
         end
 
         def foreign_key_option class_name
-          {:foreign_key => foreign_key(class_name)}
+          {:foreign_key => foreign_key(class_name) }
         end
 
         def through_options class_name
-          {through_option, source(class_name), class_name_option(class_name) }
+          through_option.merge(source class_name).merge(class_name_option class_name)
         end
 
         # Role becomes :role

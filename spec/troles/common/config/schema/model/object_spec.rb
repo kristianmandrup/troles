@@ -1,7 +1,4 @@
-require 'spec_helper'
-
-class Role < ActiveRecord::Base  
-end
+require 'troles/common/config/schema/models_helper'
 
 def object_model_class
   Troles::Common::Config::Schema::ObjectModel
@@ -13,6 +10,8 @@ describe object_model_class do
   end
   
   describe '#configure' do
-    object_model.configure
+    it 'should configure object model' do
+      object_model.configure
+    end        
   end
 end

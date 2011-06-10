@@ -52,7 +52,6 @@ module Troles::Common
       include ClassExt
                      
       include Helpers
-      include RoleHelpers      
     end
   end
 end

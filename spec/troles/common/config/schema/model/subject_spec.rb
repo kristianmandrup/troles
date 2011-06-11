@@ -6,7 +6,7 @@ end
 
 describe subject_model_class do
   let(:subject_model) do
-    subject_model_class.new models, 'UserAccount'
+    subject_model_class.new models, 'UserAccount', :troles
   end
   
   describe '#configure' do

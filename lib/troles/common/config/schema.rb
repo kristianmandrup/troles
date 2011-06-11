@@ -1,3 +1,5 @@
+# require 'sugar-high/class_ext'
+
 module Troles::Common
   class Config
     module Schema

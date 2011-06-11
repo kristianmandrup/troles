@@ -69,17 +69,16 @@ When using Devise this could translate fx into a UserAccount with a "many roles"
 
 Example:
 
-<pre> 
-  require 'troles'
-  require 'troles/macros'
-  
-  class UserAccount
-    troles_strategy(:string_many).configure!
-  end
+<pre>require 'troles'
+require 'troles/macros'
 
-  class AdminAccount
-    troles_strategy(:bit_one, :static => true).configure!
-  end  
+class UserAccount
+  troles_strategy(:string_many).configure!
+end
+
+class AdminAccount
+  troles_strategy(:bit_one, :static => true).configure!
+end  
 </pre>
 
 The special troles macros must be enabled my requiring the _trole/macros_ file. 
@@ -113,8 +112,7 @@ can have subscribers to events.
 Also any write event to the datastore should be predicated on _#static_roles?_ not being true for the user (thus ensuring guest roles are never updated).
 
 Save triggers call to Event#update_roles
-<pre>
-User
+<pre>User
   after_save: update_roles # event handler
 </pre>
 
@@ -128,30 +126,27 @@ h3. Roles Read API
 
 This API operates directly on a user, fx _user#has_role?_
 
-<pre>  
-  user.has_role? :admin
-  user.is_role? :editor
-  user.has_any_roles? :editor, :admin  
+<pre>user.has_role? :admin
+user.is_role? :editor
+user.has_any_roles? :editor, :admin  
 </pre>
 
 h3. Roles Write API
 
 This API operates directly on a user, fx _user#has_role?_
 
-<pre>
-  user.add_role :admin
-  user.remove_role :editor
+<pre>user.add_role :admin
+user.remove_role :editor
 </pre>
 
 h3. Roles Operations object
 
 The Roles Operations object is available on user#roles
 
-<pre>
-  user.roles + :admin
-  user.roles - :editor
-  user.roles << [:editor, :admin]
-  user.roles.clear!  
+<pre>user.roles + :admin
+user.roles - :editor
+user.roles << [:editor, :admin]
+user.roles.clear!  
 </pre>
 
 h3. Creating a custom Data Store Adapter (DSA)
@@ -162,11 +157,9 @@ Note that :single role strategies always have the namespace 'Trole' whereas for 
 
 A custom Config class for _:single_ role strategies using _Mongoid_ could look sth. like this:
 
-<pre>
-module Trole::Mongoid
+<pre>module Trole::Mongoid
   class Config < Troles::Common::Config  
-
-    def initialize subject_class, options = {}
+    def initialize subject, options = {}
       super
     end
   
@@ -196,8 +189,7 @@ See the _schema_helpers.rb_ file for more details!
 
 Example: Config class for :many roles strategies with _Mongoid_
 
-<pre>
-module Troles::Mongoid
+<pre>module Troles::Mongoid
   class Config < Troles::Common::Config  
 
     def initialize subject_class, options = {}
@@ -236,8 +228,7 @@ Note: #set_role is only required for :single role strategies. In this case #set_
 
 Example custom SSA (encrypted role string):
 
-<pre>
-module Trole::Storage
+<pre>module Trole::Storage
   module EncryptedStringOne < BaseOne
     def initialize role_subject        
       super
@@ -275,8 +266,7 @@ h3. Custom Storage for an ORM (or data store)
 
 In some cases it is useful to rewrite part of the base Storage functionality. One such method is #find_roles.
 
-<pre>
-module Troles::Storage
+<pre>module Troles::Storage
   class BaseMany < Troles::Common::Storage
     def find_roles *roles
       role_model.where(:name => roles.flatten).all
@@ -288,8 +278,7 @@ end
 Active Record and Mongoid both implement the above API, so no need to customize this method in the Storage adapter.
 For most other ORMs/data stores you will likely have to write your own logic to achieve this.
 
-<pre>
-module Troles::MongoidStorage
+<pre>module Troles::MongoidStorage
   class RefMany < Troles::Storage::BaseMany
 
     def find_roles *roles
@@ -302,10 +291,9 @@ h3. Custom data marshaller
 
 You can also use a custom "Marshaller":http://en.wikipedia.org/wiki/Marshalling_%28computer_science%29 to store the roles in a non-standard format. This is used for the _BitMany_ strategy, which has a special _Marshaller::BitMask_ class which handles conversion between a list of symbols to an _Integer_ bitmap representing it (relative to a valid roles list!). You can create your own _Marshaller_, fx to encrypt the roles info or whatever you like!
 
-<pre>
-module Troles::Marshaller
+<pre>module Troles::Marshaller
   class Encryption < Generic
-    def initialize role_subject
+    def initialize subject
       super
     end
 
@@ -326,8 +314,7 @@ h3. Using a custom Marshaller in a Storage implementation
 
 The following example is taken from the BitOne Storage implementation that is part of troles:
 
-<pre>
-require 'troles/common/marshaller'
+<pre>require 'troles/common/marshaller'
 
 module Trole::Storage 
   class BitOne < BaseOne
@@ -363,10 +350,9 @@ Note that the same _BitMask_ marshaller is also reused in the _BitMany_ storage!
 
 The _#bitmask_ method returns an instance of the _Bitmask_ marshaller, instantiated with the _role_subject_ (the instance that has the #role_list method, typically the user or user account). To use the _Encryption_ marshaller in an Encryption storage we could create a _#marshaller_ method:
 
-<pre>
-  def marshaller
-    @marshaller ||= Troles::Marshaller::Encryption.new role_subject
-  end  
+<pre>def marshaller
+  @marshaller ||= Troles::Marshaller::Encryption.new role_subject
+end  
 </pre>
 
 Then use @marshaller.write(*roles)@ in the _set_xxxx_ methods and @marshaller.read@ in _#display_roles_ method of the storage, as needed.
@@ -387,8 +373,7 @@ You rarely need to implement a custom Strategy module or custom API implementati
 Here is an example of a custom Strategy implementation for _EncryptedStringMany_ that simply wraps the _BaseMany_ strategy implementation.
 This example demonstrates how you can easily override functionality with custom implementations by including modules "on top".
 
-<pre>
-module Troles::Strategy
+<pre>module Troles::Strategy
   module EncryptedStringMany
 
     # What to add to the role subject class when this role strategy is included
@@ -416,28 +401,25 @@ In some cases you need a custom Base strategy that contains common functionality
 
 Example: _BaseMany_, used as the base for all Many roles strategies
 
-<pre>
-  module Troles::Mongoid
-    module Strategy    
-      module BaseMany
-        # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
-        #
-        def self.included(base)
-          base.send :include, Troles::Strategy::BaseMany        
+<pre>module Troles::Mongoid
+  module Strategy    
+    module BaseMany
+      # @param [Class] the role subject class for which to include the Role strategy (fx User Account)
+      #
+      def self.included(base)
+        base.send :include, Troles::Strategy::BaseMany        
 
-          # base.send :include, InstanceMethods      
-          # base.extend ClassMethods            
-        end
+        # base.send :include, InstanceMethods      
+        # base.extend ClassMethods            
       end
     end
   end
+end
 </pre>
   
 To use your adapter, simply pass an extra option to the _troles_strategy_ macro:
 
-<pre>
-  User.troles_strategy(:bit_one, :orm => :mongoid).configure!
-</pre> 
+@User.troles_strategy(:bit_one, :orm => :mongoid).configure!@
 
 This even allows you to use different ORM role strategies/storages for different user accounts simultaneously!!!
 
@@ -445,22 +427,17 @@ Using the :auto_load option will 'auto load' (i.e require) the orm adapter from 
 You can include a specific custom (or 3rd party) adapter manually. In the future it will be possible to configure troles with adapters 
 and specify how/where to load them from as part of this configuration!
 
-<pre>
-  User.troles_strategy(:bit_one, :orm => :mongoid, :auto_load => true).configure!
-</pre> 
+@User.troles_strategy(:bit_one, :orm => :mongoid, :auto_load => true).configure!@
 
 You can also specify some of the options relevant to model configuration on the call to #configure if you like ;) 
 
-<pre>
-  User.troles_strategy(:bit_one, :orm => :active_record, :auto_load => true).configure! :role_model => 'Troll'
-</pre> 
+@User.troles_strategy(:bit_one, :orm => :active_record, :auto_load => true).configure! :role_model => 'Troll'@
 
 The _troles_strategy_ macro will yield the Config object if you pass it a block. 
 This allows you to configure your stategy with troles inside the block and then call _configure!_ on end of the block.
 Using all this in combination, you could configure it all doing sth. like this:
 
-<pre>  
-require 'my/own/active_record/adapter'  
+<pre>require 'my/own/active_record/adapter'  
   
 User.troles_strategy :bit_one, :orm => :active_record do |c|
   c.auto_load = false
@@ -522,14 +499,13 @@ _troles_ will be part of a larger project under development that will go under t
 
 h3. Guest users
 
-From the Devise wiki: https://github.com/plataformatec/devise/wiki/How-To:-Create-a-guest-user
+From the "Devise wiki":https://github.com/plataformatec/devise/wiki/How-To:-Create-a-guest-user
 
 "In some applications, it's useful to have a guest User object to pass around even before the (human) user has registered or logged in. Normally, you want this guest user to persist as long as the browser session persists.
 
 Our approach is to create a guest user object in the database and store its id in session[:guest_user_id]. When (and if) the user registers or logs in, we delete the guest user and clear the session variable. A helper function, current_or_guest_user, returns guest_user if the user is not logged in and current_user if the user is logged in."
 
-<pre>
-module ApplicationHelper
+<pre>module ApplicationHelper
   ...
   # if user is logged in, return current_user, else return guest_user
   def current_or_guest_user
@@ -562,9 +538,7 @@ end
 
 In the new system, I propose the following:
 
-<pre>
-
-# this will make the current user the guest user account for the given scope!
+<pre># this will make the current user the guest user account for the given scope!
 def sign_in_guest scope, options = {}
   warden.set_user(guest_user.account, options.merge!(:scope => scope))
 end
@@ -596,8 +570,7 @@ def guest_user
 end  
 </pre>
 
-<pre>     
-class GuestUserAccount
+<pre>class GuestUserAccount
   troles_strategy(:static_one, :role => :guest) do |c|
     # c.valid_roles = [:guest] not needed!
   end.configure!
@@ -616,8 +589,7 @@ end
 
 Here the special _:static_many_ strategy is used, which means that whatever the _role_list_ is first set to can never change for that user.
 
-<pre>
-module BaseAccount
+<pre>module BaseAccount
   # transfer guest settings to logged_in user/account
   def transfer_guest(guest_user)
   end  
@@ -642,8 +614,7 @@ end
 
 And here the User setup:
 
-<pre>
-module BaseUser
+<pre>module BaseUser
 end
 
 class User
@@ -657,8 +628,7 @@ class User
 end  
 </pre>
 
-<pre>
-class GuestUser
+<pre>class GuestUser
   include BaseUser
 
   def account

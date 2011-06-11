@@ -111,16 +111,7 @@ can have subscribers to events.
 
 Also any write event to the datastore should be predicated on _#static_roles?_ not being true for the user (thus ensuring guest roles are never updated).
 
-Save triggers call to Event#update_roles
-<pre>User
-  after_save: update_roles # event handler
-</pre>
-
-<pre>
-module Troles::Api::Event
-  def update_roles
-  def publish_change event
-</pre>
+@User.after_save: update_roles # event handler@
 
 h3. Roles Read API
 

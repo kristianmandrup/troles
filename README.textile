@@ -13,75 +13,6 @@ The roles list cache of a role subject (fx a user) is only updated (retrieved fr
 
 Note: Troles is a full redesign of _roles generic_ and company, using lessons learned. Troles uses a much cleaner design. It is aimed at being easy to extend and easy to create adapters for etc.
 
-h2. Status June 7, 2011 
-
-I'm now in the process of implementing TroleGroups! Finally a fully integrated role groups solution for Ruby and Rails ;)
-Due to the flexible design ot troles and trole, I can reuse the same infrastructure/design/architecture to implement trole_groups! 
-*Yiii...haaa!*   
-                 
-"A RoleGroup is simply another role_subject and can thus be configured with a given role strategy!" 
-
-Simple and Sweet :)
-
-h2. The Ruby Class Decorator (RCD) pattern is born!!!
-
-I realized a while ago that I had come upon a very cool kind of "class decorator" design pattern that can be generalized to any gem that "decorates" a class (or perhaps multiple classes) with certain behavior. Gems such as _act_as_xxx_ come to mind fx.
-
-I will soon try to generalize this pattern into a separate project and then have trole, troles and trole_groups all use this to leverage their functionality. Also, I will make use of an idea that I just had while taking a cold shower (try it sometime if you have a mind block!). 
-The idea is to have an internal default API, and an exposed API that by default is a reflection of the internal API. However the user is free to block parts of the API from being loaded or define his own external API that utilizes the inner API.
-
-Since this is a general purpose decorator pattern, there should also be a kind of Index where you can see which decorators have been applied to an object and what API each such decorator exposes! Cool stuff!!!!  
-
-Some example usage:
-<pre>
-return if !User.has_decorator?(:troles_group)
-# do some trole group stuff!!!
-
-# later ...
-
-# list all decorators currently applied to the User class
-puts User.decorators
-
-# print the methods of the public Write API for the :troles_group decorator :)
-puts User.decorator(:troles_group).public_api(:write).methods.sort
-
-# print the methods of the internal Write API for the :troles_group decorator :)
-puts User.decorator(:troles_group).internal_api(:write).methods.sort
-</pre>
-
-I will use the new Decorator API very soon... sth like this:
-
-<pre>
-User.decorator(:trole_groups).configure(:strategy) :ref_one do |strategy|
-  strategy.orm = :mongoid
-  strategy.auto_load = true
-end.configure!  
-</pre>
-
-Awesome! 
-
-h3. Yard documentation
-
-I'm using "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
-
-<pre>$ yard server
-
-From browser, go to: http://0.0.0.0:8808/  # then you can enjoy! the nice documentation :) 
-</pre>
-
-There is now support for Caching and invalidation of the _role_list_ when the roles change. 
-The specs now validate that caching works as it should.
-
-Please help out to finalize this project! :)
-
-h2. Bug hunting by running specs
-
-Run specs for at most one strategy at the time for now...
-
-@$ rspec spec/troles/strategies/bit_many_spec.rb@ 
-
-Please see the document _spec/Guide to running specs.textile_ where I advise on how best to do "bug hunting" to help get this project off the ground!
-
 h2. Role strategies
 
 The following lists the role strategies to be supported
@@ -164,14 +95,14 @@ h2. Roles API
 The Roles API can be divided into:
 
 * Core
-* Event/Cache
+* Event
+* Cache
 * Read
 * Write
-* Store
 * Validation
 * Operations object
 
-There is an equivalen Trole API for single role strategies.
+There is an equivalent Trole API for single role strategies.
 
 h3. Event/Cache API
 

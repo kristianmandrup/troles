@@ -62,8 +62,7 @@ These strategies can be implemented for any data store using any schema format.
 
 h3. Using roles strategies with Users and User accounts
 
-Roles are assigned to role subject classes such as _User_ or _UserAccount_ (YES, Devise can have multiple user accounts!). The class that has a role strategy assigned is referred to as the _role subject class_. 
-Different role subject classes can have different role strategies! 
+Roles are assigned to role subject classes such as _User_ or _UserAccount_ (YES, Devise can have multiple user accounts!). The class that has a role strategy assigned is referred to as the _role subject class_. Different role subject classes can have different role strategies! 
 
 When using Devise this could translate fx into a UserAccount with a "many roles" strategy and an AdminAccount with a "single role" strategy (or vice versa). 
 
@@ -81,13 +80,15 @@ class AdminAccount
 end  
 </pre>
 
-The special troles macros must be enabled my requiring the _trole/macros_ file. 
+The special troles macros must currently be enabled my requiring the _troles/macros_ file. 
+If the troles macros are not included like this, the troles DSL can be made available for an individual class by including a specific Strategy.
+Using the macros like in the above example is much easier and is recommended.
 
 h3. Macro options
 
 The @:static => true@ options is used to indicate, that the role can not be changed after being initially set. 
-But we are getting ahead of ourselves... (more on this later).
-Troles can easily be extended to support other macro options if needed.
+But we are getting ahead of ourselves... (more on this later). Troles can easily be extended to support other macro options if needed.
+Note: This static roles functionality is currently in-progress... (used to work but under change).
 
 h2. Roles API
 

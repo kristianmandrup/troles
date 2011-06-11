@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'sugar-high',   '~> 0.4.4'
+gem 'sugar-high',   '~> 0.4.6'
 gem 'require_all',  '~> 1.2.0'
 gem 'yard',         '>  0.6.1'
 

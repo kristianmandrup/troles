@@ -17,8 +17,9 @@ module Troles::Common
         configure_relation if auto_config?(:relations)
       end         
 
-      def configure_generic                    
-        subject_class.send(:attr_accessor, role_field)  if generic? || orm == :generic # create troles accessor      
+      def configure_generic
+
+        # subject_class.send(:attr_accessor, main_field) if generic? || orm == :generic # create troles accessor      
       end
 
       # Adapter should customize this as needed 
@@ -32,21 +33,21 @@ module Troles::Common
       # Sets the role model to use
       # allows different role subject classes (fx User Accounts) to have different role schemas
       # @param [Class] the model class
-      def role_model= model_class
-        @role_model = model_class.to_s and return if model_class.any_kind_of?(Class, String, Symbol)
-        raise "The role model must be a Class, was: #{model_class}"
+      def object_model= model_class
+        @object_model = model_class.to_s and return if model_class.any_kind_of?(Class, String, Symbol)
+        raise "The object model must be a Class, was: #{model_class}"
       end
 
       # Gets the role model to be used
       # see (#role_model=)
       # @return [Class] the model class (defaults to Role)
-      def role_model
-        @role_model_found ||= find_first_class(role_model, default_role_class_name)
+      def object_model
+        @object_model_found ||= find_first_class(object_model, default_object_model_class_name)
       end
 
       protected
 
-      def default_role_class_name
+      def default_object_model_class_name
         'Role'
       end
 

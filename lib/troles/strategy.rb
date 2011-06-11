@@ -1,3 +1,5 @@
+puts "BaseMany"
+
 # @author Kristian Mandrup
 #
 # Base module for Many roles strategies

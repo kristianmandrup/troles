@@ -4,8 +4,9 @@ module Troles::ActiveRecord
     attr_reader :models
     
     def initialize subject_class, options = {}
-      super 
-      @models = Models.new subject_class, object_class, join_class
+      # super       
+      # puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
+      @models = Models.new subject_class, nil, nil # object_model, join_model
     end
     
     def configure_relation
@@ -35,16 +36,7 @@ module Troles::ActiveRecord
       role_field
     end      
 
-    def object_model
-      role_model
-    end
-
     def join_model
-      role_join_model
-    end
-
-
-    def role_join_model
       @join_model_found ||= begin
         models = [@join_model, join_model_best_guess].select do |class_name|
           try_class(class_name.to_s.camelize)
@@ -59,14 +51,14 @@ module Troles::ActiveRecord
       "#{subject_class.to_s.pluralize}#{object_model.to_s.pluralize}"
     end
 
-    def role_join_model= model_class
+    def join_model= model_class
       @join_model = model_class and return if model_class.any_kind_of?(Class, String, Symbol)
       raise "The role model must be a Class, was: #{model_class}"
     end
 
 
     def join_key
-      make_key role_join_model
+      make_key join_model
     end
     
     def configure_join_model           

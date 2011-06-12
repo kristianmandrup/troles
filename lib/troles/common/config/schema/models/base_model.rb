@@ -80,7 +80,6 @@ module Troles::Common
         # Example:
         #   User.has_many :roles, :class_name => 'Role'
         def create_has_many clazz, options = {} 
-          puts "create_has_many options: #{options}"
           make_relationship :has_many, clazz, options
         end        
 

@@ -27,7 +27,7 @@ module Troles::Common
         # The models :subject and :object must both be configured 
         # with a has_many relationship to the join model which the has_many :through references
         def configure
-          create_has_many :join
+          create_has_many :join, class_name_option(join_class)
         end
 
         # The class name of the Class to be configured
@@ -79,7 +79,8 @@ module Troles::Common
         # Create a 'has_many' relationship on the model (Class)
         # Example:
         #   User.has_many :roles, :class_name => 'Role'
-        def create_has_many clazz, options = {}
+        def create_has_many clazz, options = {} 
+          puts "create_has_many options: #{options}"
           make_relationship :has_many, clazz, options
         end        
 
@@ -112,9 +113,14 @@ module Troles::Common
         # @param [Class, Symbol] the Class that is the object of the relationship, fx Role for a User.has_many relationship
         # @param [Hash] any extra relationship options, fx for a :through relationship, or to indicate :class_name etc.        
         def make_relationship relationship_name, clazz, options = {} 
-          options.delete(:key)
-          log "#{my_class_name}.#{relationship_name} :#{key(clazz)}, #{options.inspect}" if log_on?          
-          my_class.send(relationship_name, key(clazz), options)
+          key_name = options.delete(:key) || key(clazz)          
+
+          opts_str = options.empty? ? '' : options.inspect.insert(0, ', ').gsub(/[{}]/ , '')
+          log "#{my_class_name}.#{relationship_name} :#{key_name}#{opts_str}" if log_on?          
+
+          return my_class.send(relationship_name, key_name) if options.empty?
+
+          my_class.send(relationship_name, key_name, options)
         end              
 
         # creates a key for a given type
@@ -127,6 +133,10 @@ module Troles::Common
           models.get_class type          
         end
 
+        def make_key cls_name
+          models.make_key cls_name
+        end
+
         # log the relationship being added
         # - to STDOUT via puts
         # - to a logs list
@@ -137,44 +147,49 @@ module Troles::Common
 
         # sets up the :source relationship option, typically for a has_many through relationship
         def source_option cls_name
-          {:source => source(cls_name) }
+          model = get_class(cls_name)
+          {:source => source(model) }
         end
 
         # sets up the :class_name relationship option for a given class (model
         # @param [Class, String] the class to point to
         def class_name_option cls_name
-          {:class_name => cls_name.to_s }
+          model = get_class(cls_name)
+          {:class_name => model.to_s }
         end
 
         # sets up the :through relationship option, always points to the join model 
         def through_option 
-          {:through => join_model.key }
+          {:through => join_model.through_key }
         end
 
         # sets up the :foreign_key relationship option
         # the foreign key name should always correspond to 'my own' class name
         def foreign_key_option cls_name
-          {:foreign_key => foreign_key(cls_name) }
+          model = get_class(cls_name)
+          {:foreign_key => foreign_key(model) }
         end
 
         # sets up the full :through relationship options
         # Example:
-        #   :class_name => 'Role', :through => 'UsersRoles', :source => :role (, :foreign_key => :user_id)
+        #   :class_name => 'Role', :through => 'UsersRoles', :source => :role, :foreign_key => :user_id)
         def through_options cls_name
           model = get_class(cls_name)
-          through_option.merge(source_option model).merge(class_name_option model) #.merge(foreign_key_option class_name)
+          through_option.merge(source_option model).merge(class_name_option model)
         end
 
         # creates the source
         # Role becomes :role
         def source cls_name
-          cls_name.to_s.underscore.singularize
+          model = get_class(cls_name)
+          model.to_s.underscore.singularize.to_sym
         end                        
 
         # creates the foreign key
         # RefManyAccount becomes :account_id
         def foreign_key cls_name
-          name = cls_name.underscore.split('_').last.singularize
+          model = get_class(cls_name)
+          name = model.to_s.underscore.split('_').last.singularize
           :"#{name}_id"
         end                           
       end

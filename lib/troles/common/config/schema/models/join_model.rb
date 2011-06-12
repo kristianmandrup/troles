@@ -16,8 +16,12 @@ module Troles::Common
           super
         end
 
-        def key
+        def simple_key
           clazz_name.to_s.underscore
+        end
+
+        def through_key
+          make_key clazz_name
         end
 
         # The join model always belongs to both the object and subject model
@@ -31,8 +35,8 @@ module Troles::Common
         #
         # @note Do not call super here! 
         def configure          
-          create_belongs_to :subject          
-          create_belongs_to :object
+          create_belongs_to :subject, class_name_option(:subject)
+          create_belongs_to :object, class_name_option(:object)
         end                
       end
     end

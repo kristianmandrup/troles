@@ -23,8 +23,8 @@ module Troles::Common
         #     has_many :accounts,   :class_name => 'RefManyAccount', :through => :accounts_roles (subject)
         #     has_many :user_roles, :class_name => 'UserRole' (join)
         def configure         
+          super
           create_has_many_through :subject
-          create_has_many :join
         end
 
         # @note important to use super to avoid recursive stack overflow!

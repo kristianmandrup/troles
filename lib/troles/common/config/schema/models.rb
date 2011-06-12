@@ -31,7 +31,7 @@ module Troles::Common
         def initialize subject_class, object_class, join_class, options = {}
           @subject_model  = SubjectModel.new self, subject_class, options[:subject_key]
           @object_model   = ObjectModel.new self, object_class
-          @join_model     = JoinModel.new self, join_class          
+          @join_model     = JoinModel.new self, join_class
         end
 
         # creates a key for a given type
@@ -42,7 +42,16 @@ module Troles::Common
 
         # configure each model in turn
         def configure
-          [subject_model, object_model, join_model].each {|model| model.configure}          
+          [subject_model, object_model, join_model].each do
+            |model| model.configure
+          end  
+        end
+
+        def logs
+          @logs ||= [subject_model, object_model, join_model].inject([]) do |res, model|
+            res << model.logs
+            res
+          end.flatten
         end
 
         def self.model_types
@@ -71,8 +80,8 @@ module Troles::Common
           when BaseModel
             type.my_class
           when String, Symbol
-            raise "Not a valid type, #{type}" unless [:subject, :object, :join].include? type.to_sym        
-            get_class send("#{type}_model")
+            return get_class send("#{type}_model") if [:subject, :object, :join].include?(type.to_sym)
+            type.to_s.constantize
           else
             raise "Can't determine a class from: #{type}"
           end          
@@ -83,7 +92,7 @@ module Troles::Common
         # @param [String] the class name
         def make_key class_name
           name = class_name.to_s.pluralize.gsub(/::/, '__').underscore
-          only_last_part_plural(name)
+          only_last_part_plural(name).to_sym
         end                               
 
         protected

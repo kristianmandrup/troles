@@ -37,7 +37,7 @@ module Troles::Common
 
         # @note important to use super to avoid recursive stack overflow!                
         def through_options options = {}
-          options.merge super(:object)
+          options.merge super(:object).merge(foreign_key_option :subject)
         end                       
       end
     end

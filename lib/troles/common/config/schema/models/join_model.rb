@@ -16,6 +16,10 @@ module Troles::Common
           super
         end
 
+        def key
+          clazz_name.to_s.underscore
+        end
+
         # The join model always belongs to both the object and subject model
         # the subject and object model can then each have a has_many relationship to the join model
         # thus creating a Many-to-Many relationship via the join model

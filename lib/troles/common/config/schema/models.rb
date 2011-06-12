@@ -56,13 +56,11 @@ module Troles::Common
         model_types.each do |model_type|
           class_eval %{
             def #{model_type}_class
-              #{model_type}_model.class_name              
+              #{model_type}_model.clazz_name              
             end
           }
         end
                                    
-        protected
-
         # retrieves a given Class ie. a type of model
         # @param [Class, String, Symbol, BaseModel] which class to get
         # @return [Class] the Class (model) of interest
@@ -88,13 +86,13 @@ module Troles::Common
           only_last_part_plural(name)
         end                               
 
-        private
+        protected
 
         # Takes a composite name and makes a nice sounding key that follows the Rails conventions
         # fx UsersRoles becomes :user_roles, where only the last part is pluralised!
         # @param [String] the class name, fx UsersRoles
-        def only_last_part_plural name 
-          parts = class_name.split('_')
+        def only_last_part_plural cls_name 
+          parts = cls_name.split('_')
           name = parts.inject([]) do |res, part|
             res << (part != parts.last ? part.singularize : part)
             res

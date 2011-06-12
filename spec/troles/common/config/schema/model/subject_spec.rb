@@ -12,6 +12,8 @@ describe subject_model_class do
   describe '#configure' do
     it 'should configure subject model' do
       subject_model.configure
+      # check the logs!
+      puts subject_model.logs
     end        
   end
 end

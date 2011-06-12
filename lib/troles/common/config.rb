@@ -124,7 +124,7 @@ module Troles::Common
     # end
             
     def generic?
-      return true if orm.nil?
+      return true if orm.nil? || orm == :generic
       @generic.nil? ? false : @generic
     end
   end

@@ -27,7 +27,8 @@ module Troles::Common
 
       # configures main field (fx role field) as a generic accessor
       def configure_generic
-        # subject_class.send(:attr_accessor, main_field) # create troles accessor      
+        raise "Subject class must be a Class" unless subject_class.is_a?(Class)
+        subject_class.send(:attr_accessor, main_field) # create troles accessor      
       end
 
       # configures a single main field on the subject

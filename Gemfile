@@ -3,6 +3,7 @@ source "http://rubygems.org"
 gem 'sugar-high',   '~> 0.4.6'
 gem 'require_all',  '~> 1.2.0'
 gem 'yard',         '>  0.6.1'
+gem 'schemaker',    '~> 0.1.0'
 
 group :development, :test do
   gem 'rails',        '~> 3.1.0.rc1'

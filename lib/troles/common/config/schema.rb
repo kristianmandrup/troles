@@ -9,14 +9,6 @@ module Troles::Common
     module Schema
       autoload :Helpers,        'troles/common/config/schema/helpers'
 
-      autoload :Models,         'troles/common/config/schema/models'
-
-      autoload :BaseModel,      'troles/common/config/schema/models/base_model'
-
-      autoload :SubjectModel,   'troles/common/config/schema/models/subject_model'
-      autoload :ObjectModel,    'troles/common/config/schema/models/object_model'
-      autoload :JoinModel,      'troles/common/config/schema/models/join_model'
-
       # configures the models if set to do so
       # first configures 
       def configure_models
@@ -58,7 +50,7 @@ module Troles::Common
       #
       # @return [Class] the model class
       def object_model
-        @object_model_found ||= find_first_class(object_model, default_object_model_class_name)
+        @object_model_found ||= find_first_class(@object_model, default_object_model_class_name)
       end
       alias_method :role_mode, :object_model
 

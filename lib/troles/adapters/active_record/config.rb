@@ -4,9 +4,9 @@ module Troles::ActiveRecord
     attr_reader :models
     
     def initialize subject_class, options = {}
-      # super       
-      # puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
-      @models = Models.new subject_class, nil, nil # object_model, join_model
+      super       
+      puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
+      @models = Schemaker::Models.new subject_class, object_model, join_model
     end
     
     def configure_relation
@@ -38,12 +38,7 @@ module Troles::ActiveRecord
 
     def join_model
       @join_model_found ||= begin
-        models = [@join_model, join_model_best_guess].select do |class_name|
-          try_class(class_name.to_s.camelize)
-        end.compact
-        # puts "role models found: #{models}"
-        raise "No #{subject_class} to #{object_model} join class defined, define a #{join_model_best_guess} model class or set which class to use, using the :role_join_model option on configuration" if models.empty?
-        models.first.to_s.constantize
+        find_first_module(@join_model, join_model_best_guess)
       end
     end
 
@@ -53,7 +48,7 @@ module Troles::ActiveRecord
 
     def join_model= model_class
       @join_model = model_class and return if model_class.any_kind_of?(Class, String, Symbol)
-      raise "The role model must be a Class, was: #{model_class}"
+      raise "The join model must be a Class, was: #{model_class}"
     end
 
 
@@ -70,7 +65,7 @@ module Troles::ActiveRecord
       end
             
       [:object, :subject, :join].each do |type|
-        clazz = "#{type.to_s.camelize}Model".constantize
+        clazz = "Schemaker::#{type.to_s.camelize}Model".constantize
         clazz.new(model).configure
       end      
     end

@@ -10,14 +10,16 @@ module Behave
     # The behaviors contained here can later be added to subject classes
     def add_behavior name, &block
       new_behavior = create_behavior name
-      behaviors << new_behavior
+      behaviors[name] = new_behavior
       yield new_behavior
       new_behavior
     end 
 
     def behaviors
-      @behaviors ||= Set.new
+      @behaviors = {}
     end
+
+    private
     
     def create_behavior name
       Behave::Decorator.new name

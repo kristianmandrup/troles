@@ -1,15 +1,25 @@
 module Behave
   class Decorator
+    autoload :Configuration, 'behave/decorator/configuration'
+    
+    attr_accessor :name, :configuration_class
+
+    def initialize name
+      @name = name
+    end
+    
     def internal_api name
     end
 
     def public_api name
     end
-    
-    autoload :Configuration, 'behave/macros/configuration'
-    
+
+    def configuration_class
+      @configuration_class || Configuration
+    end
+        
     def configure strategy, options = {}, &block
-      configuration = Configuration.new self, strategy, options
+      configuration = configuration_class.new self, strategy, options
 
       configuration.load_adapter
       puts "strategy module: #{configuration.strategy_module}"

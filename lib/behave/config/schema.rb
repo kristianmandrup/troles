@@ -4,10 +4,10 @@
 # Schema configuration
 # Has responsibiloity to configure relationships between models
 #
-module Troles::Common
+module Behave
   class Config
     module Schema
-      autoload :Helpers,        'troles/common/config/schema/helpers'
+      autoload :Helpers,        'behave/config/schema/helpers'
 
       # configures the models if set to do so
       # first configures 

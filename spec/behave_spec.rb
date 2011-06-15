@@ -1,22 +1,22 @@
 # This is to test how you can add behaviors to the set of global behaviors!describe Behave::Macros do
+# The Behave module acts as a repository for registering behaviors that can then be added to individual classes
+
+require 'behave/spec_helper'
 
 describe Behave do
-
-  describe '#add_behavior'
+  describe '#add_behavior' do
     it 'should add a named behavior' do
       Behave.add_behavior(:hello).should be_a(Behave::Decorator)
     end
 
     it 'should add a behavior with config class' do
       Behave.add_behavior(:hello) do |behavior|
-        behavior.config = MyBehavior::Config
+        behavior.should be_a(Behave::Decorator)
       end
-      
-      Behave.behaviors[:hello].config.should == MyBehavior::Config
     end
   end
 
-  describe '#behaviors'  
+  describe '#behaviors' do  
     it 'should contain global behaviors' do
       Behave.behaviors.should_not be_empty
     end
@@ -26,9 +26,9 @@ describe Behave do
     end
   end
 
-  describe 'behavior'  
+  describe 'behavior' do  
     it 'should have behavior' do
-      Behave.behaviors[:hello].config .should be_a(Behave::Config)
+      Behave.behaviors[:hello].config.should be_a(Behave::Config)
     end
   end  
 end

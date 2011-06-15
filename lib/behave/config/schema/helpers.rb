@@ -1,4 +1,4 @@
-module Troles::Common
+module Behave
   class Config
     module Schema
       module Helpers

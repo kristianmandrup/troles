@@ -1,13 +1,8 @@
 module Behave
   class Config
-    autoload :Schema,         'troles/common/config/schema'
-    autoload :SchemaHelpers,  'troles/common/config/schema_helpers'
-    autoload :ClassMethods,   'troles/common/config/class_methods'
-
-    # include sub-modules as needed
-    sub_modules.each do |name|    
-      send :include, "Troles::Common::Config::#{name.to_s.camelize}".constantize
-    end
+    autoload :Schema,         'behave/config/schema'
+    autoload :SchemaHelpers,  'behave/config/schema_helpers'
+    autoload :ClassMethods,   'behave/config/class_methods'
 
     attr_accessor :subject_class, :strategy, :log_on, :generic
     attr_writer   :orm

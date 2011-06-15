@@ -1,7 +1,14 @@
 require 'behave/macros'
 
 module Behave
-  autoload :Config,   'behave/config'
+  autoload :Config,       'behave/config'
+  autoload :Decorator,    'behave/decorator'
+
+  autoload :BaseLoader,     'behave/loaders/base_loader'
+  autoload :ConfigLoader,   'behave/loaders/config_loader'
+  autoload :StrategyLoader, 'behave/loaders/strategy_loader'
+  autoload :StorageLoader,  'behave/loaders/storage_loader'      
+
 
   module ClassMethods
     attr_accessor :behaviors
@@ -11,12 +18,12 @@ module Behave
     def add_behavior name, &block
       new_behavior = create_behavior name
       behaviors[name] = new_behavior
-      yield new_behavior
+      yield new_behavior if block
       new_behavior
     end 
 
     def behaviors
-      @behaviors = {}
+      @behaviors ||= {}
     end
 
     private

@@ -1,6 +1,6 @@
-module Troles::Macros
+module Behave::Macros
   class Configuration  
-    class StrategyLoader < Behave::Macros::Configuration::StrategyLoader
+    class StrategyLoader < BaseLoader
 
       def initialize strategy, orm
         super

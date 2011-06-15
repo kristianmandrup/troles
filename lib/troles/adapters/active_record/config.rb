@@ -5,7 +5,6 @@ module Troles::ActiveRecord
     
     def initialize subject_class, options = {}
       super       
-      puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
       @models = Schemaker::Models.new subject_class, object_model, join_model
     end
     

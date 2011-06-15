@@ -1,6 +1,36 @@
 module Troles
-  class Config < Troles::Common::Config    
+  class Config < Behave::Config    
+    autoload :ValidRoles,     'troles/common/config/valid_roles'        
+    autoload :StaticRoles,    'troles/common/config/static_roles'    
+
+    def self.sub_modules
+      [:valid_roles, :static_roles, :schema]
+    end
+    
     def initialize subject_class, options = {}
+      super
+    end
+
+    alias_method :role_field, :main_field
+    alias_method :role_field=, :main_field=
+    
+    alias_method :default_role_field, :default_main_field    
+
+
+    # get the default name of the main field
+    # for roles, it depends on the singularity (one or many) of the strategy
+    # see (#singularity)
+    def default_main_field
+      @default_main_field ||= (singularity == :many) ? :troles : :trole
+    end
+
+    # get the singularity (one or many) of the strategy
+    def singularity
+      @singularity ||= (strategy =~ /_many$/) ? :many : :one
+    end
+
+
+    def auto_config?(name)
       super
     end
 

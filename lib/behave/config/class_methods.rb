@@ -1,4 +1,4 @@
-module Troles::Common
+module Behave
   class Config
     module ClassMethods
       attr_reader :default_orm, :auto_load

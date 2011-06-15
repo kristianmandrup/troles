@@ -1,4 +1,4 @@
-module Troles::Macros
+module Behave::Macros
   class Configuration  
     class StorageLoader < BaseLoader
 

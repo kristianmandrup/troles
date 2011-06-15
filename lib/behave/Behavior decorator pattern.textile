@@ -33,4 +33,31 @@ User.decorator(:trole_groups).configure(:strategy) :ref_one do |strategy|
 end.configure!  
 </pre>
 
-Awesome!
+Awesome!   
+
+h2.
+
+The idea is that you should be able to apply the behave pattern on a class:
+
+<pre>
+class User
+  behave!
+end
+</pre>
+
+This will add a #behavior collection at the class level, where each item is a Behave::Decorator instance. 
+Each such Behave::Decorator instance has a Behave::Config object that configures it.
+
+The Behave::Config encapsulates concepts such as storage, strategy etc. and can do schema/model configuration (using schemaker) etc.
+
+<pre>
+class User
+  behave!
+  
+  behavior(:trole_groups).configure(:strategy) :ref_one do |strategy|
+    strategy.orm = :mongoid
+    strategy.auto_load = true
+  end.configure!
+end  
+</pre>
+

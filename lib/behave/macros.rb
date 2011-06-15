@@ -11,27 +11,24 @@
 
 module Behave  
   module Macros
-    autoload :Configuration, 'behave/macros/configuration'
+    def behave!
+      self.singleton_class.class_eval %{
+        def behaviors
+          @behaviors ||= {}
+        end
+      }
+    end
     
-    def behave_as strategy, options = {}, &block
-      configuration = Configuration.new self, strategy, options
-
-      configuration.load_adapter
-      puts "strategy module: #{configuration.strategy_module}"
-      puts configuration.strategy_module.methods.grep /store/ 
-      
-      send :include, configuration.strategy_module
-
-      configuration.define_hooks
-      configuration.apply_strategy_options!
-
-      if strategy == :bit_one 
-        behavior_config.valid_roles = [:user, :admin] # default binary roles 
-      end
-      
-      yield behavior_config if block_given?
-      behavior_config
-    end     
+    def behavior name
+      behave! unless respond_to? :behaviors
+      raise ArgumentError, "Behavior '#{name}' already available" if has_behavior?(name)
+      behaviors[name.to_sym]
+    end
+    
+    def has_behavior?
+      return false unless respond_to? :behaviors
+      behaviors.keys.include? name.to_sym
+    end
   end  
 end
 

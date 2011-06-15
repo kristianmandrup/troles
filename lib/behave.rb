@@ -1,14 +1,28 @@
+require 'behave/macros'
+
 module Behave
   autoload :Config,   'behave/config'
-  autoload :Macros,   'behave/macros'
 
-  def has_decorator? name
-  end
+  module ClassMethods
+    attr_accessor :behaviors
 
-  def has_decorators? *names
-  end
+    # Add a new behavior to the global set of available behaviors!
+    # The behaviors contained here can later be added to subject classes
+    def add_behavior name, &block
+      new_behavior = create_behavior name
+      behaviors << new_behavior
+      yield new_behavior
+      new_behavior
+    end 
 
-  # get the decorator!
-  def decorator name
+    def behaviors
+      @behaviors ||= Set.new
+    end
+    
+    def create_behavior name
+      Behave::Decorator.new name
+    end
   end
+  
+  extend ClassMethods
 end

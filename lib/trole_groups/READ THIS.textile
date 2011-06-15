@@ -1,4 +1,0 @@
-h1. Important Trole Groups considerations
-
-When role groups are enabled, it makes no sense to only enable a single role group, hence no need for :one strategies.
-I will thus only implement the :many strategies similar to troles.

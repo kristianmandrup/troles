@@ -1,4 +1,0 @@
-h1. Trole Design
-
-Trole should be designed to work with a very generic underlying model. The specs here will use all the strategies listed in the README.
-Some of the strategies require a Role class.

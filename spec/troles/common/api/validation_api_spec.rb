@@ -30,7 +30,7 @@ shared_examples_for "Common Validation API" do
 
   # @return [Array<Symbol>] the valid roles of the role subject
   describe '#valid_roles' do
-    it 'should get valid roles of class' do                   
+    it 'should get valid roles of class' do
       user.send(:valid_roles).should include(:admin)
     end
   end
@@ -38,7 +38,7 @@ shared_examples_for "Common Validation API" do
   context 'Class Methods' do
     # @return [Array<Symbol>] the valid roles of the role subject
     describe '#valid_roles' do
-      it 'should set not valid roles again!' do                   
+      it 'should set not valid roles again!' do
         user.class.valid_roles.should include(:admin)
       end
     end

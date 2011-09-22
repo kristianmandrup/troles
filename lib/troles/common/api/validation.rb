@@ -14,9 +14,9 @@ module Troles::Common::Api
 
     # @return [Array<Symbol>] returns the valid roles or empty list if no valid roles
     def check_valid_roles? *roles
-      valid_roles & roles.to_symbols     
+      valid_roles & roles.to_symbols
     end
-    
+
     protected
 
     # Ensures the role is valid
@@ -30,9 +30,9 @@ module Troles::Common::Api
     # Ensures the role are valid
     # @param [Symbol] list of roles
     # @return [Array<Symbol>] the valid roles from the list of roles given
-    def make_valid_roles *roles      
+    def make_valid_roles *roles
       roles = roles.to_symbols_uniq
-      return [] if roles.empty?                
+      return [] if roles.empty?
       check_valid_roles? roles.map{|r| r.to_s.alpha_numeric}
     end
 

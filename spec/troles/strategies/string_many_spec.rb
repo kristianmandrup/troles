@@ -1,4 +1,4 @@
-require 'strategy_helper'
+require 'troles/strategy_helper'
 
 User.troles_strategy :string_many do |c|
   c.valid_roles = [:user, :admin, :blogger, :editor]

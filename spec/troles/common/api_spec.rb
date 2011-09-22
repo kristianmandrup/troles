@@ -10,16 +10,16 @@ def define_users
   let(:no_roles_user) { create_no_roles_user  }
   let(:user)          { create_user  }
   let(:admin_user)    { create_admin_user  }
-end  
+end
 
 shared_examples_for "Common API" do
-  include UserSetup 
-     
+  include UserSetup
+
   it_behaves_like "Common Core API" do
     define_users
-  end  
+  end
 
-  # 
+  #
   # it_behaves_like "Common Event API" do
   #   define_users
   # end  
@@ -42,11 +42,11 @@ shared_examples_for "Common API" do
 end 
 
 shared_examples_for "Common API for multiple roles" do
-  include UserSetup 
-    
+  include UserSetup
+
   it_behaves_like "Common Write API for multiple roles" do
     define_users
-  end  
+  end
 end
 
 # Customizing shared example groups

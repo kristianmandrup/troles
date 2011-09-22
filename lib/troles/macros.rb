@@ -1,7 +1,5 @@
-require 'troles/common/macros'
-
-module Troles  
+module Troles
   module Macros
-  end  
+  end
 end
 

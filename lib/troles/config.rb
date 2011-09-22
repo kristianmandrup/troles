@@ -1,20 +1,18 @@
 module Troles
-  class Config < Behave::Config    
-    autoload :ValidRoles,     'troles/common/config/valid_roles'        
-    autoload :StaticRoles,    'troles/common/config/static_roles'    
+  class Config < Behave::Config
+    autoload_modules :ValidRoles, :StaticRoles
 
     def self.sub_modules
       [:valid_roles, :static_roles, :schema]
     end
-    
+
     def initialize subject_class, options = {}
       super
     end
 
     alias_method :role_field, :main_field
     alias_method :role_field=, :main_field=
-    
-    alias_method :default_role_field, :default_main_field    
+    alias_method :default_role_field, :default_main_field
 
 
     # get the default name of the main field
@@ -36,8 +34,8 @@ module Troles
 
     def configure_models
       super
-    end       
-        
+    end
+
     def generic?
       super
     end

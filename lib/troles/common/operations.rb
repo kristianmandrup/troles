@@ -4,20 +4,18 @@
 # 
 # Usage example:
 #   - user.roles + :admin
-#   - user.roles.clear! 
+#   - user.roles.clear!
 #
 module Troles::Common
-  class Operations        
-    autoload :Read,     'troles/common/operations/read'
-    autoload :Write,    'troles/common/operations/write'
+  class Operations
+    autoload_modules :Read, :Write
 
     include Read
     include Write
-
     include Enumerable
 
     attr_reader :role_subject
-    
+
     # constructor
     # @param [Object] the role subject, fx a User or UserAccount
     def initialize role_subject
@@ -28,6 +26,6 @@ module Troles::Common
     # iterates and yields all roles in the role list (Symbols)
     def each
       list.each { |role| yield role }
-    end        
+    end
   end
 end

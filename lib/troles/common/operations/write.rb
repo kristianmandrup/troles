@@ -2,7 +2,7 @@
 module Troles::Common
   class Operations
     module Write
-      
+
       # Test roles equality
       # @param [Array<Symbol>] roles list to test
       def == *roles
@@ -19,7 +19,7 @@ module Troles::Common
       end
       alias_method :<<, :+
       alias_method :add, :+
-      alias_method :add!, :+                           
+      alias_method :add!, :+
 
       # Remove a set of roles from the role subject
       # @param  [Array<Symbol>] roles list to add
@@ -35,7 +35,7 @@ module Troles::Common
       # @return [true, false, Error] true if removed, false if static or invalid, Error on some error
       def clear
         role_subject.clear_roles!
-      end    
+      end
       alias_method :clear!, :clear
     end
   end

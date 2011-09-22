@@ -1,6 +1,6 @@
 module Troles::Common
   class Operations
-    module Read      
+    module Read
       # The roles list of the role subject
       # @return [Array<Symbol>] the list of roles
       def list

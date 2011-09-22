@@ -1,11 +1,9 @@
-puts "BaseMany"
-
 # @author Kristian Mandrup
 #
 # Base module for Many roles strategies
 #
 module Troles
-  module Strategy    
+  module Strategy
     module BaseMany
       #
       # a Many role strategy is included by a role subject (fx a UserAccount class) 
@@ -19,7 +17,7 @@ module Troles
       #
       def self.included(base)
         base.send :include, Troles::Api
-      end      
+      end
 
       # The storage to use
       # @return [Troles::Storage] a storage subclass instance matching the needs of the strategy
@@ -28,9 +26,9 @@ module Troles
       end
 
       # @return [Class] the storage strategy class
-      def storage 
+      def storage
         raise "Must be implemented by subclass" # Troles::Storage::BaseMany
-      end      
+      end
     end
   end
 end

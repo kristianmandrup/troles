@@ -1,8 +1,8 @@
-module Troles  
-  module Macros    
+module Troles
+  module Macros
     class StrategyOptions
       attr_reader :subject_class
-  
+
       def initialize subject_class
         @subject_class = subject_class
       end
@@ -10,7 +10,7 @@ module Troles
       # @param [Symbol] name of the macro to run
       def apply_macro name
         # overrides default method that returns false
-        begin 
+        begin
           subject_class.send :include,  "Troles::Macros::#{strategy_name.to_s.camelize}".constantize
         rescue
         end
@@ -18,4 +18,3 @@ module Troles
     end
   end
 end
-    

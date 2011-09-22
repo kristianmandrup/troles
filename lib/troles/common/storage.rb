@@ -1,5 +1,5 @@
 # @author Kristian Mandrup
-#  
+#
 # The Common Storage API
 # @note all methods potentially operate directly on values in the data store
 #
@@ -11,13 +11,13 @@ module Troles::Common
     # @param [Object] the role subject (fx a User or UserAccount) 
     def initialize role_subject
       @role_subject = role_subject
-    end      
+    end
 
     # valid roles of the role subjects class (fx account - i.e the account rules!)
     # @return [Array<Symbol>] the list of valid roles
     def valid_roles
       role_subject.class.valid_roles
-    end        
+    end
 
     # name/type of storage
     # @return [Symbol]
@@ -49,21 +49,21 @@ module Troles::Common
     # @return [Object] the value
     def ds_field_value
       role_subject.send(ds_field_name)
-    end      
+    end
 
     # Attempts to persist the role field changes
     # @return [true, false, error] true if saved, false if no save! method, Error on some error
-    def persist_role_changes!           
+    def persist_role_changes!
       puts "Troles::Common::Storage::BaseMany.persist_role_changes!" if Troles::Common::Config.log_on?
       if !role_subject.respond_to? :save
         puts "could not save since no #save method on subject: #{role_subject}" if Troles::Common::Config.log_on?
-        return false 
-      else      
-        puts "#{role_subject}.save" if Troles::Common::Config.log_on?         
+        return false
+      else
+        puts "#{role_subject}.save" if Troles::Common::Config.log_on?
         role_subject.save
         role_subject.publish_change :roles
       end
-    end 
+    end
 
     protected
 
@@ -71,7 +71,7 @@ module Troles::Common
       role_subject.class.troles_config
     end
 
-    def role_field      
+    def role_field
       troles_config.role_field
     end
 
@@ -82,5 +82,5 @@ module Troles::Common
     def role_list
       role_subject.role_list
     end
-  end        
+  end
 end

@@ -2,10 +2,10 @@ shared_examples_for "Common Cache API" do
   describe '#invalidate_role_cache!' do
     before :each do
       user.role_list
-      user.invalidate_role_cache!                                     
+      user.invalidate_role_cache!
     end
 
-    # should invalidate role cache, forcing update of @role_list instance var    
+    # should invalidate role cache, forcing update of @role_list instance var
     expect { user.role_list }.to change { user.instance_variable_get "@role_list" }
   end
 end

@@ -8,16 +8,16 @@ module Troles::Common
         @role_subject = role_subject
         @valid_roles = role_subject.class.valid_roles
       end
-      
+
       protected
 
-      def ds_field_value  
+      def ds_field_value
         role_subject.send ds_field_name
-      end      
+      end
 
-      def ds_field_name  
+      def ds_field_name
         @ds_field_name ||= role_subject.class.role_field
-      end      
+      end
     end
   end
 end

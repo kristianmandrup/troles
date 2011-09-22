@@ -10,8 +10,8 @@ module Troles::Common
       end
 
       def read
-        valid_roles.reject do |r| 
-          num = as_number(ds_field_value) 
+        valid_roles.reject do |r|
+          num = as_number(ds_field_value)
           ((num || 0) & calc_index(r)).zero?
         end
       end
@@ -19,9 +19,9 @@ module Troles::Common
       def write *roles
         roles = roles.uniq.compact
         return as_number(false) if roles.empty?
-        roles.to_symbols.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }          
+        roles.to_symbols.map { |r| calc_index(r) }.inject { |sum, bitvalue| sum + bitvalue }
       end
-      
+
       protected
 
       def as_number value
@@ -29,15 +29,15 @@ module Troles::Common
         when TrueClass, FalseClass
           value ? 2 : 1
         when Fixnum
-          value 
+          value
         else
           raise ArgumentError, "Cant be converted to a bit index, #{value}"
         end
       end
-        
+
       def calc_index(r)
         2**valid_roles.index(r)
-      end        
+      end
     end
   end
 end

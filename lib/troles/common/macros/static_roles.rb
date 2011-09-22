@@ -5,5 +5,5 @@ module Troles
         true
       end
     end
-  end  
+  end
 end

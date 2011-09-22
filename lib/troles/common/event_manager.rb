@@ -17,7 +17,7 @@ module Troles::Common
       def subscribers
         @subscribers ||= []
       end
-      
+
       def publish_change event, options
         # from = options[:from]
         subscribers.each do |subscriber|
@@ -25,16 +25,16 @@ module Troles::Common
         end
         true
       end
-      
+
       def add_subscribers subscribers
         self.subscribers << subscribers
       end
 
       def remove_subscribers subscribers
         self.subscribers - subscribers
-      end      
+      end
     end
-       
+
     extend ClassMethods
   end
 end

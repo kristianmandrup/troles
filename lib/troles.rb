@@ -1,11 +1,7 @@
+require 'sweetloader'
 require 'troles/common'
 require 'troles/macros'
 
-module Troles  
-  autoload :Config,         'troles/config'
-  autoload :Common,         'troles/common'
-  autoload :Api,            'troles/api'
-  autoload :Operations,     'troles/operations'
-  autoload :Strategy,       'troles/strategy'
-  autoload :Storage,        'troles/storage'
+module Troles
+  autoload_modules :Config, :Common, :Api, :Operations, :Strategy, :Storage
 end

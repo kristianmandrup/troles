@@ -9,16 +9,15 @@
 #     troles_strategy :bit_many
 #
 
-module Troles  
+module Troles::Common
   module Macros
-    autoload :Configuration, 'troles/common/macros/configuration'
-
+    autoload_modules :Configuration
     # IMPORTANT
     # Should hook into Behave macros and just extend it with what is specific for troles config, 
     # should result in most of local /macros folder being generalised in behave macros
-    
+
     # See 'Behavior decorator pattern.textile' for more...
-    
+
     # def troles_strategy strategy, options = {}, &block
     #   configuration = Configuration.new self, strategy, options
     # 

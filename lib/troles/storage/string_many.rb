@@ -18,24 +18,24 @@ module Troles::Storage
     end
 
     def ds_field_value?
-      ds_field_value && !ds_field_value.empty?      
+      ds_field_value && !ds_field_value.empty?
     end
-    
+
     # saves the role for the user in the data store
     # @param [Array<Symbol>] roles list
     def set_roles *roles
       value = roles.flatten.map(&:to_s).join(',')
       set_ds_field value
-    end  
+    end
 
     # clears the role of the user in the data store
     def clear!
       set_ds_field ""
     end
-    
+
     # sets the role to default setting
     def set_default_role!
       clear!
-    end        
+    end
   end
 end

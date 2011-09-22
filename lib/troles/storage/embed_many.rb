@@ -14,11 +14,11 @@ module Troles::Storage
     end
 
     def roles_to_embed *roles
-      roles.flatten.inject([]) do |res, role| 
+      roles.flatten.inject([]) do |res, role|
         res << create_role(role)
         res
       end
-    end           
+    end
 
     # display the roles as a list of symbols
     # @return [Array<Symbol>] roles list
@@ -30,27 +30,27 @@ module Troles::Storage
     # is it set?
     def ds_field_value?
       ds_field_value && !ds_field_value.empty?
-    end    
-  
+    end
+
     # saves the roles for the role subject in the data store
-    # @param [Array<Symbol>] roles list    
+    # @param [Array<Symbol>] roles list
     def set_roles *roles
       # creates and embeds new Role instances from symbols
       set_ds_field roles_to_embed(*roles)
-    end  
+    end
 
     # clears the role of the user in the data store
     def clear!
       set_ds_field []
-    end  
-  
+    end
+
     # sets the role to its default state
     def set_default_role!
       clear!
     end
-    
+
     protected
-    
+
     def create_role name
       role_model.create name
     end

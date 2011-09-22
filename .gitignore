@@ -8,3 +8,4 @@ spec/dummy/tmp/
 */.DS_Store
 .yardoc/
 *.sqlite3
+Gemfile.lock

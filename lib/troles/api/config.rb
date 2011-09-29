@@ -5,5 +5,5 @@
 #
 module Troles::Api
   module Config
-  end  
+  end
 end

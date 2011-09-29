@@ -1,13 +1,13 @@
 module Troles
-  class Config < Troles::Common::Config    
+  class Config < Troles::Common::Config
     def initialize subject_class, options = {}
       super
     end
 
     def configure_models
       super
-    end       
-        
+    end
+
     def generic?
       super
     end

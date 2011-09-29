@@ -13,5 +13,5 @@ module Troles
     autoload :Marshaller,   'troles/common/marshaller'
     autoload :Storage,      'troles/common/storage'
     autoload :EventManager, 'troles/common/event_manager'
-  end  
+  end
 end

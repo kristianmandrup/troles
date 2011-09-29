@@ -48,7 +48,7 @@ shared_examples_for "Common Write API for multiple roles" do
       user.remove_roles :admin, :admin
       expect { user.role_list }.to change{user.role_list_value}      
       user.has_role?(:admin).should be_false
-      user.roles.list.should == [:editor, :blogger]
+      user.roles.list.should include(:editor, :blogger)
     end
   end
 
@@ -69,7 +69,7 @@ shared_examples_for "Common Operations API for multiple roles" do
     it "should clear all roles and invalidate roles cache" do
       user.set_roles :admin
       user.roles << [:admin, :editor, :blogger]
-      user.roles.list.should == [:admin, :editor, :blogger]
+      user.roles.list.should == include(:admin, :editor, :blogger)
       user.roles.clear!
       expect { user.role_list }.to change{user.role_list_value }
       user.role_list.should be_empty      

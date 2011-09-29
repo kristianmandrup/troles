@@ -15,12 +15,13 @@ module Troles::Common
       end
 
       def included(base)
+        puts "Included #{base}"
         apis.each do |api|
           begin
             base.include_and_extend :"#{api.to_s.camelize}"
           rescue
           end
-        end      
+        end
       end
     end
     extend ClassMethods

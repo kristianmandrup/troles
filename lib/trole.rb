@@ -5,6 +5,6 @@ module Trole
   autoload :Config,         'trole/config'
   autoload :Api,            'trole/api'
   autoload :Operations,     'trole/operations'
-  autoload :Strategy,       'trole/strategy'      
+  autoload :Strategy,       'trole/strategy'
   autoload :Storage,        'trole/storage'
 end

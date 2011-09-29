@@ -18,6 +18,9 @@ module Troles::Common
 
     # See 'Behavior decorator pattern.textile' for more...
 
+    # Same as
+    # Behave::Behavior#configure_with strategy = :default, options = {}, &block
+
     # def troles_strategy strategy, options = {}, &block
     #   configuration = Configuration.new self, strategy, options
     # 

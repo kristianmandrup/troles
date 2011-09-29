@@ -13,6 +13,11 @@ User.troles_strategy :bit_one do |c|
   c.valid_roles = [:user, :admin]
 end.configure!
 
+User.behavior(:troles).configure_with :bit_one do |c|
+  c.valid_roles = [:user, :admin]
+end.apply!
+
+
 module UserSetup
   def create_no_roles_user
     Factory.create :user, :name => 'no roles', :trole => false

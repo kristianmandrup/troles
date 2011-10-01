@@ -1,4 +1,4 @@
-require 'strategy_helper'
+require 'trole/strategy_helper'
 
 User.troles_strategy :ref_one do |c|
   c.valid_roles = [:user, :admin, :editor, :blogger]

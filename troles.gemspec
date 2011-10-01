@@ -4,19 +4,20 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{troles}
-  s.version = "0.5.1"
+  s.name = "troles"
+  s.version = "0.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Kristian Mandrup}]
-  s.date = %q{2011-06-08}
-  s.description = %q{Ruby roles solution that has an easy to extend API, configuration and nice Adapter interface to ORMs and data stores}
-  s.email = %q{kmandrup@gmail.com}
+  s.authors = ["Kristian Mandrup"]
+  s.date = "2011-10-01"
+  s.description = "Ruby roles solution that has an easy to extend API, configuration and nice Adapter interface to ORMs and data stores"
+  s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
     "README.textile"
   ]
   s.files = [
     ".rspec",
+    "Design.textile",
     "Gemfile",
     "Gemfile.lock",
     "MIT-LICENSE",
@@ -151,23 +152,30 @@ Gem::Specification.new do |s|
     "lib/troles/storage/base_many.rb",
     "lib/troles/storage/bit_many.rb",
     "lib/troles/storage/embed_many.rb",
+    "lib/troles/storage/join_ref_many.rb",
     "lib/troles/storage/ref_many.rb",
     "lib/troles/storage/string_many.rb",
     "lib/troles/strategy.rb",
     "playbox/old_rake",
     "spec/Guide to running specs.textile",
     "spec/active_record/migrations/many/bit_many.rb",
+    "spec/active_record/migrations/many/custom_join.rb",
+    "spec/active_record/migrations/many/join_ref_many.rb",
     "spec/active_record/migrations/many/ref_many.rb",
     "spec/active_record/migrations/many/string_many.rb",
     "spec/active_record/migrations/one/bit_one.rb",
     "spec/active_record/migrations/one/ref_one.rb",
     "spec/active_record/migrations/one/string_one.rb",
     "spec/active_record/models.rb",
+    "spec/active_record/models/custom_join.rb",
+    "spec/active_record/models/join_ref_many.rb",
     "spec/active_record/models/ref_many.rb",
     "spec/active_record/models/ref_one.rb",
     "spec/active_record/models/role.rb",
     "spec/active_record/models/user.rb",
     "spec/active_record/strategies/many/bit_many_spec.rb",
+    "spec/active_record/strategies/many/custom_join_spec.rb",
+    "spec/active_record/strategies/many/join_ref_many_spec.rb",
     "spec/active_record/strategies/many/ref_many_spec.rb",
     "spec/active_record/strategies/many/string_many_spec.rb",
     "spec/active_record/strategies/one/bit_one_spec.rb",
@@ -307,21 +315,22 @@ Gem::Specification.new do |s|
     "spec/troles_spec.rb",
     "troles.gemspec"
   ]
-  s.homepage = %q{http://github.com/kristianmandrup/troles}
-  s.licenses = [%q{MIT}]
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.5}
-  s.summary = %q{Complete roles solution that is easy to integrate with any Rack app, including Rails 3+}
+  s.homepage = "http://github.com/kristianmandrup/troles"
+  s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Complete roles solution that is easy to integrate with any Rack app, including Rails 3+"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<sugar-high>, ["~> 0.4.4"])
+      s.add_runtime_dependency(%q<sugar-high>, [">= 0.4.4"])
+      s.add_runtime_dependency(%q<sweetloader>, [">= 0.1.0"])
       s.add_runtime_dependency(%q<require_all>, ["~> 1.2.0"])
-      s.add_runtime_dependency(%q<yard>, ["> 0.6.1"])
-      s.add_development_dependency(%q<rails>, ["~> 3.1.0.rc1"])
-      s.add_development_dependency(%q<rspec-rails>, ["> 2.4.0"])
+      s.add_development_dependency(%q<yard>, ["> 0.6.1"])
+      s.add_development_dependency(%q<rails>, [">= 3.0.1"])
+      s.add_development_dependency(%q<rspec-rails>, [">= 2.4.0"])
       s.add_development_dependency(%q<sqlite3>, [">= 0"])
       s.add_development_dependency(%q<capybara>, ["> 0.4.0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
@@ -330,15 +339,17 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<database_cleaner>, ["~> 0.6.8"])
       s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
       s.add_development_dependency(%q<bundler>, [">= 1"])
-      s.add_development_dependency(%q<jeweler>, [">= 1.5"])
+      s.add_development_dependency(%q<jeweler>, [">= 1.6"])
       s.add_development_dependency(%q<rdoc>, [">= 3.6"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<yard>, ["> 0.6.1"])
     else
-      s.add_dependency(%q<sugar-high>, ["~> 0.4.4"])
+      s.add_dependency(%q<sugar-high>, [">= 0.4.4"])
+      s.add_dependency(%q<sweetloader>, [">= 0.1.0"])
       s.add_dependency(%q<require_all>, ["~> 1.2.0"])
       s.add_dependency(%q<yard>, ["> 0.6.1"])
-      s.add_dependency(%q<rails>, ["~> 3.1.0.rc1"])
-      s.add_dependency(%q<rspec-rails>, ["> 2.4.0"])
+      s.add_dependency(%q<rails>, [">= 3.0.1"])
+      s.add_dependency(%q<rspec-rails>, [">= 2.4.0"])
       s.add_dependency(%q<sqlite3>, [">= 0"])
       s.add_dependency(%q<capybara>, ["> 0.4.0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
@@ -347,16 +358,18 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<database_cleaner>, ["~> 0.6.8"])
       s.add_dependency(%q<rake>, ["~> 0.9.0"])
       s.add_dependency(%q<bundler>, [">= 1"])
-      s.add_dependency(%q<jeweler>, [">= 1.5"])
+      s.add_dependency(%q<jeweler>, [">= 1.6"])
       s.add_dependency(%q<rdoc>, [">= 3.6"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<yard>, ["> 0.6.1"])
     end
   else
-    s.add_dependency(%q<sugar-high>, ["~> 0.4.4"])
+    s.add_dependency(%q<sugar-high>, [">= 0.4.4"])
+    s.add_dependency(%q<sweetloader>, [">= 0.1.0"])
     s.add_dependency(%q<require_all>, ["~> 1.2.0"])
     s.add_dependency(%q<yard>, ["> 0.6.1"])
-    s.add_dependency(%q<rails>, ["~> 3.1.0.rc1"])
-    s.add_dependency(%q<rspec-rails>, ["> 2.4.0"])
+    s.add_dependency(%q<rails>, [">= 3.0.1"])
+    s.add_dependency(%q<rspec-rails>, [">= 2.4.0"])
     s.add_dependency(%q<sqlite3>, [">= 0"])
     s.add_dependency(%q<capybara>, ["> 0.4.0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
@@ -365,9 +378,10 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<database_cleaner>, ["~> 0.6.8"])
     s.add_dependency(%q<rake>, ["~> 0.9.0"])
     s.add_dependency(%q<bundler>, [">= 1"])
-    s.add_dependency(%q<jeweler>, [">= 1.5"])
+    s.add_dependency(%q<jeweler>, [">= 1.6"])
     s.add_dependency(%q<rdoc>, [">= 3.6"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<yard>, ["> 0.6.1"])
   end
 end
 

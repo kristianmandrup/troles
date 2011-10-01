@@ -34,10 +34,10 @@ module Troles::Common::Api
         troles_config.valid_roles
       end
 
-      # # TODO: make sure alphanumeric only
-      # def valid_roles= *roles
-      #   troles_config.valid_roles = *roles
-      # end
+      # convert to alphanumeric symbols
+      def valid_roles= *roles
+        troles_config.valid_roles = roles.flatten.map{|r| r.to_s.alpha_numeric}.map(&:to_sym).uniq
+      end
 
       # If all role subjects using this strategy should have static (immutable) roles
       #

@@ -1,4 +1,4 @@
-module Troles
+module Troles::Common
   module Macros
     module StaticRoles
       def static_roles?

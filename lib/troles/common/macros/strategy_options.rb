@@ -1,4 +1,4 @@
-module Troles
+module Troles:Common
   module Macros
     class StrategyOptions
       attr_reader :subject_class

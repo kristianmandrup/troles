@@ -39,6 +39,12 @@ module Troles::Common::Api
     # (see #has_roles?)
     def has_any_role? *roles
       !(role_list & roles.to_symbols).empty?
+    end
+
+    # Checks if the role subject has any of the listed roles
+    # (see #has_roles?)
+    def has_all_roles? *roles
+      (roles.to_symbols - role_list).empty?
     end    
   end
 end

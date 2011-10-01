@@ -1,11 +1,11 @@
 source :rubygems
 
 gem 'sugar-high',   '>= 0.4.4'
-gem 'require_all',  '~> 1.2.0'
 gem 'sweetloader',  '>= 0.1.0'
-
+gem 'require_all',  '~> 1.2.0'
 
 group :development, :test do
+  gem 'yard',         '>  0.6.1'
   gem 'rails',        '>= 3.0.1'
   gem 'rspec-rails',  '>= 2.4.0'
   gem 'sqlite3'

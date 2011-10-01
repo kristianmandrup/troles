@@ -13,6 +13,11 @@ The roles list cache of a role subject (fx a user) is only updated (retrieved fr
 
 Note: Troles is a full redesign of _roles generic_ and company, using lessons learned. Troles uses a much cleaner design. It is aimed at being easy to extend and easy to create adapters for etc.
 
+h2. Update: Oct. 1
+
+Updated to use the latest _sugar-high_ and _sweetloader_ gems. Also fixed most specs so they pass again. 
+In generela, troles should now be working with respect to the API and various implementation strategies. 
+
 h2. Role strategies
 
 The following lists the role strategies to be supported

@@ -21,12 +21,16 @@ ActiveRecord::Base.logger = Logger.new(STDERR)
 DatabaseCleaner.strategy = :truncation
 
 def migration_folder(name)
-  path = File.dirname(__FILE__) + "/migrations/#{name}"
+  File.dirname(__FILE__) + "/active_record/migrations/#{name}"
 end
 
-def migrate(name)
-  singularity = (name =~/_many/) ? :many : :one                  
-  ActiveRecord::Migrator.migrate migration_folder File.join(singularity, name)
+def migrate name = :ref_many
+  singularity = (name.to_s =~ /_many/) ? :many : :one                  
+  migration_file = migration_folder(File.join [singularity, name].map(&:to_s))
+  puts "mig file: #{migration_file}"
+  require migration_file
+
+  "Create#{name.to_s.camelize}".constantize.new.change
 end
 
 RSpec.configure do |config|

@@ -18,7 +18,7 @@ shared_examples_for "TroleGroup Read API" do
 
     # adding single roles and role groups together produces union of roles from all :)
     user.add_roles :editor    
-    user.role_list.should include(:editor, :blogger, :blog_editor, :admin, :blog_admin)
+    user.role_list.should include(:blogger, :blog_editor, :admin, :blog_admin)
   end
         
   specify { user.has_any_rolegroup?(:blog_admin, :admin).should be_true }

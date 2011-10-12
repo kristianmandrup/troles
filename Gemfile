@@ -24,6 +24,7 @@ end
 
 group :development do
   gem 'rake',         '>= 0.9.0'
+  gem 'rspec',        '>= 2.4'
   gem 'bundler',      '>= 1'
   gem 'jeweler',      '>= 1.6'
   gem 'rdoc',         '>= 3.6'

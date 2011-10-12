@@ -160,6 +160,7 @@ DEPENDENCIES
   rcov
   rdoc (>= 3.6)
   require_all (~> 1.2.0)
+  rspec (>= 2.4)
   rspec-rails (>= 2.4.0)
   schemaker (>= 0.1.4)
   shoulda

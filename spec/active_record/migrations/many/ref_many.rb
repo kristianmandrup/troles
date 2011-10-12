@@ -7,10 +7,10 @@ class CreateRefMany < ActiveRecord::Migration
     end
 
     # join table
-    create_table :roles_users, :id => false do |t|
-      t.integer :user_id
-      t.integer :role_id
-    end
+#    create_table :roles_users, :id => false do |t|
+#      t.integer :user_id
+#      t.integer :role_id
+#    end
 
     create_table :roles do |t|
       # implicit role_id binds to role_id of roles_users join table

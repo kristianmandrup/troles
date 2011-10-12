@@ -6,7 +6,7 @@ module Troles::ActiveRecord
     def initialize subject_class, options = {}
       super       
       puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
-      @models = Schemaker::Models.new subject_class, object_model, join_model
+      @models = ::Schemaker::Models.new(subject_class, object_model, join_model)
     end
     
     def configure_relation
@@ -14,8 +14,7 @@ module Troles::ActiveRecord
       when :join_ref_many
         configure_join_model
       when :ref_many
-        return configure_join_model if join_model
-        
+        return configure_join_model if join_model?        
         subject.quick_join
       when :embed_many
         raise "Embed many configuration not yet implemented for ActiveRecord" 
@@ -28,8 +27,8 @@ module Troles::ActiveRecord
     
     protected
 
-    def subject_relations
-      @subject_relations ||= models.subject_class
+    def subject
+      @subject ||= models.subject_model
     end
 
     def main_field
@@ -38,8 +37,14 @@ module Troles::ActiveRecord
 
     def join_model
       @join_model_found ||= begin
-        find_first_module(@join_model, join_model_best_guess)
+        find_first_class(@join_model, join_model_best_guess)
       end
+    rescue ClassExt::ClassNotFoundError
+      nil
+    end
+
+    def join_model?
+      join_model
     end
 
     def join_model_best_guess
@@ -50,7 +55,6 @@ module Troles::ActiveRecord
       @join_model = model_class and return if model_class.any_kind_of?(Class, String, Symbol)
       raise "The join model must be a Class, was: #{model_class}"
     end
-
 
     def join_key
       make_key join_model

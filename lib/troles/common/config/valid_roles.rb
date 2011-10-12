@@ -1,10 +1,20 @@
+# 
+# @author Kristian Mandrup
+#
+# Valid roles module
+# Adds methods for operating on/with valid roles
+#
 module Troles::Common
   class Config
-    module ValidRoles
+    module ValidRoles    
+      # Add a list of valid roles
+      # @param [Array<Symbol>] names of roles to make valid
       def add_valid_roles *roles
         valid_roles =valid_roles & roles
       end
 
+      # Set a list of valid roles
+      # @param [Array<Symbol>] names of roles to make valid
       def valid_roles= *roles
         vrs = roles.flatten.map{|r| r.to_s.alpha_numeric}.map(&:to_sym).uniq
 
@@ -13,6 +23,8 @@ module Troles::Common
         @valid_roles ||= vrs
       end
 
+      # Get the list of valid roles
+      # @return [Array<Symbol>] names of roles that are currently valid
       def valid_roles
         raise "No valid roles defined" if !@valid_roles || @valid_roles.empty?
         @valid_roles

@@ -14,7 +14,7 @@ shared_examples_for "Common Write API for multiple roles" do
       user.has_role?(:admin).should be_true
       user.has_role?(:user).should be_false
       user.has_any_role?(:admin, :editor).should be_true
-      user.has_any_role?(:user).should be_false
+      user.has_any_role?(:publisher, :user).should be_false
       user.has_all_roles?(:admin, :editor, :blogger).should be_true      
     end
 
@@ -23,7 +23,7 @@ shared_examples_for "Common Write API for multiple roles" do
       user.has_role?(:admin).should be_true
       user.has_role?(:user).should be_false
       user.has_any_role?(:admin, :editor).should be_true
-      user.has_any_role?(:user).should be_false
+      user.has_any_role?(:publisher, :user).should be_false
       user.has_all_roles?(:admin, :editor, :blogger).should be_true      
     end
   end

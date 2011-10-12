@@ -2,6 +2,8 @@ module Troles::Common::Macros
   class Configuration  
     class BaseLoader
       attr_reader :strategy, :orm
+
+      include ClassExt
       
       def initialize strategy, orm
         @strategy = strategy
@@ -12,16 +14,10 @@ module Troles::Common::Macros
         (strategy =~ /_many$/) ? :many : :one
       end
       
-      def try_module full_name
-        begin
-          full_name.constantize
-          true
-        rescue
-          # puts "module #{full_name} not found!"
-          false
-        end
+      def strategy_class
+        strategy.to_s.camelize
       end
-
+      
       def base_class
         "Base#{singularity.to_s.camelize}"
       end

@@ -13,10 +13,34 @@ The roles list cache of a role subject (fx a user) is only updated (retrieved fr
 
 Note: Troles is a full redesign of _roles generic_ and company, using lessons learned. Troles uses a much cleaner design. It is aimed at being easy to extend and easy to create adapters for etc.
 
-h2. Update: Oct. 1
+h2. Update: Oct. 12
 
-Updated to use the latest _sugar-high_ and _sweetloader_ gems. Also fixed most specs so they pass again. 
-In generela, troles should now be working with respect to the API and various implementation strategies. 
+Updated to use the latest _sugar-high_, _sweetloader_ and _schemaker_ gems. 
+Fixed most specs so they pass again. 
+
+In general, troles should now be working with respect to the API and various implementation strategies. 
+
+h3. Yard documentation
+
+This project uses "Yard":http://rubydoc.info/docs/yard/file/docs/GettingStarted.md for documentation.
+
+<pre>$ yard server
+
+From browser, go to: http://0.0.0.0:8808/  # then you can enjoy! the nice documentation :) 
+</pre>
+
+There is now support for Caching and invalidation of the _role_list_ when the roles change. 
+The specs now validate that caching works as it should.
+
+Please help out to finalize this project! :)
+
+h2. Bug hunting by running specs
+
+Run specs for at most one strategy at the time for now...
+
+@$ rspec spec/troles/strategies/bit_many_spec.rb@ 
+
+Please see the document _spec/Guide to running specs.textile_ where I advise on how best to do "bug hunting" to help get this project off the ground!
 
 h2. Role strategies
 

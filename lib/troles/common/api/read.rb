@@ -34,6 +34,7 @@ module Troles::Common::Api
     def has_roles? *roles
       (roles.to_symbols - role_list).empty?
     end
+    alias_method :has_all_roles?, :has_roles?
 
     # Checks if the role subject has any of the listed roles
     # (see #has_roles?)

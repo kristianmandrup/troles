@@ -7,13 +7,8 @@ module Troles::Common::Macros
       end
 
       def storage_class
-        begin
-          "#{orm_namespace}::Storage::#{strategy.to_s.camelize}".constantize
-        rescue
-          # use generic if no ORM specific strategy found!
-          "#{namespace}::Storage::#{strategy.to_s.camelize}".constantize
-        end        
-      end      
+        @storage_class ||= find_first_class("#{orm_namespace}::Storage::#{strategy_class}", "#{namespace}::Storage::#{strategy_class}")
+      end
     end
   end
 end

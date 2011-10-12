@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "troles"
-  s.version = "0.5.2"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = "2011-10-01"
+  s.date = "2011-10-12"
   s.description = "Ruby roles solution that has an easy to extend API, configuration and nice Adapter interface to ORMs and data stores"
   s.email = "kmandrup@gmail.com"
   s.extra_rdoc_files = [
@@ -120,9 +120,9 @@ Gem::Specification.new do |s|
     "lib/troles/common/api/validation.rb",
     "lib/troles/common/api/write.rb",
     "lib/troles/common/config.rb",
+    "lib/troles/common/config/class_methods.rb",
     "lib/troles/common/config/schema.rb",
     "lib/troles/common/config/schema/helpers.rb",
-    "lib/troles/common/config/schema/role_helpers.rb",
     "lib/troles/common/config/static_roles.rb",
     "lib/troles/common/config/valid_roles.rb",
     "lib/troles/common/dependencies.rb",
@@ -280,7 +280,7 @@ Gem::Specification.new do |s|
     "spec/trole_groups/generic/models.rb",
     "spec/trole_groups/generic/models/role_group.rb",
     "spec/trole_groups/generic/models/user.rb",
-    "spec/trole_groups/strategies/ref_many.rb",
+    "spec/trole_groups/strategies/ref_many_spec.rb",
     "spec/trole_groups/strategy_helper.rb",
     "spec/trole_groups_spec.rb",
     "spec/trole_spec.rb",
@@ -301,12 +301,17 @@ Gem::Specification.new do |s|
     "spec/troles/common/api/validation_api_spec.rb",
     "spec/troles/common/api/write_api_spec.rb",
     "spec/troles/common/api_spec.rb",
+    "spec/troles/common/config/schema_spec.rb",
     "spec/troles/common/config_spec.rb",
     "spec/troles/common/multi_roles_spec.rb",
     "spec/troles/marshaller/bitmask_spec.rb",
+    "spec/troles/marshaller/generic_spec.rb",
     "spec/troles/operations/read_ops_spec.rb",
     "spec/troles/operations/write_ops_spec.rb",
     "spec/troles/playbox/shared_examples.rb",
+    "spec/troles/storage/bit_many_spec.rb",
+    "spec/troles/storage/ref_many_spec.rb",
+    "spec/troles/storage/string_many_spec.rb",
     "spec/troles/strategies/bit_many_spec.rb",
     "spec/troles/strategies/embed_many_spec.rb",
     "spec/troles/strategies/ref_many_spec.rb",
@@ -325,38 +330,22 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<sugar-high>, [">= 0.4.4"])
-      s.add_runtime_dependency(%q<sweetloader>, [">= 0.1.0"])
-      s.add_runtime_dependency(%q<require_all>, ["~> 1.2.0"])
-      s.add_development_dependency(%q<yard>, ["> 0.6.1"])
-      s.add_development_dependency(%q<rails>, [">= 3.0.1"])
-      s.add_development_dependency(%q<rspec-rails>, [">= 2.4.0"])
-      s.add_development_dependency(%q<sqlite3>, [">= 0"])
-      s.add_development_dependency(%q<capybara>, ["> 0.4.0"])
-      s.add_development_dependency(%q<shoulda>, [">= 0"])
-      s.add_development_dependency(%q<factory_girl_rails>, [">= 0"])
-      s.add_development_dependency(%q<mocha>, [">= 0"])
-      s.add_development_dependency(%q<database_cleaner>, ["~> 0.6.8"])
-      s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
+      s.add_runtime_dependency(%q<sugar-high>, [">= 0.6.0"])
+      s.add_runtime_dependency(%q<sweetloader>, [">= 0.1.1"])
+      s.add_runtime_dependency(%q<schemaker>, [">= 0.1.4"])
+      s.add_development_dependency(%q<rake>, [">= 0.9.0"])
+      s.add_development_dependency(%q<rspec>, [">= 2.4"])
       s.add_development_dependency(%q<bundler>, [">= 1"])
       s.add_development_dependency(%q<jeweler>, [">= 1.6"])
       s.add_development_dependency(%q<rdoc>, [">= 3.6"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
       s.add_development_dependency(%q<yard>, ["> 0.6.1"])
     else
-      s.add_dependency(%q<sugar-high>, [">= 0.4.4"])
-      s.add_dependency(%q<sweetloader>, [">= 0.1.0"])
-      s.add_dependency(%q<require_all>, ["~> 1.2.0"])
-      s.add_dependency(%q<yard>, ["> 0.6.1"])
-      s.add_dependency(%q<rails>, [">= 3.0.1"])
-      s.add_dependency(%q<rspec-rails>, [">= 2.4.0"])
-      s.add_dependency(%q<sqlite3>, [">= 0"])
-      s.add_dependency(%q<capybara>, ["> 0.4.0"])
-      s.add_dependency(%q<shoulda>, [">= 0"])
-      s.add_dependency(%q<factory_girl_rails>, [">= 0"])
-      s.add_dependency(%q<mocha>, [">= 0"])
-      s.add_dependency(%q<database_cleaner>, ["~> 0.6.8"])
-      s.add_dependency(%q<rake>, ["~> 0.9.0"])
+      s.add_dependency(%q<sugar-high>, [">= 0.6.0"])
+      s.add_dependency(%q<sweetloader>, [">= 0.1.1"])
+      s.add_dependency(%q<schemaker>, [">= 0.1.4"])
+      s.add_dependency(%q<rake>, [">= 0.9.0"])
+      s.add_dependency(%q<rspec>, [">= 2.4"])
       s.add_dependency(%q<bundler>, [">= 1"])
       s.add_dependency(%q<jeweler>, [">= 1.6"])
       s.add_dependency(%q<rdoc>, [">= 3.6"])
@@ -364,19 +353,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<yard>, ["> 0.6.1"])
     end
   else
-    s.add_dependency(%q<sugar-high>, [">= 0.4.4"])
-    s.add_dependency(%q<sweetloader>, [">= 0.1.0"])
-    s.add_dependency(%q<require_all>, ["~> 1.2.0"])
-    s.add_dependency(%q<yard>, ["> 0.6.1"])
-    s.add_dependency(%q<rails>, [">= 3.0.1"])
-    s.add_dependency(%q<rspec-rails>, [">= 2.4.0"])
-    s.add_dependency(%q<sqlite3>, [">= 0"])
-    s.add_dependency(%q<capybara>, ["> 0.4.0"])
-    s.add_dependency(%q<shoulda>, [">= 0"])
-    s.add_dependency(%q<factory_girl_rails>, [">= 0"])
-    s.add_dependency(%q<mocha>, [">= 0"])
-    s.add_dependency(%q<database_cleaner>, ["~> 0.6.8"])
-    s.add_dependency(%q<rake>, ["~> 0.9.0"])
+    s.add_dependency(%q<sugar-high>, [">= 0.6.0"])
+    s.add_dependency(%q<sweetloader>, [">= 0.1.1"])
+    s.add_dependency(%q<schemaker>, [">= 0.1.4"])
+    s.add_dependency(%q<rake>, [">= 0.9.0"])
+    s.add_dependency(%q<rspec>, [">= 2.4"])
     s.add_dependency(%q<bundler>, [">= 1"])
     s.add_dependency(%q<jeweler>, [">= 1.6"])
     s.add_dependency(%q<rdoc>, [">= 3.6"])

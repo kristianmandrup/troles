@@ -1,5 +1,5 @@
-module Troles::ActiveRecord
+module Troles::Adapters::ActiveRecord
   module Storage
-    autoload :EmbedMany,    'troles/adapters/active_record/strategy/embed_many'
+    autoload_modules :EmbedMany
   end
 end

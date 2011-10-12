@@ -1,4 +1,4 @@
-module Troles::ActiveRecord
+module Troles::Adapters::ActiveRecord
   class Config < Troles::Common::Config  
 
     attr_reader :models

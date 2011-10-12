@@ -9,8 +9,7 @@
 #
 module Trole
   class Operations
-    autoload :Read,     'trole/operations/read'
-    autoload :Write,    'trole/operations/write'  
+    autoload_modules :Read, :Write
 
     include Read
     include Write

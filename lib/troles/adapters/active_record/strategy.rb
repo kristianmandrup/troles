@@ -1,4 +1,4 @@
-module Troles::ActiveRecord
+module Troles::Adapters::ActiveRecord
   module Strategy    
     module BaseMany
       # @param [Class] the role subject class for which to include the Role strategy (fx User Account)

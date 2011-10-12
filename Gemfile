@@ -3,6 +3,7 @@ source :rubygems
 gem 'sugar-high',   '>= 0.4.4'
 gem 'sweetloader',  '>= 0.1.0'
 gem 'require_all',  '~> 1.2.0'
+gem 'schemaker',    '>= 0.1.0'
 
 group :development, :test do
   gem 'yard',         '>  0.6.1'

@@ -1,8 +1,12 @@
 module Troles::ActiveRecord
   class Config < Troles::Common::Config  
+
+    attr_reader :models
     
     def initialize subject_class, options = {}
-      super 
+      super       
+      puts "models classes: #{subject_class}, #{object_model}, #{join_model}"
+      @models = Schemaker::Models.new subject_class, object_model, join_model
     end
     
     def configure_relation
@@ -10,8 +14,9 @@ module Troles::ActiveRecord
       when :join_ref_many
         configure_join_model
       when :ref_many
-        return configure_join_model if join_model_found?
-        has_and_belongs_many subject_class, object_model, :key => :accounts         
+        return configure_join_model if join_model
+        
+        subject.quick_join
       when :embed_many
         raise "Embed many configuration not yet implemented for ActiveRecord" 
       end
@@ -23,47 +28,32 @@ module Troles::ActiveRecord
     
     protected
 
-    def object_model
-      role_model
+    def subject_relations
+      @subject_relations ||= models.subject_class
     end
+
+    def main_field
+      role_field
+    end      
 
     def join_model
-      role_join_model
-    end
-
-    def role_join_model
-      @join_model_found ||= begin        
-        raise "No #{subject_class} to #{object_model} join class defined, #{cure}" if !join_model_found?
-        models.first.to_s.constantize
+      @join_model_found ||= begin
+        find_first_module(@join_model, join_model_best_guess)
       end
-    end
-
-    def cure
-      "define a #{join_model_best_guess} model class or set which class to use, using the :role_join_model option on configuration"
-    end
-
-    def join_model_found?
-      join_models_found.size > 0
-    end
-
-    def join_models_found
-      [@join_model, join_model_best_guess].select do |class_name|
-        try_class(class_name.to_s.camelize)
-      end.compact
     end
 
     def join_model_best_guess
       "#{subject_class.to_s.pluralize}#{object_model.to_s.pluralize}"
     end
 
-    def role_join_model= model_class
+    def join_model= model_class
       @join_model = model_class and return if model_class.any_kind_of?(Class, String, Symbol)
-      raise "The role model must be a Class, was: #{model_class}"
+      raise "The join model must be a Class, was: #{model_class}"
     end
 
 
     def join_key
-      make_key role_join_model
+      make_key join_model
     end
     
     def configure_join_model           
@@ -73,25 +63,11 @@ module Troles::ActiveRecord
         puts "Role class: #{object_model}"
         puts "Join class: #{join_model}"
       end
-
-      # UserAccount
-      # has_many :troles, :class_name => 'Role', :through => :users_roles
-      has_many_for subject_class, object_model, :opts => {:through => join_key.to_sym}
-      # has_many :user_roles, :class_name => 'UserRole'
-      has_many_for subject_class, role_join_model, :key => join_key
-
-      # UserRole (custom join class name)
-      # belongs_to :user, :class_name => 'UserAccount'      
-      belongs_to_for role_join_model, subject_class
-      # belongs_to :role, :class_name => 'Role'      
-      belongs_to_for role_join_model, role_model
-
-      # Role
-      # has_many :accounts, :class_name => 'User', :through => :user_roles      
-      has_many_for object_model, subject_class, :key => :accounts, :opts => {:through => join_key.to_sym}
-
-      # has_many :user_roles, :class_name => 'UserRole'
-      has_many_for object_model, role_join_model, :key => join_key      
+            
+      [:object, :subject, :join].each do |type|
+        clazz = "Schemaker::#{type.to_s.camelize}Model".constantize
+        clazz.new(model).configure
+      end      
     end
   end
 end

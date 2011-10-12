@@ -1,2 +1,4 @@
-class Role < ActiveRecord::Base    
+puts "Role model"
+
+class Role < ActiveRecord::Base
 end

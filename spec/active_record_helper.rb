@@ -13,7 +13,7 @@ Troles::Config.log_on = true
 
 dbconfig_path = File.dirname(__FILE__) + '/db/database.yml'
 dbfile = File.open(dbconfig_path)
-dbconfig = YAML::load(dbfile)  
+dbconfig = YAML::load(dbfile)
 
 ActiveRecord::Base.establish_connection(dbconfig)
 ActiveRecord::Base.logger = Logger.new(STDERR)
@@ -25,7 +25,7 @@ def migration_folder(name)
 end
 
 def migrate name = :ref_many
-  singularity = (name.to_s =~ /_many/) ? :many : :one                  
+  singularity = (name.to_s =~ /_many/) ? :many : :one
   migration_file = migration_folder(File.join [singularity, name].map(&:to_s))
   puts "mig file: #{migration_file}"
   require migration_file
@@ -36,19 +36,19 @@ end
 RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)    
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do    
+  config.before(:each) do
     DatabaseCleaner.start
     DatabaseCleaner.drop_tables :users, :roles, :users_roles
     migrate_up
-    # api_migrate      
+    # api_migrate
   end
 
   config.after(:each) do
     DatabaseCleaner.clean
-  end  
+  end
 end
 
 

@@ -13,7 +13,7 @@ module Troles::Storage
     end
 
     # display the roles as a list of symbols
-    # see Troles::Marshaller::Bitmask    
+    # see Troles::Marshaller::Bitmask
     # @return [Array<Symbol>] roles list
     def display_roles
       return [] if !ds_field_value?
@@ -21,34 +21,34 @@ module Troles::Storage
     end
 
     def ds_field_value?
-      ds_field_value == 0
+      ds_field_value > 0
     end
-  
+
     # saves the roles for the role subject in the data store
     # see Troles::Marshaller::Bitmask
-    # @param [Array<Symbol>] roles list        
+    # @param [Array<Symbol>] roles list
     def set_roles *roles
       roles = roles.to_symbols_uniq
-      return clear! if roles.empty?      
+      return clear! if roles.empty?
       set_ds_field bitmask.write(roles.to_symbols)
-    end  
+    end
 
     # Clears the role state of the role subject 
     def clear!
       set_ds_field 0
     end
-  
-    # Sets role to default state    
+
+    # Sets role to default state
     def set_default_role!
       clear!
-    end            
+    end
 
     protected
 
     def bitmask
       @bitmask ||= bitmask_class.new role_subject
     end
-    
+
     def bitmask_class
       Troles::Common::Marshaller::Bitmask
     end

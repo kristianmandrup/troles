@@ -10,10 +10,12 @@ User.valid_roles = [:user, :admin, :blogger]
 
 describe Troles::Storage::StringMany do
   let(:kris)    { Factory.create :user, :troles => 'user' }
-  subject 		{ Troles::Storage::StringMany.new kris }
+  subject       { Troles::Storage::StringMany.new kris }
 
-  it 'should set roles' do 
-  	subject.set_roles 'blogger', 'admin'
-  	subject.display_roles.should == [:blogger, :admin]
+  it 'should set roles' do
+    subject.set_roles 'blogger', 'admin'
+    subject.display_roles.should == [:blogger, :admin]
+    puts kris.troles.inspect
+    kris.troles.split(',').should include('blogger', 'admin')
   end
 end

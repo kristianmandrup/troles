@@ -14,7 +14,7 @@ shared_examples_for "Common Write API for multiple roles" do
       user.has_role?(:admin).should be_true
       user.has_role?(:user).should be_false
       user.has_any_role?(:admin, :editor).should be_true
-      user.has_any_role?(:admin, :user).should be_false
+      user.has_any_role?(:publisher, :user).should be_false
       user.has_all_roles?(:admin, :editor, :blogger).should be_true      
     end
 
@@ -23,7 +23,7 @@ shared_examples_for "Common Write API for multiple roles" do
       user.has_role?(:admin).should be_true
       user.has_role?(:user).should be_false
       user.has_any_role?(:admin, :editor).should be_true
-      user.has_any_role?(:admin, :user).should be_false
+      user.has_any_role?(:publisher, :user).should be_false
       user.has_all_roles?(:admin, :editor, :blogger).should be_true      
     end
   end
@@ -48,19 +48,12 @@ shared_examples_for "Common Write API for multiple roles" do
       user.remove_roles :admin, :admin
       expect { user.role_list }.to change{user.role_list_value}      
       user.has_role?(:admin).should be_false
-      user.roles.list.should == [:editor, :blogger]
+      user.roles.list.should include(:editor, :blogger)
     end
   end
 
   describe '#static_role!' do
     pending 'TODO'
-
-    it "should set set roles to :user only" do
-      user.static_role!(:guest)
-      user.has_role?(:guest).should be_true
-      user.valid_roles.should include(:guest)
-      lambda { user.set_roles(:admin) }.should raise_error
-    end
   end  
 end
 

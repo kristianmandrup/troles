@@ -1,19 +1,20 @@
 source "http://rubygems.org"
 
-gem 'sugar-high',   '~> 0.4.6'
+gem 'sweetloader',  '>= 0.1.0'
+gem 'sugar-high',   '>= 0.6.0'
 gem 'require_all',  '~> 1.2.0'
 gem 'yard',         '>  0.6.1'
-gem 'schemaker',    '~> 0.1.0'
+gem 'schemaker',    '>= 0.1.0'
 
 group :development, :test do
-  gem 'rails',        '~> 3.1.0.rc1'
+  gem 'rails',        '>= 3.0.1'
   gem 'rspec-rails',  '> 2.4.0'
   gem 'sqlite3'
   gem 'capybara',     '> 0.4.0'
   gem 'shoulda'
   gem 'factory_girl_rails'
   gem 'mocha'
-  gem 'database_cleaner', '~> 0.6.8', :git => "git://github.com/kristianmandrup/database_cleaner.git" 
+  gem 'database_cleaner', '~> 0.6.8', :git =>"git://github.com/kristianmandrup/database_cleaner.git" 
 
   gem 'rake',         '~> 0.9.0'
   gem 'bundler',      '>= 1'

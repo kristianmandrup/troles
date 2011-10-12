@@ -52,7 +52,7 @@ module Troles::Common
       def object_model
         @object_model_found ||= find_first_class(@object_model, default_object_model_class_name)
       end
-      alias_method :role_mode, :object_model
+      alias_method :role_model, :object_model
 
       protected
 

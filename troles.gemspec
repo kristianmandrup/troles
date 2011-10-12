@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "troles"
-  s.version = "0.6.0"
+  s.version = "0.6.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "config/database.yml",
     "lib/trole.rb",
+    "lib/trole/adapters.rb",
     "lib/trole/adapters/active_record.rb",
     "lib/trole/adapters/active_record/config.rb",
     "lib/trole/adapters/active_record/storage.rb",
@@ -36,6 +37,7 @@ Gem::Specification.new do |s|
     "lib/trole/adapters/mongoid/strategy.rb",
     "lib/trole/api.rb",
     "lib/trole/api/cache.rb",
+    "lib/trole/api/class_methods.rb",
     "lib/trole/api/config.rb",
     "lib/trole/api/core.rb",
     "lib/trole/api/event.rb",
@@ -93,6 +95,7 @@ Gem::Specification.new do |s|
     "lib/trole_groups/storage/ref_many.rb",
     "lib/trole_groups/strategy.rb",
     "lib/troles.rb",
+    "lib/troles/adapters.rb",
     "lib/troles/adapters/active_record.rb",
     "lib/troles/adapters/active_record/Design Notes.textile",
     "lib/troles/adapters/active_record/config.rb",
@@ -104,6 +107,7 @@ Gem::Specification.new do |s|
     "lib/troles/adapters/mongoid/config.rb",
     "lib/troles/api.rb",
     "lib/troles/api/cache.rb",
+    "lib/troles/api/class_methods.rb",
     "lib/troles/api/config.rb",
     "lib/troles/api/core.rb",
     "lib/troles/api/event.rb",
@@ -113,6 +117,7 @@ Gem::Specification.new do |s|
     "lib/troles/common.rb",
     "lib/troles/common/api.rb",
     "lib/troles/common/api/cache.rb",
+    "lib/troles/common/api/class_methods.rb",
     "lib/troles/common/api/config.rb",
     "lib/troles/common/api/core.rb",
     "lib/troles/common/api/event.rb",

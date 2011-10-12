@@ -1,6 +1,5 @@
 def migrate_up
   migrate :ref_many
-  # migrate :join_ref_many
 end
 
 require 'active_record_helper'

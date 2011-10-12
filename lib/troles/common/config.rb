@@ -1,9 +1,6 @@
 module Troles::Common
   class Config
-    autoload :ValidRoles,     'troles/common/config/valid_roles'        
-    autoload :StaticRoles,    'troles/common/config/static_roles'
-    autoload :Schema,         'troles/common/config/schema'
-    autoload :SchemaHelpers,  'troles/common/config/schema_helpers'
+    autoload_modules :ValidRoles, :StaticRoles, :Schema, :SchemaHelpers
 
     def self.sub_modules
       [:valid_roles, :static_roles, :schema]

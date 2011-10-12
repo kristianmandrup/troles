@@ -1,10 +1,7 @@
-module Troles  
+module Troles::Common  
   module Macros    
     class Configuration
-      autoload :BaseLoader,     'troles/common/macros/configuration/base_loader'
-      autoload :ConfigLoader,   'troles/common/macros/configuration/config_loader'
-      autoload :StrategyLoader, 'troles/common/macros/configuration/strategy_loader'
-      autoload :StorageLoader,  'troles/common/macros/configuration/storage_loader'      
+      autoload_modules :BaseLoader, :ConfigLoader, :StrategyLoader, :StorageLoader
       
       attr_reader :strategy, :singularity, :orm, :auto_load, :options, :subject_class
       

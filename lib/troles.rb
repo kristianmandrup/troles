@@ -1,6 +1,7 @@
 require 'troles/common'
-require 'troles/macros'
 
 module Troles
-  autoload_modules :Config, :Common, :Api, :Operations, :Strategy, :Storage
+  autoload_modules :Config, :Common, :Api, :Operations, :Strategy, :Storage, :Macros
 end
+
+Module.send :include, Troles::Common::Macros

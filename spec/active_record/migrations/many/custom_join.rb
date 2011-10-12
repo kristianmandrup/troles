@@ -2,6 +2,7 @@ class CreateCustomJoin < ActiveRecord::Migration
   def change
     create_table :users do |t|
       # implicit user_id binds to user_id of roles_users join table
+      t.integer :troles
       t.string :name
       t.timestamps
     end

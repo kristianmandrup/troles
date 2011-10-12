@@ -13,7 +13,7 @@
 
 module TroleGroups
   module Macros
-    autoload :Configuration, 'trole_groups/macros/configuration'
+    autoload_modules :Configuration
     
     def trolegroups_strategy strategy, options = {}, &block
       configuration = Configuration.new self, strategy, options
@@ -39,4 +39,3 @@ module TroleGroups
   end  
 end
 
-Module.send :include, TroleGroups::Macros

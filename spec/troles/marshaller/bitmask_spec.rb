@@ -13,8 +13,8 @@ describe Troles::Common::Marshaller::Bitmask do
   let(:bitmask) { Troles::Common::Marshaller::Bitmask.new kris }  
 
   subject { bitmask }
+
   specify { bitmask.read.should == [:blogger] }    
-    specify { bitmask.write(:admin).should == 2 }
-    specify { bitmask.write(:user, :admin).should == 3 }    
-    
+  specify { bitmask.write(:admin).should == 2 }
+  specify { bitmask.write(:user, :admin).should == 3 }  
 end

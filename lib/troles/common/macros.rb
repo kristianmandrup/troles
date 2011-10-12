@@ -9,9 +9,9 @@
 #     troles_strategy :bit_many
 #
 
-module Troles  
+module Troles::Common  
   module Macros
-    autoload :Configuration, 'troles/common/macros/configuration'
+    autoload_modules :Configuration
     
     def troles_strategy strategy, options = {}, &block
       configuration = Configuration.new self, strategy, options
@@ -35,4 +35,3 @@ module Troles
   end  
 end
 
-Module.send :include, Troles::Macros

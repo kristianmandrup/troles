@@ -11,7 +11,6 @@ class CreateJoinRefMany < ActiveRecord::Migration
       t.integer :user_id
       t.integer :role_id
     end
-
     
     create_table :roles do |t|
       # implicit role_id binds to role_id of roles_users join table

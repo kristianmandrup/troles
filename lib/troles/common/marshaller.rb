@@ -8,7 +8,6 @@
 # 
 module Troles::Common
   module Marshaller
-    autoload :Generic,   'troles/common/marshaller/generic'
-    autoload :Bitmask,   'troles/common/marshaller/bitmask'
+    autoload_modules :Generic, :Bitmask
   end
 end

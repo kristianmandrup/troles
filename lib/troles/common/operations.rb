@@ -8,8 +8,7 @@
 #
 module Troles::Common
   class Operations        
-    autoload :Read,     'troles/common/operations/read'
-    autoload :Write,    'troles/common/operations/write'
+    autoload_modules :Read, :Write
 
     include Read
     include Write

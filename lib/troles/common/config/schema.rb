@@ -1,8 +1,7 @@
 module Troles::Common
   class Config
     module Schema
-      autoload :Helpers,      'troles/common/config/schema/helpers'
-      autoload :RoleHelpers,  'troles/common/config/schema/role_helpers'
+      autoload_modules :Helpers, :RoleHelpers
       
       def configure_models
         configure_generic

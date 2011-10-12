@@ -10,7 +10,7 @@ module Troles::ActiveRecord
       when :join_ref_many
         configure_join_model
       when :ref_many
-        return configure_join_model if join_model
+        return configure_join_model if join_model_found?
         has_and_belongs_many subject_class, object_model, :key => :accounts         
       when :embed_many
         raise "Embed many configuration not yet implemented for ActiveRecord" 
@@ -31,16 +31,25 @@ module Troles::ActiveRecord
       role_join_model
     end
 
-
     def role_join_model
-      @join_model_found ||= begin
-        models = [@join_model, join_model_best_guess].select do |class_name|
-          try_class(class_name.to_s.camelize)
-        end.compact
-        # puts "role models found: #{models}"
-        raise "No #{subject_class} to #{object_model} join class defined, define a #{join_model_best_guess} model class or set which class to use, using the :role_join_model option on configuration" if models.empty?
+      @join_model_found ||= begin        
+        raise "No #{subject_class} to #{object_model} join class defined, #{cure}" if !join_model_found?
         models.first.to_s.constantize
       end
+    end
+
+    def cure
+      "define a #{join_model_best_guess} model class or set which class to use, using the :role_join_model option on configuration"
+    end
+
+    def join_model_found?
+      join_models_found.size > 0
+    end
+
+    def join_models_found
+      [@join_model, join_model_best_guess].select do |class_name|
+        try_class(class_name.to_s.camelize)
+      end.compact
     end
 
     def join_model_best_guess

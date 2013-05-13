@@ -149,7 +149,7 @@ This API operates directly on a user, fx _user#has_role?_
 
 <pre>user.has_role? :admin
 user.is_role? :editor
-user.has_any_roles? :editor, :admin  
+user.has_roles? :editor, :admin  
 </pre>
 
 h3. Roles Write API
